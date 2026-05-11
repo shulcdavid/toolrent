@@ -1,0 +1,183 @@
+{
+  "nav": {
+    "browse": "Naršyti įrankius",
+    "addListing": "Įkelti įrankį",
+    "dashboard": "Mano paskyra",
+    "login": "Prisijungti",
+    "register": "Registruotis",
+    "logout": "Atsijungti",
+    "myListings": "Mano skelbimai",
+    "myBookings": "Mano nuomos"
+  },
+  "home": {
+    "hero": {
+      "title": "Nuomokis įrankius iš kaimynų",
+      "subtitle": "Kodėl pirkti, kai gali pasiskolinti? Rask grąžtus, kopėčias, aukšto slėgio plovyklas ir dar daugiau — skelbia žmonės šalia tavęs.",
+      "cta": "Naršyti įrankius",
+      "listCta": "Įkelti savo įrankį"
+    },
+    "howItWorks": {
+      "title": "Kaip tai veikia",
+      "step1Title": "Rask įrankį",
+      "step1Desc": "Ieškok pagal kategoriją ar miestą ir naršyk šalia tavęs esančius įrankius.",
+      "step2Title": "Siųsk užklausą",
+      "step2Desc": "Pasirink datas ir siųsk nuomos užklausą savininkui.",
+      "step3Title": "Pasiimk ir grąžink",
+      "step3Desc": "Susitarkit dėl pasiėmimo, naudok įrankį ir grąžink, kai baigsi."
+    },
+    "categories": {
+      "title": "Naršyti pagal kategoriją",
+      "power": "Elektriniai įrankiai",
+      "garden": "Sodas ir lauke",
+      "construction": "Statyba",
+      "cleaning": "Valymas",
+      "automotive": "Automobiliai",
+      "other": "Kita"
+    },
+    "featured": {
+      "title": "Neseniai įkelti"
+    },
+    "stats": {
+      "tools": "Įkelti įrankiai",
+      "cities": "Miestai",
+      "renters": "Patenkinti nuomininkai"
+    }
+  },
+  "listings": {
+    "title": "Naršyti įrankius",
+    "search": "Ieškoti įrankių...",
+    "filters": {
+      "category": "Kategorija",
+      "allCategories": "Visos kategorijos",
+      "city": "Miestas",
+      "allCities": "Visi miestai",
+      "priceMax": "Maks. kaina / dieną",
+      "sortBy": "Rūšiuoti pagal",
+      "newest": "Naujausias pirmas",
+      "priceLow": "Kaina: nuo mažiausios",
+      "priceHigh": "Kaina: nuo didžiausios"
+    },
+    "perDay": "/ d.",
+    "noResults": "Įrankių nerasta. Pabandyk pakeisti filtrus.",
+    "available": "Laisvas",
+    "unavailable": "Užimtas"
+  },
+  "listing": {
+    "perDay": "/ d.",
+    "deposit": "Užstatas",
+    "location": "Vieta",
+    "owner": "Skelbia",
+    "memberSince": "Narys nuo",
+    "bookingTitle": "Nuomos užklausa",
+    "startDate": "Nuo",
+    "endDate": "Iki",
+    "totalDays": "Iš viso dienų",
+    "totalPrice": "Bendra kaina",
+    "messageLabel": "Žinutė savininkui",
+    "messagePlaceholder": "Sveiki, norėčiau išsinuomoti jūsų įrankį...",
+    "sendRequest": "Siųsti užklausą",
+    "loginToBook": "Prisijunk, kad rezervuotum",
+    "description": "Aprašymas",
+    "category": "Kategorija",
+    "reviews": "Atsiliepimai",
+    "noReviews": "Atsiliepimų dar nėra.",
+    "ownListing": "Tai jūsų skelbimas",
+    "editListing": "Redaguoti skelbimą",
+    "shareTitle": "Dalintis šiuo skelbimu"
+  },
+  "addListing": {
+    "title": "Įkelk savo įrankį",
+    "editTitle": "Redaguoti skelbimą",
+    "fields": {
+      "title": "Įrankio pavadinimas",
+      "titlePlaceholder": "pvz. Bosch gręžtuvas 18V",
+      "description": "Aprašymas",
+      "descPlaceholder": "Aprašyk įrankį, jo būklę, kas įeina į komplektą...",
+      "category": "Kategorija",
+      "pricePerDay": "Kaina per dieną (€)",
+      "deposit": "Užstatas (€)",
+      "depositHint": "Neprivaloma. Grąžinama po to, kai įrankis grąžinamas geros būklės.",
+      "city": "Miestas",
+      "cityPlaceholder": "pvz. Vilnius",
+      "address": "Adresas / pasiėmimo vieta",
+      "addressPlaceholder": "pvz. Antakalnio rajonas (tikslus adresas – po rezervacijos)",
+      "images": "Nuotraukos",
+      "imagesHint": "Įkelk iki 5 nuotraukų. Pirmoji bus viršelis.",
+      "available": "Laisvas nuomai"
+    },
+    "submit": "Paskelbti",
+    "update": "Išsaugoti pakeitimus",
+    "success": "Skelbimas paskelbtas!",
+    "successEdit": "Skelbimas atnaujintas!"
+  },
+  "auth": {
+    "login": {
+      "title": "Sveiki sugrįžę",
+      "email": "El. paštas",
+      "password": "Slaptažodis",
+      "submit": "Prisijungti",
+      "noAccount": "Neturi paskyros?",
+      "register": "Registruotis",
+      "forgot": "Pamiršai slaptažodį?"
+    },
+    "register": {
+      "title": "Sukurti paskyrą",
+      "fullName": "Vardas ir pavardė",
+      "email": "El. paštas",
+      "password": "Slaptažodis",
+      "passwordHint": "Ne mažiau kaip 8 simboliai",
+      "city": "Jūsų miestas",
+      "submit": "Sukurti paskyrą",
+      "hasAccount": "Jau turi paskyrą?",
+      "login": "Prisijungti",
+      "terms": "Registruodamasis sutinki su mūsų Paslaugų teikimo sąlygomis."
+    }
+  },
+  "dashboard": {
+    "title": "Mano paskyra",
+    "welcome": "Sveiki sugrįžę",
+    "myListings": "Mano skelbimai",
+    "myBookings": "Mano nuomos",
+    "incomingRequests": "Gautos užklausos",
+    "addNew": "Įkelti naują skelbimą",
+    "noListings": "Dar neįkėlei jokių įrankių.",
+    "noBookings": "Nuomų dar nėra.",
+    "noRequests": "Gautų užklausų nėra.",
+    "status": {
+      "pending": "Laukiama",
+      "approved": "Patvirtinta",
+      "rejected": "Atmesta",
+      "completed": "Baigta",
+      "cancelled": "Atšaukta"
+    },
+    "approve": "Patvirtinti",
+    "reject": "Atmesti",
+    "cancel": "Atšaukti",
+    "edit": "Redaguoti",
+    "delete": "Ištrinti",
+    "dates": "Datos",
+    "renter": "Nuomininkas",
+    "tool": "Įrankis"
+  },
+  "categories": {
+    "power": "Elektriniai įrankiai",
+    "garden": "Sodas ir lauke",
+    "construction": "Statyba",
+    "cleaning": "Valymas",
+    "automotive": "Automobiliai",
+    "other": "Kita"
+  },
+  "common": {
+    "loading": "Kraunama...",
+    "error": "Kažkas nutiko.",
+    "retry": "Bandyti dar kartą",
+    "back": "Atgal",
+    "save": "Išsaugoti",
+    "cancel": "Atšaukti",
+    "delete": "Ištrinti",
+    "edit": "Redaguoti",
+    "close": "Uždaryti",
+    "perDay": "/ d.",
+    "currency": "€"
+  }
+}
