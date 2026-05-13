@@ -3,61 +3,69 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin, Calendar, ArrowLeft, Star, Shield } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
-import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { BookingForm } from "@/components/BookingForm";
-import { mockListings } from "@/lib/mock-data";
+import { ImageGallery } from "@/components/ImageGallery";
+import { createClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate, CATEGORY_ICONS } from "@/lib/utils";
 
 export default async function ListingDetailPage({
-  params,
+  params, searchParams,
 }: {
   params: Promise<{ lang: string; id: string }>;
+  searchParams: Promise<{ booked?: string; error?: string }>;
 }) {
   const { lang, id } = await params;
   if (!hasLocale(lang)) notFound();
 
-  const listing = mockListings.find((l) => l.id === id);
-  if (!listing) notFound();
+  const supabase = await createClient();
+  const { data: listingRaw } = await supabase
+    .from("listings")
+    .select("*, profiles(*)")
+    .eq("id", id)
+    .single();
+
+  if (!listingRaw) notFound();
+  const listing = listingRaw as any;
+
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: reviewsRaw } = await supabase
+    .from("reviews")
+    .select("*, profiles!reviewer_id(*)")
+    .eq("listing_id", id)
+    .order("created_at", { ascending: false });
+  const reviews = (reviewsRaw ?? []) as any[];
 
   const dict = await getDictionary(lang as Locale);
+  const sp = await searchParams;
   const icon = CATEGORY_ICONS[listing.category as keyof typeof CATEGORY_ICONS] ?? "📦";
+  const isOwner = user?.id === listing.user_id;
+  const avgRating = reviews?.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
-      {/* Back */}
-      <Link
-        href={`/${lang}/listings`}
-        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6 transition-colors"
-      >
+      <Link href={`/${lang}/listings`}
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6 transition-colors">
         <ArrowLeft size={15} /> {dict.common.back}
       </Link>
 
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left – images + details */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
-          {/* Main image */}
-          <div className="relative h-72 sm:h-96 w-full rounded-2xl overflow-hidden bg-gray-100">
-            {listing.images?.[0] ? (
-              <Image
-                src={listing.images[0]}
-                alt={listing.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 66vw"
-                priority
-              />
-            ) : (
-              <div className="flex h-full items-center justify-center text-6xl">{icon}</div>
-            )}
-            <div className="absolute top-4 left-4">
-              <Badge variant={listing.is_available ? "green" : "gray"}>
-                {listing.is_available ? dict.listings.available : dict.listings.unavailable}
-              </Badge>
-            </div>
-          </div>
+      {sp.booked && (
+        <div className="mb-6 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm text-green-700 font-medium">
+          ✅ {lang === "lt" ? "Užklausa išsiųsta! Savininkas netrukus susisieks." : "Request sent! The owner will get back to you soon."}
+        </div>
+      )}
 
-          {/* Title & meta */}
+      <div className="grid gap-8 lg:grid-cols-3">
+        <div className="lg:col-span-2 flex flex-col gap-6">
+          {/* Gallery */}
+          {listing.images?.length > 0 ? (
+            <ImageGallery images={listing.images} title={listing.title} />
+          ) : (
+            <div className="flex h-72 sm:h-96 w-full items-center justify-center rounded-2xl bg-gray-100 text-6xl">
+              {icon}
+            </div>
+          )}
+
           <div>
             <div className="flex items-start justify-between gap-4">
               <h1 className="text-2xl font-bold text-gray-900">{listing.title}</h1>
@@ -66,28 +74,19 @@ export default async function ListingDetailPage({
                 <span className="text-base font-normal text-gray-500 ml-1">{dict.listing.perDay}</span>
               </span>
             </div>
-
             <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-500">
-              <span className="flex items-center gap-1.5">
-                <MapPin size={14} /> {listing.city}
-                {listing.address && ` · ${listing.address}`}
-              </span>
-              <span className="flex items-center gap-1.5">
-                <Calendar size={14} /> {formatDate(listing.created_at)}
-              </span>
+              <span className="flex items-center gap-1.5"><MapPin size={14} /> {listing.city}{listing.address && ` · ${listing.address}`}</span>
+              <span className="flex items-center gap-1.5"><Calendar size={14} /> {formatDate(listing.created_at)}</span>
               <Badge variant="default">{dict.categories[listing.category as keyof typeof dict.categories]}</Badge>
+              {listing.is_available ? <Badge variant="green">{dict.listings.available}</Badge> : <Badge variant="gray">{dict.listings.unavailable}</Badge>}
             </div>
           </div>
 
-          {/* Description */}
           <div className="rounded-2xl border border-gray-100 bg-white p-5">
             <h2 className="font-semibold text-gray-900 mb-3">{dict.listing.description}</h2>
-            <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">
-              {listing.description}
-            </p>
+            <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{listing.description}</p>
           </div>
 
-          {/* Deposit */}
           {listing.deposit > 0 && (
             <div className="flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50 px-5 py-4">
               <Shield size={20} className="text-blue-500 shrink-0" />
@@ -103,31 +102,64 @@ export default async function ListingDetailPage({
             <h2 className="font-semibold text-gray-900 mb-4">{dict.listing.owner}</h2>
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 text-xl font-bold text-orange-600">
-                {listing.profiles.full_name?.[0] ?? "?"}
+                {listing.profiles?.full_name?.[0] ?? "?"}
               </div>
               <div>
-                <p className="font-medium text-gray-900">{listing.profiles.full_name}</p>
-                <p className="text-sm text-gray-500">
-                  {dict.listing.memberSince} {formatDate(listing.profiles.created_at)}
-                </p>
+                <p className="font-medium text-gray-900">{listing.profiles?.full_name ?? "Anonymous"}</p>
+                <p className="text-sm text-gray-500">{dict.listing.memberSince} {formatDate(listing.profiles?.created_at)}</p>
               </div>
-              <div className="ml-auto flex items-center gap-1 text-sm text-yellow-600 font-medium">
-                <Star size={14} fill="currentColor" /> 4.8
-              </div>
+              {avgRating && (
+                <div className="ml-auto flex items-center gap-1 text-sm text-yellow-600 font-medium">
+                  <Star size={14} fill="currentColor" /> {avgRating}
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Reviews placeholder */}
+          {/* Reviews */}
           <div className="rounded-2xl border border-gray-100 bg-white p-5">
-            <h2 className="font-semibold text-gray-900 mb-3">{dict.listing.reviews}</h2>
-            <p className="text-sm text-gray-400">{dict.listing.noReviews}</p>
+            <h2 className="font-semibold text-gray-900 mb-4">
+              {dict.listing.reviews} {reviews?.length ? `(${reviews.length})` : ""}
+            </h2>
+            {!reviews?.length ? (
+              <p className="text-sm text-gray-400">{dict.listing.noReviews}</p>
+            ) : (
+              <div className="flex flex-col gap-4">
+                {reviews.map((review) => (
+                  <div key={review.id} className="border-b border-gray-50 pb-4 last:border-0 last:pb-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <div className="h-7 w-7 rounded-full bg-orange-100 flex items-center justify-center text-xs font-bold text-orange-600">
+                        {(review.profiles as any)?.full_name?.[0] ?? "?"}
+                      </div>
+                      <span className="text-sm font-medium text-gray-800">{(review.profiles as any)?.full_name}</span>
+                      <div className="flex ml-auto">
+                        {Array.from({ length: 5 }).map((_, i) => (
+                          <Star key={i} size={12} className={i < review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-200 fill-gray-200"} />
+                        ))}
+                      </div>
+                    </div>
+                    {review.comment && <p className="text-sm text-gray-600 ml-9">{review.comment}</p>}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Right – booking card */}
+        {/* Booking card */}
         <div className="lg:col-span-1">
           <div className="sticky top-24">
-            <BookingForm listing={listing} dict={dict} lang={lang as Locale} />
+            {isOwner ? (
+              <div className="rounded-2xl border border-orange-100 bg-orange-50 p-5 text-center">
+                <p className="text-sm font-medium text-orange-700 mb-3">{dict.listing.ownListing}</p>
+                <Link href={`/${lang}/add-listing?edit=${listing.id}`}
+                  className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600">
+                  {dict.listing.editListing}
+                </Link>
+              </div>
+            ) : (
+              <BookingForm listing={listing} dict={dict} lang={lang as Locale} isLoggedIn={!!user} />
+            )}
           </div>
         </div>
       </div>

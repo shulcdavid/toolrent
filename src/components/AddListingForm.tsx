@@ -1,28 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Upload, X } from "lucide-react";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
 import { CATEGORIES, CATEGORY_ICONS } from "@/lib/utils";
-import type { Locale } from "@/i18n/dictionaries";
+import { createListing } from "@/lib/actions/listings";
+import type { Locale } from "@/i18n/config";
 
 interface Props {
   dict: {
     addListing: {
       fields: {
-        title: string; titlePlaceholder: string;
-        description: string; descPlaceholder: string;
-        category: string; pricePerDay: string;
-        deposit: string; depositHint: string;
-        city: string; cityPlaceholder: string;
-        address: string; addressPlaceholder: string;
-        images: string; imagesHint: string;
-        available: string;
+        title: string; titlePlaceholder: string; description: string; descPlaceholder: string;
+        category: string; pricePerDay: string; deposit: string; depositHint: string;
+        city: string; cityPlaceholder: string; address: string; addressPlaceholder: string;
+        images: string; imagesHint: string; available: string;
       };
       submit: string;
-      success: string;
     };
     categories: Record<string, string>;
   };
@@ -30,11 +25,7 @@ interface Props {
 }
 
 export function AddListingForm({ dict, lang }: Props) {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [images, setImages] = useState<string[]>([]);
-
   const f = dict.addListing.fields;
 
   function handleImageAdd(e: React.ChangeEvent<HTMLInputElement>) {
@@ -42,33 +33,15 @@ export function AddListingForm({ dict, lang }: Props) {
     if (!files) return;
     Array.from(files).slice(0, 5 - images.length).forEach((file) => {
       const reader = new FileReader();
-      reader.onload = (ev) => {
-        setImages((prev) => [...prev, ev.target?.result as string].slice(0, 5));
-      };
+      reader.onload = (ev) => setImages((prev) => [...prev, ev.target?.result as string].slice(0, 5));
       reader.readAsDataURL(file);
     });
   }
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
-    setLoading(false);
-    setSuccess(true);
-    setTimeout(() => router.push(`/${lang}/listings`), 1500);
-  }
-
-  if (success) {
-    return (
-      <div className="flex flex-col items-center py-16 text-center">
-        <div className="text-5xl mb-4">🎉</div>
-        <h2 className="text-xl font-bold text-gray-900">{dict.addListing.success}</h2>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+    <form action={createListing} className="flex flex-col gap-6">
+      <input type="hidden" name="lang" value={lang} />
+
       {/* Images */}
       <div>
         <label className="text-sm font-medium text-gray-700 block mb-1.5">{f.images}</label>
@@ -78,11 +51,8 @@ export function AddListingForm({ dict, lang }: Props) {
             <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-gray-200">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" className="h-full w-full object-cover" />
-              <button
-                type="button"
-                onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
-                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
-              >
+              <button type="button" onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
+                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80">
                 <X size={10} />
               </button>
             </div>
@@ -99,18 +69,12 @@ export function AddListingForm({ dict, lang }: Props) {
 
       <Input name="title" label={f.title} placeholder={f.titlePlaceholder} required />
 
-      {/* Description */}
       <div>
         <label className="text-sm font-medium text-gray-700 block mb-1.5">{f.description}</label>
-        <textarea
-          name="description"
-          placeholder={f.descPlaceholder}
-          rows={4}
-          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 transition focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent resize-none"
-        />
+        <textarea name="description" placeholder={f.descPlaceholder} rows={4}
+          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 transition focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none" />
       </div>
 
-      {/* Category */}
       <div>
         <label className="text-sm font-medium text-gray-700 block mb-1.5">{f.category}</label>
         <div className="grid grid-cols-3 gap-2">
@@ -136,7 +100,6 @@ export function AddListingForm({ dict, lang }: Props) {
         <Input name="address" label={f.address} placeholder={f.addressPlaceholder} />
       </div>
 
-      {/* Available toggle */}
       <label className="flex items-center gap-3 cursor-pointer">
         <div className="relative">
           <input type="checkbox" name="is_available" defaultChecked className="sr-only peer" />
@@ -146,9 +109,7 @@ export function AddListingForm({ dict, lang }: Props) {
         <span className="text-sm font-medium text-gray-700">{f.available}</span>
       </label>
 
-      <Button type="submit" size="lg" disabled={loading}>
-        {loading ? "..." : dict.addListing.submit}
-      </Button>
+      <Button type="submit" size="lg">{dict.addListing.submit}</Button>
     </form>
   );
 }

@@ -1,7 +1,20 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Search, Send, PackageCheck } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
+
+export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
+  const { lang } = await params;
+  const lt = lang === "lt";
+  return {
+    title: "ToolRent – " + (lt ? "Nuomokis įrankius iš kaimynų" : "Rent tools from your neighbours"),
+    description: lt
+      ? "P2P įrankių nuomos platforma. Rask gręžtuvus, kopėčias, plovyklas ir daugiau šalia tavęs."
+      : "Peer-to-peer tool rental. Find drills, ladders, pressure washers and more near you.",
+    openGraph: { images: [{ url: "/og-default.png", width: 1200, height: 630 }] },
+  };
+}
 import { ListingCard } from "@/components/ListingCard";
 import { Button } from "@/components/ui/Button";
 import { mockListings } from "@/lib/mock-data";

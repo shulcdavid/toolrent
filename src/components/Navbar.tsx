@@ -2,15 +2,13 @@ import Link from "next/link";
 import { Wrench } from "lucide-react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { Button } from "./ui/Button";
-import type { Locale } from "@/i18n/dictionaries";
+import { MobileNav } from "./MobileNav";
+import { logout } from "@/lib/actions/auth";
+import type { Locale } from "@/i18n/config";
 
 interface NavDict {
-  browse: string;
-  addListing: string;
-  dashboard: string;
-  login: string;
-  register: string;
-  logout: string;
+  browse: string; addListing: string; dashboard: string;
+  login: string; register: string; logout: string;
 }
 
 interface NavbarProps {
@@ -31,19 +29,13 @@ export function Navbar({ dict, lang, user }: NavbarProps) {
           <span className="text-lg tracking-tight">ToolRent</span>
         </Link>
 
-        {/* Center links */}
+        {/* Center links – desktop only */}
         <div className="hidden items-center gap-6 md:flex">
-          <Link
-            href={`/${lang}/listings`}
-            className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-          >
+          <Link href={`/${lang}/listings`} className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
             {dict.browse}
           </Link>
           {user && (
-            <Link
-              href={`/${lang}/dashboard`}
-              className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-            >
+            <Link href={`/${lang}/dashboard`} className="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
               {dict.dashboard}
             </Link>
           )}
@@ -53,27 +45,34 @@ export function Navbar({ dict, lang, user }: NavbarProps) {
         <div className="flex items-center gap-3">
           <LanguageSwitcher currentLocale={lang} />
 
-          {user ? (
-            <div className="flex items-center gap-2">
-              <Link href={`/${lang}/add-listing`}>
-                <Button size="sm">{dict.addListing}</Button>
-              </Link>
-              <form action={`/${lang}/auth/logout`} method="POST">
-                <button className="text-sm text-gray-500 hover:text-gray-800 transition-colors px-2">
-                  {dict.logout}
-                </button>
-              </form>
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <Link href={`/${lang}/auth/login`}>
-                <Button variant="ghost" size="sm">{dict.login}</Button>
-              </Link>
-              <Link href={`/${lang}/auth/register`}>
-                <Button size="sm">{dict.register}</Button>
-              </Link>
-            </div>
-          )}
+          {/* Desktop auth buttons */}
+          <div className="hidden md:flex items-center gap-2">
+            {user ? (
+              <>
+                <Link href={`/${lang}/add-listing`}>
+                  <Button size="sm">{dict.addListing}</Button>
+                </Link>
+                <form action={logout}>
+                  <input type="hidden" name="lang" value={lang} />
+                  <button className="text-sm text-gray-500 hover:text-gray-800 transition-colors px-2">
+                    {dict.logout}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <>
+                <Link href={`/${lang}/auth/login`}>
+                  <Button variant="ghost" size="sm">{dict.login}</Button>
+                </Link>
+                <Link href={`/${lang}/auth/register`}>
+                  <Button size="sm">{dict.register}</Button>
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* Mobile hamburger */}
+          <MobileNav dict={dict} lang={lang} user={user} />
         </div>
       </nav>
     </header>
