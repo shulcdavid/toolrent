@@ -6,6 +6,8 @@ import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { Badge } from "@/components/ui/Badge";
 import { BookingForm } from "@/components/BookingForm";
 import { ImageGallery } from "@/components/ImageGallery";
+import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
+import { TrustBadges } from "@/components/TrustBadges";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate, CATEGORY_ICONS } from "@/lib/utils";
 
@@ -29,12 +31,26 @@ export default async function ListingDetailPage({
   const listing = listingRaw as any;
 
   const { data: { user } } = await supabase.auth.getUser();
+  const { data: bookingsRaw } = await supabase
+    .from("bookings")
+    .select("start_date, end_date")
+    .eq("listing_id", id)
+    .eq("status", "approved");
+  const bookedRanges = ((bookingsRaw ?? []) as any[]).map((b) => ({ start: b.start_date, end: b.end_date }));
+
   const { data: reviewsRaw } = await supabase
     .from("reviews")
     .select("*, profiles!reviewer_id(*)")
     .eq("listing_id", id)
     .order("created_at", { ascending: false });
   const reviews = (reviewsRaw ?? []) as any[];
+
+  // Response rate: % of bookings that were approved or rejected (not left pending)
+  const { data: allBookings } = await (supabase as any)
+    .from("bookings").select("status").eq("listing_id", id);
+  const total = (allBookings ?? []).length;
+  const responded = (allBookings ?? []).filter((b: any) => b.status !== "pending").length;
+  const responseRate = total > 0 ? Math.round((responded / total) * 100) : null;
 
   const dict = await getDictionary(lang as Locale);
   const sp = await searchParams;
@@ -97,6 +113,9 @@ export default async function ListingDetailPage({
             </div>
           )}
 
+          {/* Availability calendar */}
+          <AvailabilityCalendar bookedRanges={bookedRanges} lang={lang} />
+
           {/* Owner */}
           <div className="rounded-2xl border border-gray-100 bg-white p-5">
             <h2 className="font-semibold text-gray-900 mb-4">{dict.listing.owner}</h2>
@@ -114,6 +133,13 @@ export default async function ListingDetailPage({
                 </div>
               )}
             </div>
+            <TrustBadges
+              hasPhone={!!listing.profiles?.phone}
+              responseRate={responseRate}
+              avgRating={avgRating}
+              totalReviews={reviews.length}
+              lang={lang}
+            />
           </div>
 
           {/* Reviews */}

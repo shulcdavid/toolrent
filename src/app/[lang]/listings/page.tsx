@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { ListingCard } from "@/components/ListingCard";
+import { ListingsMap } from "@/components/ListingsMap";
 import { createClient } from "@/lib/supabase/server";
 import { CATEGORIES, CATEGORY_ICONS } from "@/lib/utils";
-import { SlidersHorizontal, MapPin } from "lucide-react";
+import { SlidersHorizontal, MapPin, LayoutGrid, Map } from "lucide-react";
 
-interface SearchParams { category?: string; city?: string; q?: string; sort?: string }
+interface SearchParams { category?: string; city?: string; q?: string; sort?: string; view?: string }
 
 export default async function ListingsPage({
   params, searchParams,
@@ -100,10 +101,10 @@ export default async function ListingsPage({
             ))}
           </div>
 
-          {/* Sort bar */}
-          <div className="flex items-center justify-between mb-4">
+          {/* Sort + view toggle bar */}
+          <div className="flex items-center justify-between mb-4 gap-2 flex-wrap">
             <span className="text-sm text-gray-500">{listings.length} {lang === "lt" ? "rezultatai" : "results"}</span>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               {(["newest", "priceLow", "priceHigh"] as const).map((s) => (
                 <a key={s} href={buildUrl(lang, { ...sp, sort: s })}
                   className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
@@ -111,6 +112,19 @@ export default async function ListingsPage({
                   {dict.listings.filters[s]}
                 </a>
               ))}
+              {/* View toggle */}
+              <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+                <a href={buildUrl(lang, { ...sp, view: "grid" })}
+                  className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${
+                    (sp.view ?? "grid") === "grid" ? "bg-orange-500 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}>
+                  <LayoutGrid size={13} /> {lang === "lt" ? "Tinklelis" : "Grid"}
+                </a>
+                <a href={buildUrl(lang, { ...sp, view: "map" })}
+                  className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${
+                    sp.view === "map" ? "bg-orange-500 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}>
+                  <Map size={13} /> {lang === "lt" ? "Žemėlapis" : "Map"}
+                </a>
+              </div>
             </div>
           </div>
 
@@ -119,6 +133,8 @@ export default async function ListingsPage({
               <span className="text-5xl mb-4">🔍</span>
               <p>{dict.listings.noResults}</p>
             </div>
+          ) : sp.view === "map" ? (
+            <ListingsMap listings={listings as any} lang={lang as Locale} perDayLabel={dict.listings.perDay} />
           ) : (
             <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {listings.map((listing) => (
@@ -139,6 +155,7 @@ function buildUrl(lang: string, sp: SearchParams): string {
   if (sp.city) p.set("city", sp.city);
   if (sp.q) p.set("q", sp.q);
   if (sp.sort) p.set("sort", sp.sort);
+  if (sp.view) p.set("view", sp.view);
   const qs = p.toString();
   return `/${lang}/listings${qs ? `?${qs}` : ""}`;
 }
