@@ -31,8 +31,12 @@ export const CATEGORIES = [
   "power",
   "garden",
   "construction",
+  "measuring",
+  "painting",
   "cleaning",
+  "plumbing",
   "automotive",
+  "leftovers",
   "other",
 ] as const;
 
@@ -42,7 +46,11 @@ export const CATEGORY_ICONS: Record<Category, string> = {
   power: "⚡",
   garden: "🌿",
   construction: "🏗️",
+  measuring: "📐",
+  painting: "🖌️",
   cleaning: "🧹",
+  plumbing: "🚿",
   automotive: "🚗",
+  leftovers: "♻️",
   other: "📦",
 };

@@ -26,13 +26,7 @@
       "step3Desc": "Agree on pickup details, use the tool, then return it when done."
     },
     "categories": {
-      "title": "Browse by category",
-      "power": "Power Tools",
-      "garden": "Garden & Outdoor",
-      "construction": "Construction",
-      "cleaning": "Cleaning",
-      "automotive": "Automotive",
-      "other": "Other"
+      "title": "Browse by category"
     },
     "featured": {
       "title": "Recently listed"
@@ -163,8 +157,12 @@
     "power": "Power Tools",
     "garden": "Garden & Outdoor",
     "construction": "Construction",
+    "measuring": "Measuring & Leveling",
+    "painting": "Painting",
     "cleaning": "Cleaning",
+    "plumbing": "Plumbing",
     "automotive": "Automotive",
+    "leftovers": "Construction Leftovers",
     "other": "Other"
   },
   "common": {

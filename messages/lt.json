@@ -26,13 +26,7 @@
       "step3Desc": "Susitarkit dėl pasiėmimo, naudok įrankį ir grąžink, kai baigsi."
     },
     "categories": {
-      "title": "Naršyti pagal kategoriją",
-      "power": "Elektriniai įrankiai",
-      "garden": "Sodas ir lauke",
-      "construction": "Statyba",
-      "cleaning": "Valymas",
-      "automotive": "Automobiliai",
-      "other": "Kita"
+      "title": "Naršyti pagal kategoriją"
     },
     "featured": {
       "title": "Neseniai įkelti"
@@ -163,8 +157,12 @@
     "power": "Elektriniai įrankiai",
     "garden": "Sodas ir lauke",
     "construction": "Statyba",
+    "measuring": "Matavimas",
+    "painting": "Dažymas",
     "cleaning": "Valymas",
+    "plumbing": "Santechnika",
     "automotive": "Automobiliai",
+    "leftovers": "Statybinės liekanos",
     "other": "Kita"
   },
   "common": {

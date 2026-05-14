@@ -1,11 +1,15 @@
-import { Wrench, Leaf, HardHat, Droplets, Car, Package } from "lucide-react";
+import { Wrench, Leaf, HardHat, Droplets, Car, Package, Ruler, Paintbrush, Pipette, Recycle } from "lucide-react";
 
 const icons: Record<string, React.ElementType> = {
   power: Wrench,
   garden: Leaf,
   construction: HardHat,
+  measuring: Ruler,
+  painting: Paintbrush,
   cleaning: Droplets,
+  plumbing: Pipette,
   automotive: Car,
+  leftovers: Recycle,
   other: Package,
 };
 

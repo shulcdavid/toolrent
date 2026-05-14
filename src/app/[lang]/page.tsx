@@ -157,7 +157,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
               <h2 className="font-outfit text-3xl sm:text-4xl font-bold text-[#20201f]">{dict.home.categories.title}</h2>
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-6">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat}
