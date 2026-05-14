@@ -32,7 +32,7 @@ export function MobileNav({ dict, lang, user }: Props) {
           <div className="relative ml-auto flex h-full w-72 flex-col bg-[#f7f6f2]">
             {/* Header */}
             <div className="flex items-center justify-between border-b border-[#e5e2db] px-6 py-4">
-              <span className="font-outfit text-base font-semibold text-[#20201f]">ToolRent</span>
+              <span className="font-outfit text-base font-semibold text-[#20201f]">Rente</span>
               <button onClick={() => setOpen(false)} className="text-[#20201f]/40 hover:text-[#20201f] transition-colors">
                 <X size={18} />
               </button>

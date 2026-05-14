@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "@/i18n/dictionaries";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Privacy Policy – ToolRent" };
+export const metadata: Metadata = { title: "Privacy Policy – Rente" };
 
 export default async function PrivacyPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;

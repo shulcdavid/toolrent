@@ -3,7 +3,7 @@ import { hasLocale } from "@/i18n/dictionaries";
 import { Mail, MessageSquare } from "lucide-react";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Contact – ToolRent" };
+export const metadata: Metadata = { title: "Contact – Rente" };
 
 export default async function ContactPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;

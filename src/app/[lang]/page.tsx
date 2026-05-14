@@ -12,7 +12,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   const lt = lang === "lt";
   return {
-    title: "ToolRent – " + (lt ? "Nuomokis įrankius iš kaimynų" : "Rent tools from your neighbours"),
+    title: "Rente – " + (lt ? "Nuomokis įrankius iš kaimynų" : "Rent tools from your neighbours"),
     description: lt
       ? "P2P įrankių nuomos platforma. Rask gręžtuvus, kopėčias, plovyklas ir daugiau šalia tavęs."
       : "Peer-to-peer tool rental. Find drills, ladders, pressure washers and more near you.",

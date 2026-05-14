@@ -1,6 +1,6 @@
 import { Resend } from "resend";
 
-const FROM = "ToolRent <noreply@toolrent.lt>";
+const FROM = "Rente <noreply@toolrent.lt>";
 
 function getResend() {
   const key = process.env.RESEND_API_KEY;
@@ -28,7 +28,7 @@ export async function sendBookingRequestEmail(opts: {
     html: `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111">
         <div style="background:#f97316;padding:24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:white;margin:0;font-size:22px">🔧 ToolRent</h1>
+          <h1 style="color:white;margin:0;font-size:22px">🔧 Rente</h1>
         </div>
         <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
           <h2 style="margin:0 0 16px">New booking request</h2>
@@ -66,7 +66,7 @@ export async function sendBookingStatusEmail(opts: {
     html: `
       <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111">
         <div style="background:#f97316;padding:24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:white;margin:0;font-size:22px">🔧 ToolRent</h1>
+          <h1 style="color:white;margin:0;font-size:22px">🔧 Rente</h1>
         </div>
         <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
           <h2 style="margin:0 0 16px">${approved ? "✅ Booking approved!" : "❌ Booking declined"}</h2>

@@ -34,7 +34,7 @@ export default async function LocaleLayout({
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
             {/* Brand */}
             <div className="col-span-2 sm:col-span-1">
-              <div className="font-outfit text-base font-semibold text-[#20201f] mb-3">ToolRent</div>
+              <div className="font-outfit text-base font-semibold text-[#20201f] mb-3">Rente</div>
               <p className="text-xs text-[#20201f]/50 leading-relaxed max-w-[180px]">
                 {lt ? "P2P įrankių nuomos platforma Lietuvoje." : "Peer-to-peer tool rental platform."}
               </p>
@@ -66,7 +66,7 @@ export default async function LocaleLayout({
             </div>
           </div>
           <div className="border-t border-[#e5e2db] pt-6 flex items-center justify-between">
-            <span className="text-xs text-[#20201f]/30">© {new Date().getFullYear()} ToolRent</span>
+            <span className="text-xs text-[#20201f]/30">© {new Date().getFullYear()} Rente</span>
             <span className="text-xs text-[#20201f]/30">{lt ? "Lietuvoje 🇱🇹" : "Made in Lithuania 🇱🇹"}</span>
           </div>
         </div>

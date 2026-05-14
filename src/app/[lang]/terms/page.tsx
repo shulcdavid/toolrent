@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { hasLocale } from "@/i18n/dictionaries";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Terms of Service – ToolRent" };
+export const metadata: Metadata = { title: "Terms of Service – Rente" };
 
 export default async function TermsPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -16,8 +16,8 @@ export default async function TermsPage({ params }: { params: Promise<{ lang: st
       <div className="flex flex-col gap-6 text-sm text-gray-600 leading-relaxed">
         {[
           { h: lt ? "Platformos paskirtis" : "Platform purpose",
-            p: lt ? "ToolRent yra tarpininkavimo platforma, sujungianti įrankių savininkus su nuomininkais. Mes nesame sandorio šalimi ir neatsakome už sandorius tarp naudotojų."
-                  : "ToolRent is a marketplace connecting tool owners with renters. We are not a party to transactions and are not responsible for dealings between users." },
+            p: lt ? "Rente yra tarpininkavimo platforma, sujungianti įrankių savininkus su nuomininkais. Mes nesame sandorio šalimi ir neatsakome už sandorius tarp naudotojų."
+                  : "Rente is a marketplace connecting tool owners with renters. We are not a party to transactions and are not responsible for dealings between users." },
           { h: lt ? "Naudotojų atsakomybė" : "User responsibility",
             p: lt ? "Savininkai atsako už tikslią skelbimų informaciją ir įrankių būklę. Nuomininkai atsako už tinkamą įrankių naudojimą ir savalaikį grąžinimą."
                   : "Owners are responsible for accurate listing information and tool condition. Renters are responsible for proper use and timely return of tools." },

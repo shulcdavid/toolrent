@@ -21,7 +21,7 @@ export function Navbar({ dict, lang, user }: NavbarProps) {
       <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5 sm:px-8">
         {/* Logo */}
         <Link href={`/${lang}`} className="font-outfit text-base font-semibold tracking-tight text-[#20201f]">
-          ToolRent
+          Rente
         </Link>
 
         {/* Center links – desktop only */}

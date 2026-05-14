@@ -15,7 +15,7 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "ToolRent – Rent tools from your neighbours",
+  title: "Rente – Rent tools from your neighbours",
   description: "Peer-to-peer tool rental platform. Find drills, ladders, pressure washers and more near you.",
 };
 

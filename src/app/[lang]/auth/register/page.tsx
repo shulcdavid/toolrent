@@ -16,7 +16,7 @@ export default async function RegisterPage({
     <div className="flex min-h-[80vh] items-center justify-center px-5 py-12">
       <div className="w-full max-w-sm">
         <div className="flex flex-col items-center mb-8">
-          <span className="font-outfit text-2xl font-bold text-[#20201f] mb-1">ToolRent</span>
+          <span className="font-outfit text-2xl font-bold text-[#20201f] mb-1">Rente</span>
           <h1 className="font-outfit text-lg font-semibold text-[#20201f]">{dict.auth.register.title}</h1>
         </div>
 

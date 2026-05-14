@@ -12,14 +12,14 @@ export function buildMeta(opts: {
   const image = opts.image ?? `${base}/og-default.png`;
 
   return {
-    title: `${opts.title} – ToolRent`,
+    title: `${opts.title} – Rente`,
     description: opts.description,
     metadataBase: new URL(base),
     openGraph: {
       title: opts.title,
       description: opts.description,
       url,
-      siteName: "ToolRent",
+      siteName: "Rente",
       images: [{ url: image, width: 1200, height: 630 }],
       type: "website",
     },
