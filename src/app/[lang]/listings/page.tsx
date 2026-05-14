@@ -3,7 +3,8 @@ import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { ListingCard } from "@/components/ListingCard";
 import { ListingsMap } from "@/components/ListingsMap";
 import { createClient } from "@/lib/supabase/server";
-import { CATEGORIES, CATEGORY_ICONS } from "@/lib/utils";
+import { CATEGORIES } from "@/lib/utils";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { SlidersHorizontal, MapPin, LayoutGrid, Map } from "lucide-react";
 
 interface SearchParams { category?: string; city?: string; q?: string; sort?: string; view?: string }
@@ -70,7 +71,7 @@ export default async function ListingsPage({
                 </FilterLink>
                 {CATEGORIES.map((cat) => (
                   <FilterLink key={cat} href={buildUrl(lang, { ...sp, category: cat })} active={sp.category === cat}>
-                    {CATEGORY_ICONS[cat]} {dict.categories[cat]}
+                    <CategoryIcon category={cat} size={13} className="inline shrink-0" /> {dict.categories[cat]}
                   </FilterLink>
                 ))}
               </div>
@@ -100,7 +101,7 @@ export default async function ListingsPage({
                   sp.category === cat
                     ? "border-[#20201f] bg-[#20201f] text-[#f7f6f2]"
                     : "border-[#e5e2db] bg-[#eeece3] text-[#20201f]/60 hover:border-[#20201f]/30"}`}>
-                {CATEGORY_ICONS[cat]} {dict.categories[cat]}
+                <CategoryIcon category={cat} size={13} className="inline shrink-0" /> {dict.categories[cat]}
               </a>
             ))}
           </div>

@@ -6,7 +6,8 @@ import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { ListingCard } from "@/components/ListingCard";
 import { Button } from "@/components/ui/Button";
 import { createClient } from "@/lib/supabase/server";
-import { CATEGORIES, CATEGORY_ICONS } from "@/lib/utils";
+import { CATEGORIES } from "@/lib/utils";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;
@@ -163,7 +164,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
                 href={`/${lang}/listings?category=${cat}`}
                 className="group flex flex-col items-center gap-3 rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5 hover:bg-[#e5e2db] hover:border-[#c8c4bc] transition-all duration-200"
               >
-                <span className="text-3xl">{CATEGORY_ICONS[cat]}</span>
+                <CategoryIcon category={cat} size={24} className="text-[#20201f]/50 group-hover:text-[#20201f] transition-colors" />
                 <span className="text-xs font-medium text-[#20201f]/60 text-center group-hover:text-[#20201f] transition-colors leading-tight">
                   {dict.categories[cat]}
                 </span>

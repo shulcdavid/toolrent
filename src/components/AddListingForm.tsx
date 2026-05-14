@@ -4,7 +4,8 @@ import { useState } from "react";
 import { Upload, X } from "lucide-react";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
-import { CATEGORIES, CATEGORY_ICONS } from "@/lib/utils";
+import { CATEGORIES } from "@/lib/utils";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { createListing } from "@/lib/actions/listings";
 import type { Locale } from "@/i18n/config";
 
@@ -82,7 +83,7 @@ export function AddListingForm({ dict, lang }: Props) {
             <label key={cat} className="cursor-pointer">
               <input type="radio" name="category" value={cat} className="sr-only peer" required />
               <div className="flex items-center gap-2 rounded-xl border border-[#e5e2db] bg-[#eeece3] px-3 py-2.5 text-xs transition peer-checked:border-[#20201f] peer-checked:bg-[#20201f] peer-checked:text-[#f7f6f2] hover:border-[#20201f]/40">
-                <span>{CATEGORY_ICONS[cat]}</span>
+                <CategoryIcon category={cat} size={14} className="shrink-0" />
                 <span className="font-medium">{dict.categories[cat]}</span>
               </div>
             </label>

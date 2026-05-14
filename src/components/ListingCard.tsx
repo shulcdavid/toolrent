@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
-import { formatPrice, CATEGORY_ICONS } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import type { ListingWithProfile } from "@/lib/supabase/types";
 import type { Locale } from "@/i18n/dictionaries";
 
@@ -14,7 +15,6 @@ interface Props {
 }
 
 export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavailableLabel }: Props) {
-  const icon = CATEGORY_ICONS[listing.category as keyof typeof CATEGORY_ICONS] ?? "📦";
   const coverImage = listing.images?.[0];
 
   return (
@@ -33,7 +33,9 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-5xl opacity-40">{icon}</div>
+          <div className="flex h-full items-center justify-center opacity-20">
+            <CategoryIcon category={listing.category} size={48} />
+          </div>
         )}
 
         {/* Availability dot */}

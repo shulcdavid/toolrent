@@ -9,7 +9,8 @@ import { ImageGallery } from "@/components/ImageGallery";
 import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
 import { TrustBadges } from "@/components/TrustBadges";
 import { createClient } from "@/lib/supabase/server";
-import { formatPrice, formatDate, CATEGORY_ICONS } from "@/lib/utils";
+import { formatPrice, formatDate } from "@/lib/utils";
+import { CategoryIcon } from "@/components/CategoryIcon";
 
 export default async function ListingDetailPage({
   params, searchParams,
@@ -53,7 +54,6 @@ export default async function ListingDetailPage({
 
   const dict = await getDictionary(lang as Locale);
   const sp = await searchParams;
-  const icon = CATEGORY_ICONS[listing.category as keyof typeof CATEGORY_ICONS] ?? "📦";
   const isOwner = user?.id === listing.user_id;
   const avgRating = reviews?.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : null;
 
@@ -76,8 +76,8 @@ export default async function ListingDetailPage({
           {listing.images?.length > 0 ? (
             <ImageGallery images={listing.images} title={listing.title} />
           ) : (
-            <div className="flex h-72 sm:h-96 w-full items-center justify-center rounded-2xl bg-[#eeece3] border border-[#e5e2db] text-6xl opacity-50">
-              {icon}
+            <div className="flex h-72 sm:h-96 w-full items-center justify-center rounded-2xl bg-[#eeece3] border border-[#e5e2db] opacity-20">
+              <CategoryIcon category={listing.category} size={72} />
             </div>
           )}
 
