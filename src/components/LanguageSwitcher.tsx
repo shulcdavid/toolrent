@@ -20,15 +20,15 @@ export function LanguageSwitcher({ currentLocale }: Props) {
   }
 
   return (
-    <div className="flex items-center gap-1 rounded-lg border border-gray-200 p-0.5">
-      {locales.map((locale) => (
+    <div className="flex items-center gap-0.5">
+      {locales.map((locale, i) => (
         <button
           key={locale}
           onClick={() => switchLocale(locale)}
-          className={`rounded-md px-2.5 py-1 text-xs font-semibold transition-all ${
+          className={`px-2 py-1 text-xs font-medium transition-colors ${
             locale === currentLocale
-              ? "bg-orange-500 text-white"
-              : "text-gray-500 hover:text-gray-800"
+              ? "text-[#20201f] font-semibold"
+              : "text-[#20201f]/40 hover:text-[#20201f]/70"
           }`}
         >
           {labels[locale]}

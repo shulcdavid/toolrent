@@ -16,7 +16,7 @@ export function TrustBadges({ hasPhone, responseRate, avgRating, totalReviews, l
     badges.push({
       icon: Phone,
       label: lt ? "Telefonas patvirtintas" : "Phone verified",
-      color: "text-green-600 bg-green-50 border-green-200",
+      color: "text-emerald-700 bg-emerald-50 border-emerald-200",
     });
   }
 
@@ -26,10 +26,10 @@ export function TrustBadges({ hasPhone, responseRate, avgRating, totalReviews, l
       icon: Clock,
       label: `${lt ? "Atsako" : "Responds"} ${responseRate}%`,
       color: level === "green"
-        ? "text-green-600 bg-green-50 border-green-200"
+        ? "text-emerald-700 bg-emerald-50 border-emerald-200"
         : level === "yellow"
-        ? "text-yellow-600 bg-yellow-50 border-yellow-200"
-        : "text-gray-500 bg-gray-50 border-gray-200",
+        ? "text-amber-700 bg-amber-50 border-amber-200"
+        : "text-[#20201f]/50 bg-[#eeece3] border-[#e5e2db]",
     });
   }
 
@@ -37,14 +37,14 @@ export function TrustBadges({ hasPhone, responseRate, avgRating, totalReviews, l
     badges.push({
       icon: Star,
       label: `${avgRating} (${totalReviews} ${lt ? "atsiliepimai" : "reviews"})`,
-      color: "text-yellow-600 bg-yellow-50 border-yellow-200",
+      color: "text-amber-700 bg-amber-50 border-amber-200",
     });
   }
 
   badges.push({
     icon: ShieldCheck,
     label: lt ? "El. paštas patvirtintas" : "Email verified",
-    color: "text-blue-600 bg-blue-50 border-blue-200",
+    color: "text-[#20201f]/70 bg-[#eeece3] border-[#e5e2db]",
   });
 
   if (badges.length === 0) return null;
@@ -53,7 +53,7 @@ export function TrustBadges({ hasPhone, responseRate, avgRating, totalReviews, l
     <div className="flex flex-wrap gap-2 mt-3">
       {badges.map(({ icon: Icon, label, color }) => (
         <span key={label} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium ${color}`}>
-          <Icon size={12} />
+          <Icon size={11} />
           {label}
         </span>
       ))}

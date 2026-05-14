@@ -44,23 +44,23 @@ export function AddListingForm({ dict, lang }: Props) {
 
       {/* Images */}
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">{f.images}</label>
-        <p className="text-xs text-gray-400 mb-3">{f.imagesHint}</p>
+        <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.images}</label>
+        <p className="text-xs text-[#20201f]/40 mb-3">{f.imagesHint}</p>
         <div className="flex flex-wrap gap-3">
           {images.map((src, i) => (
-            <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-gray-200">
+            <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#e5e2db]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={src} alt="" className="h-full w-full object-cover" />
               <button type="button" onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
-                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80">
+                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#20201f]/70 text-[#f7f6f2] hover:bg-[#20201f]">
                 <X size={10} />
               </button>
             </div>
           ))}
           {images.length < 5 && (
-            <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-200 bg-gray-50 hover:border-orange-400 hover:bg-orange-50 transition-colors">
-              <Upload size={20} className="text-gray-400 mb-1" />
-              <span className="text-xs text-gray-400">Upload</span>
+            <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/40 hover:bg-[#e5e2db] transition-colors">
+              <Upload size={18} className="text-[#20201f]/30 mb-1" />
+              <span className="text-xs text-[#20201f]/40">Upload</span>
               <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageAdd} />
             </label>
           )}
@@ -70,18 +70,18 @@ export function AddListingForm({ dict, lang }: Props) {
       <Input name="title" label={f.title} placeholder={f.titlePlaceholder} required />
 
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">{f.description}</label>
+        <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.description}</label>
         <textarea name="description" placeholder={f.descPlaceholder} rows={4}
-          className="w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 transition focus:outline-none focus:ring-2 focus:ring-orange-400 resize-none" />
+          className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/35 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15 resize-none" />
       </div>
 
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1.5">{f.category}</label>
+        <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.category}</label>
         <div className="grid grid-cols-3 gap-2">
           {CATEGORIES.map((cat) => (
             <label key={cat} className="cursor-pointer">
               <input type="radio" name="category" value={cat} className="sr-only peer" required />
-              <div className="flex items-center gap-2 rounded-xl border border-gray-200 px-3 py-2.5 text-sm transition peer-checked:border-orange-500 peer-checked:bg-orange-50 peer-checked:text-orange-700 hover:border-orange-300">
+              <div className="flex items-center gap-2 rounded-xl border border-[#e5e2db] bg-[#eeece3] px-3 py-2.5 text-xs transition peer-checked:border-[#20201f] peer-checked:bg-[#20201f] peer-checked:text-[#f7f6f2] hover:border-[#20201f]/40">
                 <span>{CATEGORY_ICONS[cat]}</span>
                 <span className="font-medium">{dict.categories[cat]}</span>
               </div>
@@ -100,13 +100,14 @@ export function AddListingForm({ dict, lang }: Props) {
         <Input name="address" label={f.address} placeholder={f.addressPlaceholder} />
       </div>
 
+      {/* Toggle */}
       <label className="flex items-center gap-3 cursor-pointer">
         <div className="relative">
           <input type="checkbox" name="is_available" defaultChecked className="sr-only peer" />
-          <div className="w-11 h-6 rounded-full bg-gray-200 peer-checked:bg-orange-500 transition-colors" />
-          <div className="absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5" />
+          <div className="w-11 h-6 rounded-full bg-[#e5e2db] peer-checked:bg-[#20201f] transition-colors" />
+          <div className="absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-[#f7f6f2] shadow transition-transform peer-checked:translate-x-5" />
         </div>
-        <span className="text-sm font-medium text-gray-700">{f.available}</span>
+        <span className="text-sm font-medium text-[#20201f]">{f.available}</span>
       </label>
 
       <Button type="submit" size="lg">{dict.addListing.submit}</Button>

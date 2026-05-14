@@ -45,7 +45,6 @@ export default async function ListingDetailPage({
     .order("created_at", { ascending: false });
   const reviews = (reviewsRaw ?? []) as any[];
 
-  // Response rate: % of bookings that were approved or rejected (not left pending)
   const { data: allBookings } = await (supabase as any)
     .from("bookings").select("status").eq("listing_id", id);
   const total = (allBookings ?? []).length;
@@ -59,14 +58,14 @@ export default async function ListingDetailPage({
   const avgRating = reviews?.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : null;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
+    <div className="mx-auto max-w-5xl px-5 sm:px-8 py-8">
       <Link href={`/${lang}/listings`}
-        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 mb-6 transition-colors">
-        <ArrowLeft size={15} /> {dict.common.back}
+        className="inline-flex items-center gap-1.5 text-sm text-[#20201f]/50 hover:text-[#20201f] mb-6 transition-colors">
+        <ArrowLeft size={14} /> {dict.common.back}
       </Link>
 
       {sp.booked && (
-        <div className="mb-6 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-sm text-green-700 font-medium">
+        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-700 font-medium">
           ✅ {lang === "lt" ? "Užklausa išsiųsta! Savininkas netrukus susisieks." : "Request sent! The owner will get back to you soon."}
         </div>
       )}
@@ -77,38 +76,38 @@ export default async function ListingDetailPage({
           {listing.images?.length > 0 ? (
             <ImageGallery images={listing.images} title={listing.title} />
           ) : (
-            <div className="flex h-72 sm:h-96 w-full items-center justify-center rounded-2xl bg-gray-100 text-6xl">
+            <div className="flex h-72 sm:h-96 w-full items-center justify-center rounded-2xl bg-[#eeece3] border border-[#e5e2db] text-6xl opacity-50">
               {icon}
             </div>
           )}
 
           <div>
             <div className="flex items-start justify-between gap-4">
-              <h1 className="text-2xl font-bold text-gray-900">{listing.title}</h1>
-              <span className="text-2xl font-bold text-orange-500 whitespace-nowrap">
+              <h1 className="font-outfit text-2xl font-bold text-[#20201f]">{listing.title}</h1>
+              <span className="font-outfit text-xl font-bold text-[#20201f] whitespace-nowrap">
                 {formatPrice(listing.price_per_day)}
-                <span className="text-base font-normal text-gray-500 ml-1">{dict.listing.perDay}</span>
+                <span className="text-sm font-normal text-[#20201f]/50 ml-1">{dict.listing.perDay}</span>
               </span>
             </div>
-            <div className="flex flex-wrap items-center gap-4 mt-3 text-sm text-gray-500">
-              <span className="flex items-center gap-1.5"><MapPin size={14} /> {listing.city}{listing.address && ` · ${listing.address}`}</span>
-              <span className="flex items-center gap-1.5"><Calendar size={14} /> {formatDate(listing.created_at)}</span>
+            <div className="flex flex-wrap items-center gap-3 mt-3">
+              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/50"><MapPin size={12} /> {listing.city}{listing.address && ` · ${listing.address}`}</span>
+              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/50"><Calendar size={12} /> {formatDate(listing.created_at)}</span>
               <Badge variant="default">{dict.categories[listing.category as keyof typeof dict.categories]}</Badge>
               {listing.is_available ? <Badge variant="green">{dict.listings.available}</Badge> : <Badge variant="gray">{dict.listings.unavailable}</Badge>}
             </div>
           </div>
 
-          <div className="rounded-2xl border border-gray-100 bg-white p-5">
-            <h2 className="font-semibold text-gray-900 mb-3">{dict.listing.description}</h2>
-            <p className="text-sm text-gray-600 leading-relaxed whitespace-pre-line">{listing.description}</p>
+          <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">
+            <h2 className="font-outfit font-semibold text-[#20201f] mb-3 text-sm uppercase tracking-wide">{dict.listing.description}</h2>
+            <p className="text-sm text-[#20201f]/65 leading-relaxed whitespace-pre-line">{listing.description}</p>
           </div>
 
           {listing.deposit > 0 && (
-            <div className="flex items-center gap-3 rounded-2xl border border-blue-100 bg-blue-50 px-5 py-4">
-              <Shield size={20} className="text-blue-500 shrink-0" />
+            <div className="flex items-center gap-3 rounded-2xl border border-[#e5e2db] bg-[#eeece3] px-5 py-4">
+              <Shield size={18} className="text-[#20201f]/40 shrink-0" />
               <div>
-                <p className="text-sm font-semibold text-blue-800">{dict.listing.deposit}</p>
-                <p className="text-sm text-blue-600">{formatPrice(listing.deposit)}</p>
+                <p className="text-sm font-semibold text-[#20201f]">{dict.listing.deposit}</p>
+                <p className="text-sm text-[#20201f]/50">{formatPrice(listing.deposit)}</p>
               </div>
             </div>
           )}
@@ -117,19 +116,19 @@ export default async function ListingDetailPage({
           <AvailabilityCalendar bookedRanges={bookedRanges} lang={lang} />
 
           {/* Owner */}
-          <div className="rounded-2xl border border-gray-100 bg-white p-5">
-            <h2 className="font-semibold text-gray-900 mb-4">{dict.listing.owner}</h2>
+          <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">
+            <h2 className="font-outfit font-semibold text-[#20201f] mb-4 text-sm uppercase tracking-wide">{dict.listing.owner}</h2>
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-100 text-xl font-bold text-orange-600">
-                {listing.profiles?.full_name?.[0] ?? "?"}
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#20201f] text-lg font-bold text-[#f7f6f2]">
+                {listing.profiles?.full_name?.[0]?.toUpperCase() ?? "?"}
               </div>
               <div>
-                <p className="font-medium text-gray-900">{listing.profiles?.full_name ?? "Anonymous"}</p>
-                <p className="text-sm text-gray-500">{dict.listing.memberSince} {formatDate(listing.profiles?.created_at)}</p>
+                <p className="font-outfit font-semibold text-[#20201f] text-sm">{listing.profiles?.full_name ?? "Anonymous"}</p>
+                <p className="text-xs text-[#20201f]/50">{dict.listing.memberSince} {formatDate(listing.profiles?.created_at)}</p>
               </div>
               {avgRating && (
-                <div className="ml-auto flex items-center gap-1 text-sm text-yellow-600 font-medium">
-                  <Star size={14} fill="currentColor" /> {avgRating}
+                <div className="ml-auto flex items-center gap-1 text-sm text-amber-600 font-medium">
+                  <Star size={13} fill="currentColor" /> {avgRating}
                 </div>
               )}
             </div>
@@ -143,28 +142,28 @@ export default async function ListingDetailPage({
           </div>
 
           {/* Reviews */}
-          <div className="rounded-2xl border border-gray-100 bg-white p-5">
-            <h2 className="font-semibold text-gray-900 mb-4">
+          <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">
+            <h2 className="font-outfit font-semibold text-[#20201f] mb-4 text-sm uppercase tracking-wide">
               {dict.listing.reviews} {reviews?.length ? `(${reviews.length})` : ""}
             </h2>
             {!reviews?.length ? (
-              <p className="text-sm text-gray-400">{dict.listing.noReviews}</p>
+              <p className="text-sm text-[#20201f]/40">{dict.listing.noReviews}</p>
             ) : (
               <div className="flex flex-col gap-4">
                 {reviews.map((review) => (
-                  <div key={review.id} className="border-b border-gray-50 pb-4 last:border-0 last:pb-0">
+                  <div key={review.id} className="border-b border-[#e5e2db] pb-4 last:border-0 last:pb-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <div className="h-7 w-7 rounded-full bg-orange-100 flex items-center justify-center text-xs font-bold text-orange-600">
-                        {(review.profiles as any)?.full_name?.[0] ?? "?"}
+                      <div className="h-7 w-7 rounded-full bg-[#20201f] flex items-center justify-center text-xs font-bold text-[#f7f6f2]">
+                        {(review.profiles as any)?.full_name?.[0]?.toUpperCase() ?? "?"}
                       </div>
-                      <span className="text-sm font-medium text-gray-800">{(review.profiles as any)?.full_name}</span>
+                      <span className="text-sm font-medium text-[#20201f]">{(review.profiles as any)?.full_name}</span>
                       <div className="flex ml-auto">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <Star key={i} size={12} className={i < review.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-200 fill-gray-200"} />
+                          <Star key={i} size={11} className={i < review.rating ? "text-amber-400 fill-amber-400" : "text-[#e5e2db] fill-[#e5e2db]"} />
                         ))}
                       </div>
                     </div>
-                    {review.comment && <p className="text-sm text-gray-600 ml-9">{review.comment}</p>}
+                    {review.comment && <p className="text-sm text-[#20201f]/60 ml-9">{review.comment}</p>}
                   </div>
                 ))}
               </div>
@@ -174,12 +173,12 @@ export default async function ListingDetailPage({
 
         {/* Booking card */}
         <div className="lg:col-span-1">
-          <div className="sticky top-24">
+          <div className="sticky top-20">
             {isOwner ? (
-              <div className="rounded-2xl border border-orange-100 bg-orange-50 p-5 text-center">
-                <p className="text-sm font-medium text-orange-700 mb-3">{dict.listing.ownListing}</p>
+              <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5 text-center">
+                <p className="text-sm text-[#20201f]/60 mb-4">{dict.listing.ownListing}</p>
                 <Link href={`/${lang}/add-listing?edit=${listing.id}`}
-                  className="inline-flex items-center gap-2 rounded-xl bg-orange-500 px-4 py-2 text-sm font-semibold text-white hover:bg-orange-600">
+                  className="inline-flex items-center gap-2 rounded-full bg-[#20201f] px-5 py-2.5 text-sm font-semibold text-[#f7f6f2] hover:bg-[#3a3a38] transition-colors">
                   {dict.listing.editListing}
                 </Link>
               </div>

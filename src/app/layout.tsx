@@ -1,8 +1,18 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Outfit, Figtree } from "next/font/google";
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
+  display: "swap",
+});
+
+const figtree = Figtree({
+  subsets: ["latin"],
+  variable: "--font-figtree",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "ToolRent – Rent tools from your neighbours",
@@ -11,8 +21,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geist.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-gray-50 font-sans">{children}</body>
+    <html lang="en" className={`${outfit.variable} ${figtree.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-[#f7f6f2] font-figtree text-[#20201f]">{children}</body>
     </html>
   );
 }

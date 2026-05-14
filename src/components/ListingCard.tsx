@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Star } from "lucide-react";
-import { Badge } from "./ui/Badge";
+import { MapPin } from "lucide-react";
 import { formatPrice, CATEGORY_ICONS } from "@/lib/utils";
 import type { ListingWithProfile } from "@/lib/supabase/types";
 import type { Locale } from "@/i18n/dictionaries";
@@ -21,51 +20,55 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
   return (
     <Link
       href={`/${lang}/listings/${listing.id}`}
-      className="group flex flex-col rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-md transition-all overflow-hidden"
+      className="group flex flex-col overflow-hidden rounded-2xl bg-[#eeece3] border border-[#e5e2db] hover:border-[#c8c4bc] transition-all duration-300"
     >
       {/* Image */}
-      <div className="relative h-48 w-full bg-gray-100">
+      <div className="relative aspect-[4/3] w-full bg-[#e5e2db] overflow-hidden">
         {coverImage ? (
           <Image
             src={coverImage}
             alt={listing.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-4xl">{icon}</div>
+          <div className="flex h-full items-center justify-center text-5xl opacity-40">{icon}</div>
         )}
-        <div className="absolute top-3 right-3">
-          <Badge variant={listing.is_available ? "green" : "gray"}>
-            {listing.is_available ? availableLabel : unavailableLabel}
-          </Badge>
+
+        {/* Availability dot */}
+        <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-[#f7f6f2]/90 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-[#20201f]">
+          <span className={`h-1.5 w-1.5 rounded-full ${listing.is_available ? "bg-emerald-500" : "bg-[#20201f]/30"}`} />
+          {listing.is_available ? availableLabel : unavailableLabel}
+        </div>
+
+        {/* Hover overlay */}
+        <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-full bg-[#20201f]/80 backdrop-blur-sm py-3 px-4 text-center text-xs font-semibold tracking-widest uppercase text-[#f7f6f2]">
+            View Details
+          </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex flex-col gap-2 p-4">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-gray-900 leading-tight line-clamp-2 group-hover:text-orange-600 transition-colors">
-            {listing.title}
-          </h3>
-        </div>
+      <div className="flex flex-col gap-1.5 p-4">
+        <h3 className="font-outfit font-semibold text-[#20201f] leading-snug line-clamp-2 text-sm">
+          {listing.title}
+        </h3>
 
-        <div className="flex items-center gap-1 text-sm text-gray-500">
-          <MapPin size={13} className="shrink-0" />
+        <div className="flex items-center gap-1 text-xs text-[#20201f]/50">
+          <MapPin size={11} className="shrink-0" />
           <span>{listing.city}</span>
         </div>
 
-        <div className="mt-auto flex items-center justify-between pt-2 border-t border-gray-50">
-          <span className="text-lg font-bold text-gray-900">
+        <div className="flex items-center justify-between pt-2 mt-1 border-t border-[#e5e2db]">
+          <span className="font-outfit text-sm font-semibold text-[#20201f]">
             {formatPrice(listing.price_per_day)}
-            <span className="text-sm font-normal text-gray-500 ml-1">{perDayLabel}</span>
+            <span className="text-xs font-normal text-[#20201f]/50 ml-1">{perDayLabel}</span>
           </span>
           {listing.profiles?.full_name && (
-            <div className="flex items-center gap-1.5">
-              <div className="h-6 w-6 rounded-full bg-orange-100 flex items-center justify-center text-xs font-bold text-orange-600">
-                {listing.profiles.full_name[0]}
-              </div>
+            <div className="h-6 w-6 rounded-full bg-[#20201f] flex items-center justify-center text-[10px] font-bold text-[#f7f6f2]">
+              {listing.profiles.full_name[0].toUpperCase()}
             </div>
           )}
         </div>

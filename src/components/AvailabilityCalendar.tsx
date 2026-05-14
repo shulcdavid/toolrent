@@ -51,33 +51,33 @@ export function AvailabilityCalendar({ bookedRanges, lang }: Props) {
   const nextMonth = () => setViewDate(new Date(year, month + 1, 1));
 
   return (
-    <div className="rounded-2xl border border-gray-100 bg-white p-5">
-      <h2 className="font-semibold text-gray-900 mb-4">
+    <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">
+      <h2 className="font-outfit font-semibold text-[#20201f] mb-4 text-sm uppercase tracking-wide">
         {lt ? "Prieinamumas" : "Availability"}
       </h2>
 
       {/* Legend */}
-      <div className="flex items-center gap-4 mb-4 text-xs text-gray-500">
-        <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-green-100 border border-green-300" />{lt ? "Laisva" : "Available"}</span>
+      <div className="flex items-center gap-4 mb-4 text-xs text-[#20201f]/50">
+        <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-emerald-100 border border-emerald-300" />{lt ? "Laisva" : "Available"}</span>
         <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-red-100 border border-red-300" />{lt ? "Užimta" : "Booked"}</span>
-        <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-gray-100 border border-gray-200" />{lt ? "Praėjusi" : "Past"}</span>
+        <span className="flex items-center gap-1.5"><span className="h-3 w-3 rounded-full bg-[#e5e2db] border border-[#d0cdc5]" />{lt ? "Praėjusi" : "Past"}</span>
       </div>
 
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
-        <button onClick={prevMonth} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition-colors">
-          <ChevronLeft size={16} />
+        <button onClick={prevMonth} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-[#e5e2db] text-[#20201f]/60 transition-colors">
+          <ChevronLeft size={15} />
         </button>
-        <span className="text-sm font-semibold text-gray-800">{months[month]} {year}</span>
-        <button onClick={nextMonth} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-gray-100 text-gray-600 transition-colors">
-          <ChevronRight size={16} />
+        <span className="text-sm font-outfit font-semibold text-[#20201f]">{months[month]} {year}</span>
+        <button onClick={nextMonth} className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-[#e5e2db] text-[#20201f]/60 transition-colors">
+          <ChevronRight size={15} />
         </button>
       </div>
 
       {/* Day headers */}
       <div className="grid grid-cols-7 mb-1">
         {days.map((d) => (
-          <div key={d} className="py-1 text-center text-xs font-medium text-gray-400">{d}</div>
+          <div key={d} className="py-1 text-center text-xs font-medium text-[#20201f]/35">{d}</div>
         ))}
       </div>
 
@@ -91,8 +91,8 @@ export function AvailabilityCalendar({ bookedRanges, lang }: Props) {
 
           return (
             <div key={i} className={`flex h-9 items-center justify-center rounded-lg text-xs font-medium transition-colors
-              ${isToday ? "ring-2 ring-orange-400" : ""}
-              ${past ? "bg-gray-50 text-gray-300" : booked ? "bg-red-100 text-red-600" : "bg-green-50 text-green-700 hover:bg-green-100"}`}>
+              ${isToday ? "ring-2 ring-[#20201f]/40" : ""}
+              ${past ? "bg-[#e5e2db]/50 text-[#20201f]/25" : booked ? "bg-red-100 text-red-600" : "bg-emerald-50 text-emerald-700 hover:bg-emerald-100"}`}>
               {date.getDate()}
             </div>
           );

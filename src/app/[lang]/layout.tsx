@@ -21,26 +21,53 @@ export default async function LocaleLayout({
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  const lt = lang === "lt";
+
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar dict={dict.nav} lang={lang as Locale} user={user} />
       <main className="flex-1 pb-20 md:pb-0">{children}</main>
-      <footer className="hidden md:block border-t border-gray-100 bg-white py-8 mt-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-400">
-          <span>© {new Date().getFullYear()} ToolRent</span>
-          <div className="flex gap-6">
-            <a href={`/${lang}/about`} className="hover:text-gray-600 transition-colors">
-              {lang === "lt" ? "Apie mus" : "About"}
-            </a>
-            <a href={`/${lang}/privacy`} className="hover:text-gray-600 transition-colors">
-              {lang === "lt" ? "Privatumas" : "Privacy"}
-            </a>
-            <a href={`/${lang}/terms`} className="hover:text-gray-600 transition-colors">
-              {lang === "lt" ? "Sąlygos" : "Terms"}
-            </a>
-            <a href={`/${lang}/contact`} className="hover:text-gray-600 transition-colors">
-              {lang === "lt" ? "Kontaktai" : "Contact"}
-            </a>
+
+      {/* Footer */}
+      <footer className="hidden md:block border-t border-[#e5e2db] bg-[#f7f6f2] mt-8">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-12">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
+            {/* Brand */}
+            <div className="col-span-2 sm:col-span-1">
+              <div className="font-outfit text-base font-semibold text-[#20201f] mb-3">ToolRent</div>
+              <p className="text-xs text-[#20201f]/50 leading-relaxed max-w-[180px]">
+                {lt ? "P2P įrankių nuomos platforma Lietuvoje." : "Peer-to-peer tool rental platform."}
+              </p>
+            </div>
+            {/* Browse */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-widest text-[#20201f]/30 mb-4 font-outfit">{lt ? "Platforma" : "Platform"}</div>
+              <div className="flex flex-col gap-2.5">
+                <a href={`/${lang}/listings`} className="text-xs text-[#20201f]/60 hover:text-[#20201f] transition-colors">{dict.nav.browse}</a>
+                <a href={`/${lang}/add-listing`} className="text-xs text-[#20201f]/60 hover:text-[#20201f] transition-colors">{dict.nav.addListing}</a>
+                {user && <a href={`/${lang}/dashboard`} className="text-xs text-[#20201f]/60 hover:text-[#20201f] transition-colors">{dict.nav.dashboard}</a>}
+              </div>
+            </div>
+            {/* Company */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-widest text-[#20201f]/30 mb-4 font-outfit">{lt ? "Įmonė" : "Company"}</div>
+              <div className="flex flex-col gap-2.5">
+                <a href={`/${lang}/about`} className="text-xs text-[#20201f]/60 hover:text-[#20201f] transition-colors">{lt ? "Apie mus" : "About"}</a>
+                <a href={`/${lang}/contact`} className="text-xs text-[#20201f]/60 hover:text-[#20201f] transition-colors">{lt ? "Kontaktai" : "Contact"}</a>
+              </div>
+            </div>
+            {/* Legal */}
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-widest text-[#20201f]/30 mb-4 font-outfit">{lt ? "Teisinė info" : "Legal"}</div>
+              <div className="flex flex-col gap-2.5">
+                <a href={`/${lang}/privacy`} className="text-xs text-[#20201f]/60 hover:text-[#20201f] transition-colors">{lt ? "Privatumas" : "Privacy"}</a>
+                <a href={`/${lang}/terms`} className="text-xs text-[#20201f]/60 hover:text-[#20201f] transition-colors">{lt ? "Sąlygos" : "Terms"}</a>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-[#e5e2db] pt-6 flex items-center justify-between">
+            <span className="text-xs text-[#20201f]/30">© {new Date().getFullYear()} ToolRent</span>
+            <span className="text-xs text-[#20201f]/30">{lt ? "Lietuvoje 🇱🇹" : "Made in Lithuania 🇱🇹"}</span>
           </div>
         </div>
       </footer>

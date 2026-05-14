@@ -45,7 +45,7 @@ export function ImageGallery({ images, title }: Props) {
         <div className="flex gap-2 overflow-x-auto">
           {images.map((img, i) => (
             <button key={i} onClick={() => setCurrent(i)}
-              className={`relative h-16 w-16 shrink-0 rounded-xl overflow-hidden border-2 transition-all ${i === current ? "border-orange-500" : "border-transparent opacity-60 hover:opacity-100"}`}>
+              className={`relative h-16 w-16 shrink-0 rounded-xl overflow-hidden border-2 transition-all ${i === current ? "border-[#20201f]" : "border-transparent opacity-50 hover:opacity-100"}`}>
               <Image src={img} alt="" fill className="object-cover" sizes="64px" />
             </button>
           ))}

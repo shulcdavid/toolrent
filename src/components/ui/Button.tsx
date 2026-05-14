@@ -14,18 +14,18 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         className={cn(
-          "inline-flex items-center justify-center rounded-xl font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 disabled:opacity-50 disabled:pointer-events-none",
+          "inline-flex items-center justify-center font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#20201f]/30 disabled:opacity-40 disabled:pointer-events-none font-outfit tracking-wide",
           {
-            "bg-orange-500 text-white hover:bg-orange-600 active:bg-orange-700": variant === "primary",
-            "bg-gray-100 text-gray-900 hover:bg-gray-200": variant === "secondary",
-            "border-2 border-orange-500 text-orange-600 hover:bg-orange-50": variant === "outline",
-            "text-gray-600 hover:bg-gray-100": variant === "ghost",
-            "bg-red-500 text-white hover:bg-red-600": variant === "danger",
+            "bg-[#20201f] text-[#f7f6f2] hover:bg-[#3a3a38] rounded-full": variant === "primary",
+            "bg-[#eeece3] text-[#20201f] hover:bg-[#e5e2db] rounded-full": variant === "secondary",
+            "border border-[#20201f] text-[#20201f] hover:bg-[#20201f] hover:text-[#f7f6f2] rounded-full": variant === "outline",
+            "text-[#20201f] hover:bg-[#eeece3] rounded-full": variant === "ghost",
+            "bg-red-600 text-white hover:bg-red-700 rounded-full": variant === "danger",
           },
           {
-            "px-3 py-1.5 text-sm gap-1.5": size === "sm",
-            "px-5 py-2.5 text-sm gap-2": size === "md",
-            "px-7 py-3.5 text-base gap-2": size === "lg",
+            "px-4 py-1.5 text-xs gap-1.5": size === "sm",
+            "px-6 py-2.5 text-sm gap-2": size === "md",
+            "px-8 py-3.5 text-sm gap-2": size === "lg",
           },
           className
         )}

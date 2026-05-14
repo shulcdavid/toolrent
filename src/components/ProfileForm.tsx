@@ -38,14 +38,14 @@ export function ProfileForm({ profile, lang, dict }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="rounded-2xl border border-gray-100 bg-white p-6 flex flex-col gap-5">
+    <form onSubmit={handleSubmit} className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-6 flex flex-col gap-5">
       {/* Avatar placeholder */}
       <div className="flex items-center gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-100 text-2xl font-bold text-orange-600">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#20201f] text-2xl font-bold text-[#f7f6f2]">
           {profile?.full_name?.[0] ?? "?"}
         </div>
         <div>
-          <p className="font-semibold text-gray-900">{profile?.full_name ?? ""}</p>
+          <p className="font-semibold text-[#20201f]">{profile?.full_name ?? ""}</p>
           <p className="text-sm text-gray-500">{lang === "lt" ? "Narys nuo" : "Member since"} {new Date(profile?.created_at ?? "").getFullYear()}</p>
         </div>
       </div>
