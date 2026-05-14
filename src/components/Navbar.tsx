@@ -20,7 +20,7 @@ export function Navbar({ dict, lang, user }: NavbarProps) {
     <header className="sticky top-0 z-50 border-b border-[#e5e2db] bg-[#f7f6f2]/95 backdrop-blur-sm">
       <nav className="mx-auto flex h-14 max-w-7xl items-center justify-between px-5 sm:px-8">
         {/* Logo */}
-        <Link href={`/${lang}`} className="font-outfit text-base font-semibold tracking-tight text-[#20201f]">
+        <Link href={`/${lang}`} className="font-outfit text-xl font-bold tracking-tight text-[#20201f]">
           Rente
         </Link>
 
