@@ -45,6 +45,7 @@ export async function register(formData: FormData) {
   const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
     type: "signup",
     email,
+    password,
     options: {
       redirectTo: `${siteUrl}/auth/callback?next=/${lang}/dashboard`,
     },
