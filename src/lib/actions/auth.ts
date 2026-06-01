@@ -26,17 +26,28 @@ export async function register(formData: FormData) {
   const city = formData.get("city") as string;
   const lang = (formData.get("lang") as string) ?? "en";
 
-  const { error } = await supabase.auth.signUp({
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { full_name, city } },
+    options: {
+      data: { full_name, city },
+      emailRedirectTo: `${siteUrl}/auth/callback?next=/${lang}/dashboard`,
+    },
   });
 
   if (error) {
     redirect(`/${lang}/auth/register?error=${encodeURIComponent(error.message)}`);
   }
 
-  redirect(`/${lang}/dashboard`);
+  // If email confirmation is required, the session will be null — show a "check your email" page.
+  // If auto-confirm is on (e.g. during local dev), the session is set and we go straight to dashboard.
+  if (data.session) {
+    redirect(`/${lang}/dashboard`);
+  }
+
+  redirect(`/${lang}/auth/register?success=confirm`);
 }
 
 export async function logout(formData: FormData) {
