@@ -43,6 +43,14 @@ export async function register(formData: FormData) {
     redirect(`/${lang}/auth/register?error=${encodeURIComponent(createError.message)}`);
   }
 
+  // 1b. Save username & country to profile (trigger creates the row but doesn't know these fields)
+  if (userData.user) {
+    await (admin as any)
+      .from("profiles")
+      .update({ username, country })
+      .eq("id", userData.user.id);
+  }
+
   // 2. Generate a confirmation link via admin API
   const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
     type: "signup",
