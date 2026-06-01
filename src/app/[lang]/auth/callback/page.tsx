@@ -26,7 +26,7 @@ export default function AuthCallbackPage() {
       const code = searchParams.get("code");
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
-        if (!error) { router.replace(next); return; }
+        if (!error) { window.location.replace(next); return; }
       }
 
       // ── Implicit flow: #access_token=…&refresh_token=… ──────────────────
@@ -41,16 +41,17 @@ export default function AuthCallbackPage() {
             access_token: accessToken,
             refresh_token: refreshToken,
           });
-          if (!error) { router.replace(next); return; }
+          // Hard redirect so server re-reads the session cookies properly
+          if (!error) { window.location.replace(next); return; }
         }
       }
 
       // ── Fallback: just refresh session from cookies ──────────────────────
       const { data } = await supabase.auth.getSession();
       if (data.session) {
-        router.replace(next);
+        window.location.replace(next);
       } else {
-        router.replace("/en/auth/login?error=" + encodeURIComponent("Email verification failed. Please try again."));
+        window.location.replace("/en/auth/login?error=" + encodeURIComponent("Email verification failed. Please try again."));
       }
     }
 
