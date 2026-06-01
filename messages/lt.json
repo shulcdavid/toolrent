@@ -117,10 +117,13 @@
     "register": {
       "title": "Sukurti paskyrą",
       "fullName": "Vardas ir pavardė",
+      "username": "Vartotojo vardas",
+      "usernamePlaceholder": "pvz. jonas123",
       "email": "El. paštas",
       "password": "Slaptažodis",
       "passwordHint": "Ne mažiau kaip 8 simboliai",
       "city": "Jūsų miestas",
+      "country": "Šalis",
       "submit": "Sukurti paskyrą",
       "hasAccount": "Jau turi paskyrą?",
       "login": "Prisijungti",

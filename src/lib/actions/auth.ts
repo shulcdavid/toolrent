@@ -25,7 +25,9 @@ export async function register(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const full_name = formData.get("full_name") as string;
+  const username = formData.get("username") as string;
   const city = formData.get("city") as string;
+  const country = formData.get("country") as string;
   const lang = (formData.get("lang") as string) ?? "en";
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -33,7 +35,7 @@ export async function register(formData: FormData) {
   const { data: userData, error: createError } = await admin.auth.admin.createUser({
     email,
     password,
-    user_metadata: { full_name, city },
+    user_metadata: { full_name, username, city, country },
     email_confirm: false,
   });
 

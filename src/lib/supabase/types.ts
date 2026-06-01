@@ -7,9 +7,11 @@ export interface Database {
         Row: {
           id: string;
           full_name: string | null;
+          username: string | null;
           avatar_url: string | null;
           phone: string | null;
           city: string | null;
+          country: string | null;
           created_at: string;
         };
         Insert: Omit<Database["public"]["Tables"]["profiles"]["Row"], "created_at">;
