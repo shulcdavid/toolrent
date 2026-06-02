@@ -4,6 +4,7 @@ import { MailCheck } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { RegisterForm } from "@/components/RegisterForm";
 import { ResendConfirmationForm } from "@/components/ResendConfirmationForm";
+import { SocialAuth } from "@/components/SocialAuth";
 
 export default async function RegisterPage({
   params,
@@ -81,7 +82,20 @@ export default async function RegisterPage({
           <h1 className="font-outfit text-lg font-semibold text-[#20201f]">{dict.auth.register.title}</h1>
         </div>
 
-        <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-6">
+        <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-6 flex flex-col gap-5">
+          {/* Social buttons */}
+          <SocialAuth lang={lang as Locale} />
+
+          {/* Divider */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-[#d4d0c8]" />
+            <span className="text-xs text-[#20201f]/40 font-medium">
+              {lt ? "arba el. paštu" : "or with email"}
+            </span>
+            <div className="flex-1 h-px bg-[#d4d0c8]" />
+          </div>
+
+          {/* Email registration form */}
           <RegisterForm dict={dict.auth.register} lang={lang as Locale} />
         </div>
 
