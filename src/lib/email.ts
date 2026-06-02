@@ -1,7 +1,8 @@
 import { Resend } from "resend";
 
-// onboarding@resend.dev works on free plan without domain verification
-const FROM = "Rente <onboarding@resend.dev>";
+// Use RESEND_FROM env var once your domain is verified in Resend.
+// Until then, onboarding@resend.dev only delivers to your own Resend account email.
+const FROM = process.env.RESEND_FROM ?? "Rente <onboarding@resend.dev>";
 
 function getResend() {
   const key = process.env.RESEND_API_KEY;
@@ -147,29 +148,54 @@ export async function sendBookingRequestEmail(opts: {
   const resend = getResend();
   if (!resend) return;
 
+  const year = new Date().getFullYear();
+
   await resend.emails.send({
     from: FROM,
     to: opts.ownerEmail,
-    subject: `New booking request for "${opts.listingTitle}"`,
+    subject: `New rental request: "${opts.listingTitle}"`,
     html: `
-      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111">
-        <div style="background:#f97316;padding:24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:white;margin:0;font-size:22px">🔧 Rente</h1>
-        </div>
-        <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
-          <h2 style="margin:0 0 16px">New booking request</h2>
-          <p style="color:#6b7280">Hi ${opts.ownerName}, <strong>${opts.renterName}</strong> wants to rent your tool.</p>
-          <div style="background:#f9fafb;border-radius:10px;padding:16px;margin:20px 0">
-            <p style="margin:0 0 8px"><strong>Tool:</strong> ${opts.listingTitle}</p>
-            <p style="margin:0 0 8px"><strong>Dates:</strong> ${opts.startDate} → ${opts.endDate}</p>
-            ${opts.message ? `<p style="margin:0"><strong>Message:</strong> "${opts.message}"</p>` : ""}
-          </div>
-          <a href="${opts.listingUrl}" style="display:inline-block;background:#f97316;color:white;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600">
-            View request →
-          </a>
-        </div>
-      </div>
-    `,
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f7f6f2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f6f2;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;border:1px solid #e5e2db;overflow:hidden;max-width:520px;">
+        <tr>
+          <td style="background:#20201f;padding:28px 40px;">
+            <p style="margin:0;font-size:22px;font-weight:700;color:#f7f6f2;letter-spacing:-0.5px;">Rente</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:40px;">
+            <p style="margin:0 0 8px;font-size:24px;font-weight:700;color:#20201f;">New rental request</p>
+            <p style="margin:0 0 24px;font-size:15px;color:rgba(32,32,31,0.6);line-height:1.6;">
+              Hi ${opts.ownerName}, <strong style="color:#20201f;">${opts.renterName}</strong> wants to rent your tool.
+            </p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f6f2;border-radius:12px;padding:20px;margin-bottom:28px;">
+              <tr><td style="padding:6px 0;font-size:14px;color:#20201f;"><strong>Tool:</strong> ${opts.listingTitle}</td></tr>
+              <tr><td style="padding:6px 0;font-size:14px;color:#20201f;"><strong>Dates:</strong> ${opts.startDate} → ${opts.endDate}</td></tr>
+              ${opts.message ? `<tr><td style="padding:6px 0;font-size:14px;color:#20201f;"><strong>Message:</strong> "${opts.message}"</td></tr>` : ""}
+            </table>
+            <a href="${opts.listingUrl}" style="display:inline-block;background:#20201f;color:#f7f6f2;text-decoration:none;padding:14px 28px;border-radius:999px;font-size:15px;font-weight:600;">
+              View request &rarr;
+            </a>
+            <p style="margin:28px 0 0;font-size:13px;color:rgba(32,32,31,0.4);line-height:1.6;">
+              Log in to your dashboard to approve or decline this request.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px;border-top:1px solid #e5e2db;">
+            <p style="margin:0;font-size:12px;color:rgba(32,32,31,0.35);">© ${year} Rente · P2P tool rental</p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
   });
 }
 
@@ -184,22 +210,52 @@ export async function sendBookingStatusEmail(opts: {
   if (!resend) return;
 
   const approved = opts.status === "approved";
+  const year = new Date().getFullYear();
 
   await resend.emails.send({
     from: FROM,
     to: opts.renterEmail,
-    subject: `Your booking was ${approved ? "approved ✅" : "declined"} – ${opts.listingTitle}`,
+    subject: approved
+      ? `Your booking was approved – ${opts.listingTitle}`
+      : `Your booking was declined – ${opts.listingTitle}`,
     html: `
-      <div style="font-family:sans-serif;max-width:560px;margin:0 auto;color:#111">
-        <div style="background:#f97316;padding:24px;border-radius:12px 12px 0 0;text-align:center">
-          <h1 style="color:white;margin:0;font-size:22px">🔧 Rente</h1>
-        </div>
-        <div style="background:white;padding:32px;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px">
-          <h2 style="margin:0 0 16px">${approved ? "✅ Booking approved!" : "❌ Booking declined"}</h2>
-          <p style="color:#6b7280">Hi ${opts.renterName}, your booking request for <strong>${opts.listingTitle}</strong> was ${approved ? "approved. You can now coordinate pickup with the owner." : "declined by the owner."}</p>
-          ${approved ? `<a href="${opts.listingUrl}" style="display:inline-block;background:#f97316;color:white;padding:12px 24px;border-radius:10px;text-decoration:none;font-weight:600;margin-top:16px">View listing →</a>` : ""}
-        </div>
-      </div>
-    `,
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f7f6f2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f6f2;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;border:1px solid #e5e2db;overflow:hidden;max-width:520px;">
+        <tr>
+          <td style="background:#20201f;padding:28px 40px;">
+            <p style="margin:0;font-size:22px;font-weight:700;color:#f7f6f2;letter-spacing:-0.5px;">Rente</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:40px;">
+            <p style="margin:0 0 8px;font-size:24px;font-weight:700;color:#20201f;">
+              ${approved ? "Booking approved!" : "Booking declined"}
+            </p>
+            <p style="margin:0 0 28px;font-size:15px;color:rgba(32,32,31,0.6);line-height:1.6;">
+              Hi ${opts.renterName}, your rental request for <strong style="color:#20201f;">${opts.listingTitle}</strong> was
+              ${approved
+                ? "approved by the owner. You can now coordinate pickup details directly."
+                : "declined by the owner. Feel free to browse other available tools."}
+            </p>
+            ${approved
+              ? `<a href="${opts.listingUrl}" style="display:inline-block;background:#20201f;color:#f7f6f2;text-decoration:none;padding:14px 28px;border-radius:999px;font-size:15px;font-weight:600;">View listing &rarr;</a>`
+              : ""}
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px;border-top:1px solid #e5e2db;">
+            <p style="margin:0;font-size:12px;color:rgba(32,32,31,0.35);">© ${year} Rente · P2P tool rental</p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
   });
 }

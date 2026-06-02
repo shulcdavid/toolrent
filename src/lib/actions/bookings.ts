@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { daysBetween } from "@/lib/utils";
 import { sendBookingRequestEmail, sendBookingStatusEmail } from "@/lib/email";
 
@@ -36,9 +37,10 @@ export async function createBooking(formData: FormData) {
 
   // Send email notification to owner
   try {
+    const admin = createAdminClient();
     const { data: listing } = await db.from("listings").select("title, user_id").eq("id", listingId).single();
     const { data: owner } = await db.from("profiles").select("full_name").eq("id", listing.user_id).single();
-    const { data: ownerAuth } = await supabase.auth.admin.getUserById(listing.user_id).catch(() => ({ data: { user: null } }));
+    const { data: ownerAuth } = await admin.auth.admin.getUserById(listing.user_id);
     const { data: renter } = await db.from("profiles").select("full_name").eq("id", user.id).single();
 
     if (ownerAuth?.user?.email) {
@@ -53,7 +55,9 @@ export async function createBooking(formData: FormData) {
         listingUrl: `${BASE_URL}/${lang}/listings/${listingId}`,
       });
     }
-  } catch {}
+  } catch (err) {
+    console.error("Failed to send booking request email:", err);
+  }
 
   redirect(`/${lang}/listings/${listingId}?booked=1`);
 }
@@ -69,11 +73,12 @@ export async function updateBookingStatus(bookingId: string, status: "approved" 
   // Send email notification to renter
   if (status === "approved" || status === "rejected") {
     try {
+      const admin = createAdminClient();
       const { data: booking } = await db.from("bookings")
         .select("renter_id, listing_id, listings(title)")
         .eq("id", bookingId).single();
       const { data: renter } = await db.from("profiles").select("full_name").eq("id", booking.renter_id).single();
-      const { data: renterAuth } = await supabase.auth.admin.getUserById(booking.renter_id).catch(() => ({ data: { user: null } }));
+      const { data: renterAuth } = await admin.auth.admin.getUserById(booking.renter_id);
 
       if (renterAuth?.user?.email) {
         await sendBookingStatusEmail({
@@ -84,7 +89,9 @@ export async function updateBookingStatus(bookingId: string, status: "approved" 
           listingUrl: `${BASE_URL}/${lang}/listings/${booking.listing_id}`,
         });
       }
-    } catch {}
+    } catch (err) {
+      console.error("Failed to send booking status email:", err);
+    }
   }
 
   redirect(`/${lang}/dashboard`);
