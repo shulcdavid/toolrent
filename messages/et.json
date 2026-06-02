@@ -1,0 +1,229 @@
+{
+  "nav": {
+    "browse": "Sirvi tööriistu",
+    "addListing": "Lisa kuulutus",
+    "dashboard": "Minu konto",
+    "login": "Logi sisse",
+    "register": "Registreeru",
+    "logout": "Logi välja",
+    "myListings": "Minu kuulutused",
+    "myBookings": "Minu broneeringud"
+  },
+  "home": {
+    "hero": {
+      "title": "Rendi tööriistu naabritelt",
+      "subtitle": "Miks osta, kui saab rentida? Leia puurmasinaid, redeleid, survepesureid ja palju muud — inimestelt sinu ümbruses.",
+      "cta": "Sirvi tööriistu",
+      "listCta": "Lisa oma tööriist"
+    },
+    "howItWorks": {
+      "title": "Kuidas see töötab",
+      "step1Title": "Leia tööriist",
+      "step1Desc": "Otsi kategooria või linna järgi ja sirvi lähedal olevaid tööriistu.",
+      "step2Title": "Saada päring",
+      "step2Desc": "Vali kuupäevad ja saada rendipäring omanikule.",
+      "step3Title": "Võta ja tagasta",
+      "step3Desc": "Lepi kokku kättesaamine, kasuta tööriista ja tagasta see pärast kasutamist."
+    },
+    "categories": {
+      "title": "Sirvi kategooriate järgi"
+    },
+    "featured": {
+      "title": "Hiljuti lisatud"
+    },
+    "stats": {
+      "tools": "Lisatud tööriistad",
+      "cities": "Linnad",
+      "renters": "Rahul rentijad"
+    }
+  },
+  "listings": {
+    "title": "Sirvi tööriistu",
+    "search": "Otsi tööriistu...",
+    "filters": {
+      "category": "Kategooria",
+      "allCategories": "Kõik kategooriad",
+      "city": "Linn",
+      "allCities": "Kõik linnad",
+      "priceMax": "Maks. hind / päev",
+      "sortBy": "Sorteeri",
+      "newest": "Uusimad esmalt",
+      "priceLow": "Hind: odavaimast",
+      "priceHigh": "Hind: kallimast"
+    },
+    "perDay": "/ päev",
+    "noResults": "Tööriistu ei leitud. Proovi filtreid muuta.",
+    "available": "Saadaval",
+    "unavailable": "Hõivatud"
+  },
+  "listing": {
+    "perDay": "/ päev",
+    "deposit": "Tagatisraha",
+    "location": "Asukoht",
+    "owner": "Kuulutaja",
+    "memberSince": "Liige alates",
+    "bookingTitle": "Rendipäring",
+    "startDate": "Alates",
+    "endDate": "Kuni",
+    "totalDays": "Päevade arv",
+    "totalPrice": "Koguhind",
+    "messageLabel": "Sõnum omanikule",
+    "messagePlaceholder": "Tere, sooviksin rentida teie tööriista...",
+    "sendRequest": "Saada päring",
+    "loginToBook": "Logi sisse broneerimiseks",
+    "description": "Kirjeldus",
+    "category": "Kategooria",
+    "reviews": "Arvustused",
+    "noReviews": "Arvustusi pole veel.",
+    "ownListing": "See on teie kuulutus",
+    "editListing": "Muuda kuulutust",
+    "shareTitle": "Jaga seda kuulutust"
+  },
+  "addListing": {
+    "title": "Lisa oma tööriist",
+    "editTitle": "Muuda kuulutust",
+    "fields": {
+      "title": "Tööriista nimi",
+      "titlePlaceholder": "nt. Bosch puurmasin 18V",
+      "description": "Kirjeldus",
+      "descPlaceholder": "Kirjelda tööriista, selle seisukorda, mis komplekti kuulub...",
+      "category": "Kategooria",
+      "pricePerDay": "Hind päevas (€)",
+      "deposit": "Tagatisraha (€)",
+      "depositHint": "Valikuline. Tagatisraha tagastatakse, kui tööriist tagastatakse kahjustamata.",
+      "city": "Linn",
+      "cityPlaceholder": "nt. Tallinn",
+      "address": "Aadress / kättesaamise koht",
+      "addressPlaceholder": "nt. Kesklinn (täpne aadress — pärast broneerimist)",
+      "images": "Pildid",
+      "imagesHint": "Lisa kuni 5 pilti. Esimene on kaanepilt.",
+      "available": "Rentimiseks saadaval"
+    },
+    "submit": "Avalda",
+    "update": "Salvesta muudatused",
+    "success": "Kuulutus avaldatud!",
+    "successEdit": "Kuulutus uuendatud!"
+  },
+  "auth": {
+    "login": {
+      "title": "Tere tulemast tagasi",
+      "email": "E-post",
+      "password": "Parool",
+      "submit": "Logi sisse",
+      "noAccount": "Pole kontot?",
+      "register": "Registreeru",
+      "forgot": "Unustasid parooli?"
+    },
+    "register": {
+      "title": "Loo konto",
+      "fullName": "Ees- ja perekonnanimi",
+      "username": "Kasutajanimi",
+      "usernamePlaceholder": "nt. jaan123",
+      "email": "E-post",
+      "password": "Parool",
+      "passwordHint": "Vähemalt 8 tähemärki",
+      "city": "Sinu linn",
+      "country": "Riik",
+      "submit": "Loo konto",
+      "hasAccount": "On juba konto?",
+      "login": "Logi sisse",
+      "terms": "Registreerudes nõustud meie kasutustingimustega."
+    },
+    "forgot": {
+      "title": "Parooli taastamine",
+      "description": "Sisesta oma e-posti aadress ja saadame sulle taastamislingi.",
+      "email": "E-post",
+      "submit": "Saada taastamislink",
+      "sentTitle": "Kontrolli oma e-posti",
+      "sentDesc": "Saatsime parooli taastamislingi aadressile",
+      "backToLogin": "Tagasi sisselogimisse"
+    },
+    "reset": {
+      "title": "Uus parool",
+      "description": "Vali uus, turvaline parool.",
+      "password": "Uus parool",
+      "passwordHint": "Vähemalt 8 tähemärki",
+      "submit": "Salvesta parool",
+      "successMsg": "Parool edukalt muudetud."
+    }
+  },
+  "profile": {
+    "title": "Minu profiil",
+    "avatar": "Profiilipilt",
+    "changeAvatar": "Muuda pilti",
+    "removeAvatar": "Eemalda",
+    "fullName": "Ees- ja perekonnanimi",
+    "username": "Kasutajanimi",
+    "phone": "Telefoninumber",
+    "phonePlaceholder": "+372 5000 0000",
+    "city": "Linn",
+    "country": "Riik",
+    "lockedMsg": "Nimi ja kasutajanimi on muudetavad ainult üks kord aastas.",
+    "lockedUntil": "Muutmine võimalik alates",
+    "saved": "Salvestatud!",
+    "memberSince": "Liige alates"
+  },
+  "dashboard": {
+    "title": "Minu konto",
+    "welcome": "Tere tulemast tagasi",
+    "myListings": "Minu kuulutused",
+    "myBookings": "Minu broneeringud",
+    "incomingRequests": "Saabunud päringud",
+    "addNew": "Lisa uus kuulutus",
+    "noListings": "Sa pole veel ühtegi tööriista lisanud.",
+    "noBookings": "Broneeringuid pole.",
+    "noRequests": "Saabunud päringuid pole.",
+    "status": {
+      "pending": "Ootel",
+      "approved": "Kinnitatud",
+      "rejected": "Tagasi lükatud",
+      "completed": "Lõpetatud",
+      "cancelled": "Tühistatud"
+    },
+    "approve": "Kinnita",
+    "reject": "Lükka tagasi",
+    "cancel": "Tühista",
+    "edit": "Muuda",
+    "delete": "Kustuta",
+    "dates": "Kuupäevad",
+    "renter": "Rentija",
+    "tool": "Tööriist"
+  },
+  "categories": {
+    "power": "Elektrilised tööriistad",
+    "hand": "Käsitööriistad",
+    "mechanical": "Mehaanilised tööriistad",
+    "pneumatic": "Pneumaatilised tööriistad",
+    "hydraulic": "Hüdraulilised tööriistad",
+    "woodworking": "Puidutöötlemise tööriistad",
+    "metalworking": "Metallitöötlemise tööriistad",
+    "fastening": "Kinnitustööriistad",
+    "welding": "Keevitustööriistad",
+    "garden": "Aed ja väliala",
+    "construction": "Ehitustööriistad",
+    "roofing": "Katuse tööriistad",
+    "measuring": "Mõõtetööriistad",
+    "precision": "Täppisriistad",
+    "painting": "Värvimistööriistad",
+    "cleaning": "Puhastustööriistad",
+    "plumbing": "Torustiku tööriistad",
+    "automotive": "Autotööriistad",
+    "safety": "Isikukaitsevahendid",
+    "jewelry": "Ehtekunsti tööriistad",
+    "leftovers": "Ehitusmaterjalid",
+    "other": "Muu"
+  },
+  "common": {
+    "loading": "Laadimine...",
+    "error": "Tekkis viga.",
+    "retry": "Proovi uuesti",
+    "back": "Tagasi",
+    "save": "Salvesta",
+    "cancel": "Tühista",
+    "delete": "Kustuta",
+    "edit": "Muuda",
+    "close": "Sulge",
+    "perDay": "/ päev",
+    "currency": "€"
+  }
+}

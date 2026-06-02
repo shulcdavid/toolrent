@@ -7,6 +7,9 @@ export { locales };
 const dictionaries = {
   en: () => import("../../messages/en.json").then((m) => m.default),
   lt: () => import("../../messages/lt.json").then((m) => m.default),
+  pl: () => import("../../messages/pl.json").then((m) => m.default),
+  lv: () => import("../../messages/lv.json").then((m) => m.default),
+  et: () => import("../../messages/et.json").then((m) => m.default),
 };
 
 export const hasLocale = (locale: string): locale is Locale =>

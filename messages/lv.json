@@ -1,0 +1,229 @@
+{
+  "nav": {
+    "browse": "Pārlūkot rīkus",
+    "addListing": "Pievienot sludinājumu",
+    "dashboard": "Mans konts",
+    "login": "Pieteikties",
+    "register": "Reģistrēties",
+    "logout": "Iziet",
+    "myListings": "Mani sludinājumi",
+    "myBookings": "Manas rezervācijas"
+  },
+  "home": {
+    "hero": {
+      "title": "Īrē rīkus no kaimiņiem",
+      "subtitle": "Kāpēc pirkt, ja var īrēt? Atrodi urbjmašīnas, kāpnes, augstspiediena mazgātājus un daudz ko citu — no cilvēkiem tavā tuvumā.",
+      "cta": "Pārlūkot rīkus",
+      "listCta": "Pievienot savu rīku"
+    },
+    "howItWorks": {
+      "title": "Kā tas darbojas",
+      "step1Title": "Atrodi rīku",
+      "step1Desc": "Meklē pēc kategorijas vai pilsētas un pārlūko rīkus tuvākajā apkārtnē.",
+      "step2Title": "Nosūti pieprasījumu",
+      "step2Desc": "Izvēlies datumus un nosūti īres pieprasījumu īpašniekam.",
+      "step3Title": "Saņem un atdod",
+      "step3Desc": "Vienojies par saņemšanu, izmanto rīku un atdod pēc lietošanas."
+    },
+    "categories": {
+      "title": "Pārlūkot pēc kategorijas"
+    },
+    "featured": {
+      "title": "Nesen pievienotie"
+    },
+    "stats": {
+      "tools": "Pievienotie rīki",
+      "cities": "Pilsētas",
+      "renters": "Apmierināti īrnieki"
+    }
+  },
+  "listings": {
+    "title": "Pārlūkot rīkus",
+    "search": "Meklēt rīkus...",
+    "filters": {
+      "category": "Kategorija",
+      "allCategories": "Visas kategorijas",
+      "city": "Pilsēta",
+      "allCities": "Visas pilsētas",
+      "priceMax": "Maks. cena / dienā",
+      "sortBy": "Kārtot pēc",
+      "newest": "Jaunākie vispirms",
+      "priceLow": "Cena: no zemākās",
+      "priceHigh": "Cena: no augstākās"
+    },
+    "perDay": "/ dienā",
+    "noResults": "Rīki nav atrasti. Mēģini mainīt filtrus.",
+    "available": "Pieejams",
+    "unavailable": "Aizņemts"
+  },
+  "listing": {
+    "perDay": "/ dienā",
+    "deposit": "Depozīts",
+    "location": "Atrašanās vieta",
+    "owner": "Sludinātājs",
+    "memberSince": "Dalībnieks kopš",
+    "bookingTitle": "Īres pieprasījums",
+    "startDate": "No",
+    "endDate": "Līdz",
+    "totalDays": "Dienu skaits",
+    "totalPrice": "Kopējā cena",
+    "messageLabel": "Ziņojums īpašniekam",
+    "messagePlaceholder": "Labdien, vēlētos īrēt jūsu rīku...",
+    "sendRequest": "Nosūtīt pieprasījumu",
+    "loginToBook": "Piesakies, lai rezervētu",
+    "description": "Apraksts",
+    "category": "Kategorija",
+    "reviews": "Atsauksmes",
+    "noReviews": "Atsauksmju vēl nav.",
+    "ownListing": "Šis ir jūsu sludinājums",
+    "editListing": "Rediģēt sludinājumu",
+    "shareTitle": "Kopīgot šo sludinājumu"
+  },
+  "addListing": {
+    "title": "Pievienot savu rīku",
+    "editTitle": "Rediģēt sludinājumu",
+    "fields": {
+      "title": "Rīka nosaukums",
+      "titlePlaceholder": "piem. Bosch urbjmašīna 18V",
+      "description": "Apraksts",
+      "descPlaceholder": "Apraksti rīku, tā stāvokli, kas iekļauts komplektā...",
+      "category": "Kategorija",
+      "pricePerDay": "Cena dienā (€)",
+      "deposit": "Depozīts (€)",
+      "depositHint": "Neobligāti. Depozīts tiek atgriezts, kad rīks ir atdots nesabojāts.",
+      "city": "Pilsēta",
+      "cityPlaceholder": "piem. Rīga",
+      "address": "Adrese / saņemšanas vieta",
+      "addressPlaceholder": "piem. Vecrīga (precīza adrese — pēc rezervācijas)",
+      "images": "Attēli",
+      "imagesHint": "Pievienot līdz 5 attēliem. Pirmais būs vāks.",
+      "available": "Pieejams īrei"
+    },
+    "submit": "Publicēt",
+    "update": "Saglabāt izmaiņas",
+    "success": "Sludinājums publicēts!",
+    "successEdit": "Sludinājums atjaunināts!"
+  },
+  "auth": {
+    "login": {
+      "title": "Laipni atpakaļ",
+      "email": "E-pasts",
+      "password": "Parole",
+      "submit": "Pieteikties",
+      "noAccount": "Nav konta?",
+      "register": "Reģistrēties",
+      "forgot": "Aizmirsāt paroli?"
+    },
+    "register": {
+      "title": "Izveidot kontu",
+      "fullName": "Vārds un uzvārds",
+      "username": "Lietotājvārds",
+      "usernamePlaceholder": "piem. janis123",
+      "email": "E-pasts",
+      "password": "Parole",
+      "passwordHint": "Vismaz 8 rakstzīmes",
+      "city": "Jūsu pilsēta",
+      "country": "Valsts",
+      "submit": "Izveidot kontu",
+      "hasAccount": "Jau ir konts?",
+      "login": "Pieteikties",
+      "terms": "Reģistrējoties, jūs piekrītat mūsu lietošanas noteikumiem."
+    },
+    "forgot": {
+      "title": "Paroles atjaunošana",
+      "description": "Ievadiet savu e-pasta adresi un mēs nosūtīsim jums atjaunošanas saiti.",
+      "email": "E-pasts",
+      "submit": "Nosūtīt atjaunošanas saiti",
+      "sentTitle": "Pārbaudiet e-pastu",
+      "sentDesc": "Mēs nosūtījām paroles atjaunošanas saiti uz",
+      "backToLogin": "Atpakaļ uz pieteikšanos"
+    },
+    "reset": {
+      "title": "Jaunā parole",
+      "description": "Izvēlieties jaunu, drošu paroli.",
+      "password": "Jaunā parole",
+      "passwordHint": "Vismaz 8 rakstzīmes",
+      "submit": "Saglabāt paroli",
+      "successMsg": "Parole veiksmīgi nomainīta."
+    }
+  },
+  "profile": {
+    "title": "Mans profils",
+    "avatar": "Profila attēls",
+    "changeAvatar": "Mainīt attēlu",
+    "removeAvatar": "Noņemt",
+    "fullName": "Vārds un uzvārds",
+    "username": "Lietotājvārds",
+    "phone": "Tālruņa numurs",
+    "phonePlaceholder": "+371 20 000 000",
+    "city": "Pilsēta",
+    "country": "Valsts",
+    "lockedMsg": "Vārdu un lietotājvārdu var mainīt tikai reizi gadā.",
+    "lockedUntil": "Varēs mainīt no",
+    "saved": "Saglabāts!",
+    "memberSince": "Dalībnieks kopš"
+  },
+  "dashboard": {
+    "title": "Mans konts",
+    "welcome": "Laipni atpakaļ",
+    "myListings": "Mani sludinājumi",
+    "myBookings": "Manas rezervācijas",
+    "incomingRequests": "Ienākošie pieprasījumi",
+    "addNew": "Pievienot jaunu sludinājumu",
+    "noListings": "Jūs vēl neesat pievienojis nevienu rīku.",
+    "noBookings": "Rezervāciju nav.",
+    "noRequests": "Ienākošo pieprasījumu nav.",
+    "status": {
+      "pending": "Gaida apstiprinājumu",
+      "approved": "Apstiprināts",
+      "rejected": "Noraidīts",
+      "completed": "Pabeigts",
+      "cancelled": "Atcelts"
+    },
+    "approve": "Apstiprināt",
+    "reject": "Noraidīt",
+    "cancel": "Atcelt",
+    "edit": "Rediģēt",
+    "delete": "Dzēst",
+    "dates": "Datumi",
+    "renter": "Īrnieks",
+    "tool": "Rīks"
+  },
+  "categories": {
+    "power": "Elektroinstrumenti",
+    "hand": "Rokas instrumenti",
+    "mechanical": "Mehāniskie instrumenti",
+    "pneumatic": "Pneimatiskie instrumenti",
+    "hydraulic": "Hidrauliskie instrumenti",
+    "woodworking": "Kokapstrādes instrumenti",
+    "metalworking": "Metālapstrādes instrumenti",
+    "fastening": "Stiprināšanas instrumenti",
+    "welding": "Metināšanas instrumenti",
+    "garden": "Dārzs un ārtelpas",
+    "construction": "Celtniecības instrumenti",
+    "roofing": "Jumta darbu instrumenti",
+    "measuring": "Mērīšanas instrumenti",
+    "precision": "Precīzijas instrumenti",
+    "painting": "Krāsošanas instrumenti",
+    "cleaning": "Tīrīšanas instrumenti",
+    "plumbing": "Santehnikas instrumenti",
+    "automotive": "Automobiļu instrumenti",
+    "safety": "Aizsardzības līdzekļi",
+    "jewelry": "Juvelierizstrādājumu instrumenti",
+    "leftovers": "Būvmateriāli",
+    "other": "Citi"
+  },
+  "common": {
+    "loading": "Ielādē...",
+    "error": "Radās kļūda.",
+    "retry": "Mēģināt vēlreiz",
+    "back": "Atpakaļ",
+    "save": "Saglabāt",
+    "cancel": "Atcelt",
+    "delete": "Dzēst",
+    "edit": "Rediģēt",
+    "close": "Aizvērt",
+    "perDay": "/ dienā",
+    "currency": "€"
+  }
+}

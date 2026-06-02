@@ -7,7 +7,7 @@ interface Props {
   currentLocale: Locale;
 }
 
-const labels: Record<Locale, string> = { en: "EN", lt: "LT" };
+const labels: Record<Locale, string> = { en: "EN", lt: "LT", pl: "PL", lv: "LV", et: "ET" };
 
 export function LanguageSwitcher({ currentLocale }: Props) {
   const pathname = usePathname();

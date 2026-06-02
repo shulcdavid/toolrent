@@ -1,0 +1,229 @@
+{
+  "nav": {
+    "browse": "Przeglądaj narzędzia",
+    "addListing": "Dodaj ogłoszenie",
+    "dashboard": "Moje konto",
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "logout": "Wyloguj się",
+    "myListings": "Moje ogłoszenia",
+    "myBookings": "Moje rezerwacje"
+  },
+  "home": {
+    "hero": {
+      "title": "Wypożyczaj narzędzia od sąsiadów",
+      "subtitle": "Po co kupować, skoro możesz wypożyczyć? Znajdź wiertarki, drabiny, myjki ciśnieniowe i wiele więcej – od ludzi w Twojej okolicy.",
+      "cta": "Przeglądaj narzędzia",
+      "listCta": "Dodaj swoje narzędzie"
+    },
+    "howItWorks": {
+      "title": "Jak to działa",
+      "step1Title": "Znajdź narzędzie",
+      "step1Desc": "Szukaj według kategorii lub miasta i przeglądaj narzędzia dostępne w pobliżu.",
+      "step2Title": "Wyślij zapytanie",
+      "step2Desc": "Wybierz daty i wyślij prośbę o wypożyczenie do właściciela.",
+      "step3Title": "Odbierz i zwróć",
+      "step3Desc": "Umów odbiór, korzystaj z narzędzia i zwróć je po zakończeniu."
+    },
+    "categories": {
+      "title": "Przeglądaj według kategorii"
+    },
+    "featured": {
+      "title": "Ostatnio dodane"
+    },
+    "stats": {
+      "tools": "Dodane narzędzia",
+      "cities": "Miasta",
+      "renters": "Zadowoleni najemcy"
+    }
+  },
+  "listings": {
+    "title": "Przeglądaj narzędzia",
+    "search": "Szukaj narzędzi...",
+    "filters": {
+      "category": "Kategoria",
+      "allCategories": "Wszystkie kategorie",
+      "city": "Miasto",
+      "allCities": "Wszystkie miasta",
+      "priceMax": "Maks. cena / dzień",
+      "sortBy": "Sortuj według",
+      "newest": "Najnowsze",
+      "priceLow": "Cena: od najniższej",
+      "priceHigh": "Cena: od najwyższej"
+    },
+    "perDay": "/ dzień",
+    "noResults": "Nie znaleziono narzędzi. Spróbuj zmienić filtry.",
+    "available": "Dostępne",
+    "unavailable": "Niedostępne"
+  },
+  "listing": {
+    "perDay": "/ dzień",
+    "deposit": "Kaucja",
+    "location": "Lokalizacja",
+    "owner": "Właściciel",
+    "memberSince": "Członek od",
+    "bookingTitle": "Prośba o wypożyczenie",
+    "startDate": "Od",
+    "endDate": "Do",
+    "totalDays": "Liczba dni",
+    "totalPrice": "Łączna cena",
+    "messageLabel": "Wiadomość do właściciela",
+    "messagePlaceholder": "Dzień dobry, chciałbym wypożyczyć to narzędzie...",
+    "sendRequest": "Wyślij prośbę",
+    "loginToBook": "Zaloguj się, aby zarezerwować",
+    "description": "Opis",
+    "category": "Kategoria",
+    "reviews": "Opinie",
+    "noReviews": "Brak opinii.",
+    "ownListing": "To jest Twoje ogłoszenie",
+    "editListing": "Edytuj ogłoszenie",
+    "shareTitle": "Udostępnij to ogłoszenie"
+  },
+  "addListing": {
+    "title": "Dodaj swoje narzędzie",
+    "editTitle": "Edytuj ogłoszenie",
+    "fields": {
+      "title": "Nazwa narzędzia",
+      "titlePlaceholder": "np. Wiertarka Bosch 18V",
+      "description": "Opis",
+      "descPlaceholder": "Opisz narzędzie, jego stan, co wchodzi w skład zestawu...",
+      "category": "Kategoria",
+      "pricePerDay": "Cena za dzień (€)",
+      "deposit": "Kaucja (€)",
+      "depositHint": "Opcjonalnie. Kaucja jest zwracana po oddaniu narzędzia w nienaruszonym stanie.",
+      "city": "Miasto",
+      "cityPlaceholder": "np. Warszawa",
+      "address": "Adres / miejsce odbioru",
+      "addressPlaceholder": "np. Śródmieście (dokładny adres – po rezerwacji)",
+      "images": "Zdjęcia",
+      "imagesHint": "Dodaj do 5 zdjęć. Pierwsze będzie okładką.",
+      "available": "Dostępne do wypożyczenia"
+    },
+    "submit": "Opublikuj",
+    "update": "Zapisz zmiany",
+    "success": "Ogłoszenie opublikowane!",
+    "successEdit": "Ogłoszenie zaktualizowane!"
+  },
+  "auth": {
+    "login": {
+      "title": "Witaj z powrotem",
+      "email": "E-mail",
+      "password": "Hasło",
+      "submit": "Zaloguj się",
+      "noAccount": "Nie masz konta?",
+      "register": "Zarejestruj się",
+      "forgot": "Zapomniałeś hasła?"
+    },
+    "register": {
+      "title": "Utwórz konto",
+      "fullName": "Imię i nazwisko",
+      "username": "Nazwa użytkownika",
+      "usernamePlaceholder": "np. jan123",
+      "email": "E-mail",
+      "password": "Hasło",
+      "passwordHint": "Minimum 8 znaków",
+      "city": "Twoje miasto",
+      "country": "Kraj",
+      "submit": "Utwórz konto",
+      "hasAccount": "Masz już konto?",
+      "login": "Zaloguj się",
+      "terms": "Rejestrując się, akceptujesz nasze warunki korzystania z serwisu."
+    },
+    "forgot": {
+      "title": "Resetowanie hasła",
+      "description": "Podaj swój adres e-mail, a wyślemy Ci link do resetowania hasła.",
+      "email": "E-mail",
+      "submit": "Wyślij link resetujący",
+      "sentTitle": "Sprawdź swoją skrzynkę",
+      "sentDesc": "Wysłaliśmy link do resetowania hasła na adres",
+      "backToLogin": "Wróć do logowania"
+    },
+    "reset": {
+      "title": "Nowe hasło",
+      "description": "Wybierz nowe, bezpieczne hasło.",
+      "password": "Nowe hasło",
+      "passwordHint": "Minimum 8 znaków",
+      "submit": "Zapisz hasło",
+      "successMsg": "Hasło zostało pomyślnie zmienione."
+    }
+  },
+  "profile": {
+    "title": "Mój profil",
+    "avatar": "Zdjęcie profilowe",
+    "changeAvatar": "Zmień zdjęcie",
+    "removeAvatar": "Usuń",
+    "fullName": "Imię i nazwisko",
+    "username": "Nazwa użytkownika",
+    "phone": "Numer telefonu",
+    "phonePlaceholder": "+48 600 000 000",
+    "city": "Miasto",
+    "country": "Kraj",
+    "lockedMsg": "Imię i nazwisko oraz nazwa użytkownika mogą być zmieniane tylko raz w roku.",
+    "lockedUntil": "Będzie można zmienić od",
+    "saved": "Zapisano!",
+    "memberSince": "Członek od"
+  },
+  "dashboard": {
+    "title": "Moje konto",
+    "welcome": "Witaj z powrotem",
+    "myListings": "Moje ogłoszenia",
+    "myBookings": "Moje rezerwacje",
+    "incomingRequests": "Przychodzące prośby",
+    "addNew": "Dodaj nowe ogłoszenie",
+    "noListings": "Nie dodałeś jeszcze żadnych narzędzi.",
+    "noBookings": "Brak rezerwacji.",
+    "noRequests": "Brak przychodzących próśb.",
+    "status": {
+      "pending": "Oczekujące",
+      "approved": "Zatwierdzone",
+      "rejected": "Odrzucone",
+      "completed": "Zakończone",
+      "cancelled": "Anulowane"
+    },
+    "approve": "Zatwierdź",
+    "reject": "Odrzuć",
+    "cancel": "Anuluj",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "dates": "Daty",
+    "renter": "Najemca",
+    "tool": "Narzędzie"
+  },
+  "categories": {
+    "power": "Narzędzia elektryczne",
+    "hand": "Narzędzia ręczne",
+    "mechanical": "Narzędzia mechaniczne",
+    "pneumatic": "Narzędzia pneumatyczne",
+    "hydraulic": "Narzędzia hydrauliczne",
+    "woodworking": "Narzędzia do obróbki drewna",
+    "metalworking": "Narzędzia do obróbki metalu",
+    "fastening": "Narzędzia do mocowania",
+    "welding": "Narzędzia spawalnicze",
+    "garden": "Ogród i teren",
+    "construction": "Narzędzia budowlane",
+    "roofing": "Narzędzia dekarskie",
+    "measuring": "Narzędzia pomiarowe",
+    "precision": "Narzędzia precyzyjne",
+    "painting": "Narzędzia malarskie",
+    "cleaning": "Narzędzia do czyszczenia",
+    "plumbing": "Narzędzia hydrauliczne",
+    "automotive": "Narzędzia samochodowe",
+    "safety": "Środki ochrony osobistej",
+    "jewelry": "Narzędzia jubilerskie",
+    "leftovers": "Materiały budowlane",
+    "other": "Inne"
+  },
+  "common": {
+    "loading": "Ładowanie...",
+    "error": "Wystąpił błąd.",
+    "retry": "Spróbuj ponownie",
+    "back": "Wróć",
+    "save": "Zapisz",
+    "cancel": "Anuluj",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "close": "Zamknij",
+    "perDay": "/ dzień",
+    "currency": "€"
+  }
+}
