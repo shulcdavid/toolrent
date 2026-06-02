@@ -7,12 +7,12 @@
     "register": "Registruotis",
     "logout": "Atsijungti",
     "myListings": "Mano skelbimai",
-    "myBookings": "Mano nuomos"
+    "myBookings": "Mano rezervacijos"
   },
   "home": {
     "hero": {
       "title": "Nuomokis įrankius iš kaimynų",
-      "subtitle": "Kodėl pirkti, kai gali pasiskolinti? Rask grąžtus, kopėčias, aukšto slėgio plovyklas ir dar daugiau — skelbia žmonės šalia tavęs.",
+      "subtitle": "Kodėl pirkti, kai gali išsinuomoti? Rask gręžtuvus, kopėčias, aukšto slėgio plovyklas ir dar daugiau — skelbia žmonės šalia tavęs.",
       "cta": "Naršyti įrankius",
       "listCta": "Įkelti savo įrankį"
     },
@@ -23,7 +23,7 @@
       "step2Title": "Siųsk užklausą",
       "step2Desc": "Pasirink datas ir siųsk nuomos užklausą savininkui.",
       "step3Title": "Pasiimk ir grąžink",
-      "step3Desc": "Susitarkit dėl pasiėmimo, naudok įrankį ir grąžink, kai baigsi."
+      "step3Desc": "Susitark dėl pasiėmimo, naudok įrankį ir grąžink, kai baigsi."
     },
     "categories": {
       "title": "Naršyti pagal kategoriją"
@@ -47,7 +47,7 @@
       "allCities": "Visi miestai",
       "priceMax": "Maks. kaina / dieną",
       "sortBy": "Rūšiuoti pagal",
-      "newest": "Naujausias pirmas",
+      "newest": "Naujausi pirmiausia",
       "priceLow": "Kaina: nuo mažiausios",
       "priceHigh": "Kaina: nuo didžiausios"
     },
@@ -65,12 +65,12 @@
     "bookingTitle": "Nuomos užklausa",
     "startDate": "Nuo",
     "endDate": "Iki",
-    "totalDays": "Iš viso dienų",
+    "totalDays": "Dienų skaičius",
     "totalPrice": "Bendra kaina",
     "messageLabel": "Žinutė savininkui",
     "messagePlaceholder": "Sveiki, norėčiau išsinuomoti jūsų įrankį...",
     "sendRequest": "Siųsti užklausą",
-    "loginToBook": "Prisijunk, kad rezervuotum",
+    "loginToBook": "Prisijunk, kad galėtum rezervuoti",
     "description": "Aprašymas",
     "category": "Kategorija",
     "reviews": "Atsiliepimai",
@@ -90,7 +90,7 @@
       "category": "Kategorija",
       "pricePerDay": "Kaina per dieną (€)",
       "deposit": "Užstatas (€)",
-      "depositHint": "Neprivaloma. Grąžinama po to, kai įrankis grąžinamas geros būklės.",
+      "depositHint": "Neprivaloma. Užstatas grąžinamas, kai įrankis sugrąžinamas nepažeistas.",
       "city": "Miestas",
       "cityPlaceholder": "pvz. Vilnius",
       "address": "Adresas / pasiėmimo vieta",
@@ -127,11 +127,11 @@
       "submit": "Sukurti paskyrą",
       "hasAccount": "Jau turi paskyrą?",
       "login": "Prisijungti",
-      "terms": "Registruodamasis sutinki su mūsų Paslaugų teikimo sąlygomis."
+      "terms": "Registruodamasis (-a) sutinki su mūsų naudojimo sąlygomis."
     },
     "forgot": {
-      "title": "Atstatyti slaptažodį",
-      "description": "Įvesk el. paštą ir išsiųsime atstatymo nuorodą.",
+      "title": "Slaptažodžio atstatymas",
+      "description": "Įvesk savo el. paštą ir išsiųsime atstatymo nuorodą.",
       "email": "El. paštas",
       "submit": "Siųsti atstatymo nuorodą",
       "sentTitle": "Patikrink el. paštą",
@@ -139,12 +139,12 @@
       "backToLogin": "Grįžti į prisijungimą"
     },
     "reset": {
-      "title": "Nustatyti naują slaptažodį",
-      "description": "Pasirink saugų slaptažodį savo paskyroje.",
+      "title": "Naujas slaptažodis",
+      "description": "Pasirink naują saugų slaptažodį.",
       "password": "Naujas slaptažodis",
       "passwordHint": "Ne mažiau kaip 8 simboliai",
-      "submit": "Atnaujinti slaptažodį",
-      "successMsg": "Slaptažodis sėkmingai atnaujintas."
+      "submit": "Išsaugoti slaptažodį",
+      "successMsg": "Slaptažodis sėkmingai pakeistas."
     }
   },
   "profile": {
@@ -167,11 +167,11 @@
     "title": "Mano paskyra",
     "welcome": "Sveiki sugrįžę",
     "myListings": "Mano skelbimai",
-    "myBookings": "Mano nuomos",
+    "myBookings": "Mano rezervacijos",
     "incomingRequests": "Gautos užklausos",
     "addNew": "Įkelti naują skelbimą",
     "noListings": "Dar neįkėlei jokių įrankių.",
-    "noBookings": "Nuomų dar nėra.",
+    "noBookings": "Rezervacijų dar nėra.",
     "noRequests": "Gautų užklausų nėra.",
     "status": {
       "pending": "Laukiama",
@@ -199,23 +199,23 @@
     "metalworking": "Metalo apdirbimo įrankiai",
     "fastening": "Tvirtinimo įrankiai",
     "welding": "Suvirinimo įrankiai",
-    "garden": "Sodas ir lauke",
-    "construction": "Statyba",
-    "roofing": "Stogo įrankiai",
-    "measuring": "Matavimas",
+    "garden": "Sodas ir laukas",
+    "construction": "Statybos įrankiai",
+    "roofing": "Stogdengystės įrankiai",
+    "measuring": "Matavimo įrankiai",
     "precision": "Tikslumo įrankiai",
     "painting": "Dažymo įrankiai",
-    "cleaning": "Valymas",
-    "plumbing": "Santechnika",
-    "automotive": "Automobiliai",
-    "safety": "Sauga ir įranga",
+    "cleaning": "Valymo įrankiai",
+    "plumbing": "Santechnikos įrankiai",
+    "automotive": "Automobiliniai įrankiai",
+    "safety": "Saugos priemonės",
     "jewelry": "Juvelyrikos įrankiai",
     "leftovers": "Statybinės liekanos",
     "other": "Kita"
   },
   "common": {
     "loading": "Kraunama...",
-    "error": "Kažkas nutiko.",
+    "error": "Įvyko klaida.",
     "retry": "Bandyti dar kartą",
     "back": "Atgal",
     "save": "Išsaugoti",
