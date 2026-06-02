@@ -2,22 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-
-const COUNTRIES = ["LT", "LV", "EE", "PL"] as const;
-
-function canChangeIdentity(changedAt: string | null): boolean {
-  if (!changedAt) return true;
-  const oneYearAgo = new Date();
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-  return new Date(changedAt) < oneYearAgo;
-}
-
-function nextEditDate(changedAt: string | null): string {
-  if (!changedAt) return "";
-  const d = new Date(changedAt);
-  d.setFullYear(d.getFullYear() + 1);
-  return d.toLocaleDateString("lt-LT", { year: "numeric", month: "long", day: "numeric" });
-}
+import { canChangeIdentity } from "@/lib/utils";
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient();
@@ -67,5 +52,3 @@ export async function updateProfile(formData: FormData) {
 
   redirect(`/${lang}/profile?saved=1`);
 }
-
-export { canChangeIdentity, nextEditDate };

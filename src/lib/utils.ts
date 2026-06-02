@@ -54,6 +54,20 @@ export const CATEGORIES = [
 
 export type Category = (typeof CATEGORIES)[number];
 
+export function canChangeIdentity(changedAt: string | null): boolean {
+  if (!changedAt) return true;
+  const oneYearAgo = new Date();
+  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+  return new Date(changedAt) < oneYearAgo;
+}
+
+export function nextEditDate(changedAt: string | null): string {
+  if (!changedAt) return "";
+  const d = new Date(changedAt);
+  d.setFullYear(d.getFullYear() + 1);
+  return d.toLocaleDateString("lt-LT", { year: "numeric", month: "long", day: "numeric" });
+}
+
 export const CATEGORY_ICONS: Record<Category, string> = {
   power: "⚡",
   hand: "🔨",

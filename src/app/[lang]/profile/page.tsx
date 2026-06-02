@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { createClient } from "@/lib/supabase/server";
 import { ProfileForm } from "@/components/ProfileForm";
-import { canChangeIdentity, nextEditDate } from "@/lib/actions/profile";
+import { canChangeIdentity, nextEditDate } from "@/lib/utils";
 
 export default async function ProfilePage({
   params,
