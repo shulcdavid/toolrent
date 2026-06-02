@@ -128,7 +128,40 @@
       "hasAccount": "Already have an account?",
       "login": "Log in",
       "terms": "By signing up you agree to our Terms of Service."
+    },
+    "forgot": {
+      "title": "Reset password",
+      "description": "Enter your email and we'll send you a reset link.",
+      "email": "Email address",
+      "submit": "Send reset link",
+      "sentTitle": "Check your email",
+      "sentDesc": "We sent a password reset link to",
+      "backToLogin": "Back to login"
+    },
+    "reset": {
+      "title": "Set new password",
+      "description": "Choose a strong password for your account.",
+      "password": "New password",
+      "passwordHint": "At least 8 characters",
+      "submit": "Update password",
+      "successMsg": "Password updated successfully."
     }
+  },
+  "profile": {
+    "title": "My profile",
+    "avatar": "Profile photo",
+    "changeAvatar": "Change photo",
+    "removeAvatar": "Remove",
+    "fullName": "Full name",
+    "username": "Username",
+    "phone": "Phone number",
+    "phonePlaceholder": "+370 600 00000",
+    "city": "City",
+    "country": "Country",
+    "lockedMsg": "Name and username can only be changed once per year.",
+    "lockedUntil": "Editable again from",
+    "saved": "Saved!",
+    "memberSince": "Member since"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -158,13 +191,25 @@
   },
   "categories": {
     "power": "Power Tools",
+    "hand": "Hand Tools",
+    "mechanical": "Mechanical Tools",
+    "pneumatic": "Pneumatic Tools",
+    "hydraulic": "Hydraulic Tools",
+    "woodworking": "Woodworking Tools",
+    "metalworking": "Metalworking Tools",
+    "fastening": "Fastening Tools",
+    "welding": "Welding Tools",
     "garden": "Garden & Outdoor",
     "construction": "Construction",
+    "roofing": "Roofing Tools",
     "measuring": "Measuring & Leveling",
-    "painting": "Painting",
+    "precision": "Precision Tools",
+    "painting": "Painting Tools",
     "cleaning": "Cleaning",
     "plumbing": "Plumbing",
     "automotive": "Automotive",
+    "safety": "Safety & Equipment",
+    "jewelry": "Jewelry-Making Tools",
     "leftovers": "Construction Leftovers",
     "other": "Other"
   },

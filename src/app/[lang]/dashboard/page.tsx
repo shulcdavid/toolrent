@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
-import { PlusCircle, Package, CalendarCheck, Bell } from "lucide-react";
+import { PlusCircle, Package, CalendarCheck, Bell, UserRound } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -29,7 +29,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase.from("listings").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
     supabase.from("bookings").select("*, listings(title, city, price_per_day)").eq("renter_id", user.id).order("created_at", { ascending: false }),
-    supabase.from("bookings").select("*, listings!inner(title, user_id), profiles!renter_id(full_name)").eq("listings.user_id", user.id).order("created_at", { ascending: false }),
+    supabase.from("bookings").select("*, listings!inner(title, user_id), profiles!renter_id(full_name, phone, city)").eq("listings.user_id", user.id).order("created_at", { ascending: false }),
   ]);
 
   const profile = profileRaw as any;
@@ -45,9 +45,17 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
           <h1 className="font-outfit text-3xl font-bold text-[#20201f]">{d.title}</h1>
           <p className="text-sm text-[#20201f]/50 mt-1">{d.welcome}, {(profile as any)?.full_name?.split(" ")[0]} 👋</p>
         </div>
-        <Link href={`/${lang}/add-listing`}>
-          <Button size="sm"><PlusCircle size={14} /> {d.addNew}</Button>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link href={`/${lang}/profile`}>
+            <Button size="sm" variant="outline">
+              <UserRound size={14} />
+              {lang === "lt" ? "Profilis" : "Profile"}
+            </Button>
+          </Link>
+          <Link href={`/${lang}/add-listing`}>
+            <Button size="sm"><PlusCircle size={14} /> {d.addNew}</Button>
+          </Link>
+        </div>
       </div>
 
       {/* My Listings */}
@@ -70,7 +78,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                   {listing.is_available ? dict.listings.available : dict.listings.unavailable}
                 </Badge>
                 <div className="flex gap-2">
-                  <Link href={`/${lang}/listings/${listing.id}`}>
+                  <Link href={`/${lang}/add-listing?edit=${listing.id}`}>
                     <Button variant="ghost" size="sm">{d.edit}</Button>
                   </Link>
                   <form action={deleteListing.bind(null, listing.id, lang)}>
@@ -98,6 +106,20 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                   </div>
                   <Badge variant={statusVariant[req.status]}>{d.status[req.status as keyof typeof d.status]}</Badge>
                 </div>
+                {req.status === "approved" && req.profiles && (
+                  <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3">
+                    <span className="text-xs font-semibold text-emerald-800">
+                      {lang === "lt" ? "📞 Kontaktai" : "📞 Contact"}
+                    </span>
+                    <span className="text-xs text-emerald-700">{req.profiles.full_name}</span>
+                    {req.profiles.phone && (
+                      <a href={`tel:${req.profiles.phone}`} className="text-xs font-medium text-emerald-700 underline underline-offset-2">
+                        {req.profiles.phone}
+                      </a>
+                    )}
+                    {req.profiles.city && <span className="text-xs text-emerald-600">📍 {req.profiles.city}</span>}
+                  </div>
+                )}
                 {req.status === "pending" && (
                   <div className="flex gap-2 mt-4">
                     <form action={updateBookingStatus.bind(null, req.id, "approved", lang)}>
@@ -120,17 +142,26 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
         {!myBookings?.length ? <EmptyState msg={d.noBookings} /> : (
           <div className="flex flex-col gap-3">
             {myBookings.map((booking: any) => (
-              <div key={booking.id} className="flex items-center gap-4 rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-4 flex-wrap">
-                <div className="flex-1 min-w-0">
-                  <p className="font-outfit font-semibold text-[#20201f] truncate text-sm">{booking.listings?.title}</p>
-                  <p className="text-xs text-[#20201f]/50 mt-0.5">{formatDate(booking.start_date)} – {formatDate(booking.end_date)} · {formatPrice(booking.total_price)}</p>
+              <div key={booking.id} className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-4">
+                <div className="flex items-center gap-4 flex-wrap">
+                  <div className="flex-1 min-w-0">
+                    <Link href={`/${lang}/listings/${booking.listing_id}`} className="font-outfit font-semibold text-[#20201f] truncate text-sm hover:underline block">
+                      {booking.listings?.title}
+                    </Link>
+                    <p className="text-xs text-[#20201f]/50 mt-0.5">
+                      {formatDate(booking.start_date)} – {formatDate(booking.end_date)} · {formatPrice(booking.total_price)}
+                    </p>
+                    {booking.listings?.city && (
+                      <p className="text-xs text-[#20201f]/40 mt-0.5">📍 {booking.listings.city}</p>
+                    )}
+                  </div>
+                  <Badge variant={statusVariant[booking.status]}>{d.status[booking.status as keyof typeof d.status]}</Badge>
+                  {(booking.status === "pending" || booking.status === "approved") && (
+                    <form action={updateBookingStatus.bind(null, booking.id, "cancelled", lang)}>
+                      <Button size="sm" variant="outline" type="submit">{d.cancel}</Button>
+                    </form>
+                  )}
                 </div>
-                <Badge variant={statusVariant[booking.status]}>{d.status[booking.status as keyof typeof d.status]}</Badge>
-                {booking.status === "pending" && (
-                  <form action={updateBookingStatus.bind(null, booking.id, "cancelled", lang)}>
-                    <Button size="sm" variant="outline" type="submit">{d.cancel}</Button>
-                  </form>
-                )}
               </div>
             ))}
           </div>

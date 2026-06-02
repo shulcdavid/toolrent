@@ -128,7 +128,40 @@
       "hasAccount": "Jau turi paskyrą?",
       "login": "Prisijungti",
       "terms": "Registruodamasis sutinki su mūsų Paslaugų teikimo sąlygomis."
+    },
+    "forgot": {
+      "title": "Atstatyti slaptažodį",
+      "description": "Įvesk el. paštą ir išsiųsime atstatymo nuorodą.",
+      "email": "El. paštas",
+      "submit": "Siųsti atstatymo nuorodą",
+      "sentTitle": "Patikrink el. paštą",
+      "sentDesc": "Išsiuntėme slaptažodžio atstatymo nuorodą į",
+      "backToLogin": "Grįžti į prisijungimą"
+    },
+    "reset": {
+      "title": "Nustatyti naują slaptažodį",
+      "description": "Pasirink saugų slaptažodį savo paskyroje.",
+      "password": "Naujas slaptažodis",
+      "passwordHint": "Ne mažiau kaip 8 simboliai",
+      "submit": "Atnaujinti slaptažodį",
+      "successMsg": "Slaptažodis sėkmingai atnaujintas."
     }
+  },
+  "profile": {
+    "title": "Mano profilis",
+    "avatar": "Profilio nuotrauka",
+    "changeAvatar": "Keisti nuotrauką",
+    "removeAvatar": "Pašalinti",
+    "fullName": "Vardas ir pavardė",
+    "username": "Vartotojo vardas",
+    "phone": "Telefono numeris",
+    "phonePlaceholder": "+370 600 00000",
+    "city": "Miestas",
+    "country": "Šalis",
+    "lockedMsg": "Vardas ir vartotojo vardas gali būti keičiami tik kartą per metus.",
+    "lockedUntil": "Bus galima keisti nuo",
+    "saved": "Išsaugota!",
+    "memberSince": "Narys nuo"
   },
   "dashboard": {
     "title": "Mano paskyra",
@@ -158,13 +191,25 @@
   },
   "categories": {
     "power": "Elektriniai įrankiai",
+    "hand": "Rankiniai įrankiai",
+    "mechanical": "Mechaniniai įrankiai",
+    "pneumatic": "Pneumatiniai įrankiai",
+    "hydraulic": "Hidrauliniai įrankiai",
+    "woodworking": "Medžio apdirbimo įrankiai",
+    "metalworking": "Metalo apdirbimo įrankiai",
+    "fastening": "Tvirtinimo įrankiai",
+    "welding": "Suvirinimo įrankiai",
     "garden": "Sodas ir lauke",
     "construction": "Statyba",
+    "roofing": "Stogo įrankiai",
     "measuring": "Matavimas",
-    "painting": "Dažymas",
+    "precision": "Tikslumo įrankiai",
+    "painting": "Dažymo įrankiai",
     "cleaning": "Valymas",
     "plumbing": "Santechnika",
     "automotive": "Automobiliai",
+    "safety": "Sauga ir įranga",
+    "jewelry": "Juvelyrikos įrankiai",
     "leftovers": "Statybinės liekanos",
     "other": "Kita"
   },

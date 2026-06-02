@@ -13,6 +13,8 @@ export interface Database {
           city: string | null;
           country: string | null;
           created_at: string;
+          full_name_changed_at: string | null;
+          username_changed_at: string | null;
         };
         Insert: Omit<Database["public"]["Tables"]["profiles"]["Row"], "created_at">;
         Update: Partial<Database["public"]["Tables"]["profiles"]["Insert"]>;

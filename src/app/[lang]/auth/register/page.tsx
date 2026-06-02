@@ -3,22 +3,24 @@ import { notFound } from "next/navigation";
 import { MailCheck } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { RegisterForm } from "@/components/RegisterForm";
+import { ResendConfirmationForm } from "@/components/ResendConfirmationForm";
 
 export default async function RegisterPage({
   params,
   searchParams,
 }: {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<{ success?: string }>;
+  searchParams: Promise<{ success?: string; email?: string; resent?: string; error?: string }>;
 }) {
   const { lang } = await params;
-  const { success } = await searchParams;
+  const { success, email, resent, error } = await searchParams;
   if (!hasLocale(lang)) notFound();
   const dict = await getDictionary(lang as Locale);
   const lt = lang === "lt";
 
   // Show "check your email" screen after successful signup
   if (success === "confirm") {
+    const decodedEmail = email ? decodeURIComponent(email) : "";
     return (
       <div className="flex min-h-[80vh] items-center justify-center px-5 py-12">
         <div className="w-full max-w-sm text-center flex flex-col items-center gap-5">
@@ -30,15 +32,40 @@ export default async function RegisterPage({
               {lt ? "Patikrink el. paštą" : "Check your email"}
             </h1>
             <p className="text-sm text-[#20201f]/55 leading-relaxed">
-              {lt
-                ? "Išsiuntėme patvirtinimo nuorodą. Spustelk ją, kad aktyvuotum paskyrą."
-                : "We sent you a confirmation link. Click it to activate your account."}
+              {decodedEmail ? (
+                <>
+                  {lt ? "Išsiuntėme patvirtinimo nuorodą į " : "We sent a confirmation link to "}
+                  <span className="font-medium text-[#20201f]/80">{decodedEmail}</span>
+                  {lt ? ". Spustelk ją, kad aktyvuotum paskyrą." : ". Click it to activate your account."}
+                </>
+              ) : (
+                lt
+                  ? "Išsiuntėme patvirtinimo nuorodą. Spustelk ją, kad aktyvuotum paskyrą."
+                  : "We sent you a confirmation link. Click it to activate your account."
+              )}
             </p>
           </div>
+
+          {error && (
+            <p className="text-sm text-red-500 rounded-lg bg-red-50 px-3 py-2 w-full text-left">
+              {decodeURIComponent(error)}
+            </p>
+          )}
+
           <p className="text-xs text-[#20201f]/40">
             {lt ? "Negauni laiško? Patikrink šlamšto aplanką." : "No email? Check your spam folder."}
           </p>
-          <Link href={`/${lang}/auth/login`} className="text-sm font-medium text-[#20201f] underline underline-offset-2 hover:opacity-70">
+
+          {decodedEmail && (
+            <ResendConfirmationForm
+              email={decodedEmail}
+              lang={lang}
+              justResent={resent === "1"}
+              isLt={lt}
+            />
+          )}
+
+          <Link href={`/${lang}/auth/login`} className="text-sm font-medium text-[#20201f]/50 hover:text-[#20201f] transition-colors">
             {lt ? "Grįžti į prisijungimą" : "Back to login"}
           </Link>
         </div>

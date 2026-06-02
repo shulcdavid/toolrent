@@ -7,7 +7,7 @@ import { CATEGORIES } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { SlidersHorizontal, MapPin, LayoutGrid, Map } from "lucide-react";
 
-interface SearchParams { category?: string; city?: string; q?: string; sort?: string; view?: string }
+interface SearchParams { category?: string; city?: string; q?: string; sort?: string; view?: string; priceMax?: string }
 
 export default async function ListingsPage({
   params, searchParams,
@@ -30,6 +30,7 @@ export default async function ListingsPage({
   if (sp.category) query = query.eq("category", sp.category);
   if (sp.city) query = query.eq("city", sp.city);
   if (sp.q) query = query.ilike("title", `%${sp.q}%`);
+  if (sp.priceMax) query = query.lte("price_per_day", Number(sp.priceMax));
   if (sp.sort === "priceLow") query = query.order("price_per_day", { ascending: true });
   else if (sp.sort === "priceHigh") query = query.order("price_per_day", { ascending: false });
 
@@ -75,6 +76,32 @@ export default async function ListingsPage({
                   </FilterLink>
                 ))}
               </div>
+            </FilterSection>
+
+            <FilterSection label={dict.listings.filters.priceMax}>
+              <form action={`/${lang}/listings`} method="GET">
+                {sp.category && <input type="hidden" name="category" value={sp.category} />}
+                {sp.city && <input type="hidden" name="city" value={sp.city} />}
+                {sp.q && <input type="hidden" name="q" value={sp.q} />}
+                {sp.sort && <input type="hidden" name="sort" value={sp.sort} />}
+                <div className="flex items-center gap-2">
+                  <input
+                    name="priceMax"
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={sp.priceMax}
+                    placeholder="e.g. 20"
+                    className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2 text-sm text-[#20201f] placeholder:text-[#20201f]/35 focus:outline-none focus:ring-2 focus:ring-[#20201f]/15"
+                  />
+                  <button type="submit" className="shrink-0 rounded-xl bg-[#20201f] px-3 py-2 text-xs font-medium text-[#f7f6f2] hover:bg-[#3a3a38] transition-colors">→</button>
+                </div>
+                {sp.priceMax && (
+                  <a href={buildUrl(lang, { ...sp, priceMax: undefined })} className="block mt-1.5 text-xs text-[#20201f]/50 hover:text-[#20201f] transition-colors">
+                    ✕ {lang === "lt" ? "Išvalyti" : "Clear"}
+                  </a>
+                )}
+              </form>
             </FilterSection>
 
             <FilterSection label={dict.listings.filters.city}>
@@ -163,6 +190,7 @@ function buildUrl(lang: string, sp: SearchParams): string {
   if (sp.q) p.set("q", sp.q);
   if (sp.sort) p.set("sort", sp.sort);
   if (sp.view) p.set("view", sp.view);
+  if (sp.priceMax) p.set("priceMax", sp.priceMax);
   const qs = p.toString();
   return `/${lang}/listings${qs ? `?${qs}` : ""}`;
 }
