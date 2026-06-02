@@ -1,6 +1,13 @@
-import { Wrench, Leaf, HardHat, Droplets, Car, Package, Ruler, Paintbrush, Pipette, Recycle } from "lucide-react";
+import {
+  Wrench, Leaf, HardHat, Droplets, Car, Package,
+  Ruler, Paintbrush, Pipette, Recycle,
+  Hammer, Settings, Wind, Gauge, Axe,
+  Scissors, Pin, Flame, Home, Crosshair,
+  Shield, Gem,
+} from "lucide-react";
 
 const icons: Record<string, React.ElementType> = {
+  // Original 10
   power: Wrench,
   garden: Leaf,
   construction: HardHat,
@@ -11,6 +18,19 @@ const icons: Record<string, React.ElementType> = {
   automotive: Car,
   leftovers: Recycle,
   other: Package,
+  // New 12
+  hand: Hammer,
+  mechanical: Settings,
+  pneumatic: Wind,
+  hydraulic: Gauge,
+  woodworking: Axe,
+  metalworking: Scissors,
+  fastening: Pin,
+  welding: Flame,
+  roofing: Home,
+  precision: Crosshair,
+  safety: Shield,
+  jewelry: Gem,
 };
 
 interface Props {
