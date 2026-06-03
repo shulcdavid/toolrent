@@ -1,7 +1,7 @@
 import {
   Wrench, Leaf, HardHat, Droplets, Car, Package,
   Ruler, Paintbrush, Recycle,
-  Hammer, Settings, Wind, Gauge, Axe,
+  Hammer, Wind, Gauge, Axe,
   Flame, Home,
   Shield, Gem,
 } from "lucide-react";
@@ -107,11 +107,9 @@ const lucideIcons: Record<string, React.ElementType> = {
   leftovers: Recycle,
   other: Package,
   hand: Hammer,
-  mechanical: Settings,
   pneumatic: Wind,
   hydraulic: Gauge,
   woodworking: Axe,
-  welding: Flame,
   roofing: Home,
   safety: Shield,
   jewelry: Gem,
@@ -120,7 +118,6 @@ const lucideIcons: Record<string, React.ElementType> = {
 const customIcons: Record<string, React.FC<{ size: number; className?: string }>> = {
   plumbing: FaucetIcon,
   metalworking: AnvilIcon,
-  precision: CaliperIcon,
   fastening: StapleGunIcon,
 };
 
