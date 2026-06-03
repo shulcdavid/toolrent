@@ -2,7 +2,7 @@ import {
   Wrench, Leaf, HardHat, Droplets, Car, Package,
   Ruler, Paintbrush, Recycle,
   Hammer, Settings, Wind, Gauge, Axe,
-  Pin, Flame, Home,
+  Flame, Home,
   Shield, Gem,
 } from "lucide-react";
 
@@ -50,6 +50,25 @@ function AnvilIcon({ size, className }: { size: number; className?: string }) {
   );
 }
 
+function StapleGunIcon({ size, className }: { size: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+      className={className} aria-hidden="true">
+      {/* Main body housing */}
+      <rect x="2" y="4" width="14" height="7" rx="1.5" />
+      {/* Nose tip (where staples fire) */}
+      <path d="M16 6 L20 6 L20 9 L16 9" />
+      {/* Staple exit slot on nose bottom */}
+      <line x1="18" y1="9" x2="20" y2="9" />
+      {/* Handle / grip */}
+      <path d="M5 11 L7 20 L11 20 L9 11" />
+      {/* Trigger */}
+      <path d="M9 11 Q10 13.5 9.5 15" />
+    </svg>
+  );
+}
+
 function CaliperIcon({ size, className }: { size: number; className?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none"
@@ -92,7 +111,6 @@ const lucideIcons: Record<string, React.ElementType> = {
   pneumatic: Wind,
   hydraulic: Gauge,
   woodworking: Axe,
-  fastening: Pin,
   welding: Flame,
   roofing: Home,
   safety: Shield,
@@ -103,6 +121,7 @@ const customIcons: Record<string, React.FC<{ size: number; className?: string }>
   plumbing: FaucetIcon,
   metalworking: AnvilIcon,
   precision: CaliperIcon,
+  fastening: StapleGunIcon,
 };
 
 interface Props {
