@@ -163,6 +163,7 @@ export function ProfileForm({
         placeholder="Jonas Jonaitis"
         disabled={!canChangeName}
         required
+        hint={canChangeName ? (lang === "lt" ? "⚠ Išsaugojus, vardą bus galima keisti tik kartą per metus." : "⚠ Once saved, your name can only be changed once per year.") : undefined}
       />
 
       {/* Read-only email */}
@@ -179,6 +180,7 @@ export function ProfileForm({
         defaultValue={profile?.username ?? ""}
         placeholder="jonas123"
         disabled={!canChangeUsername}
+        hint={canChangeUsername ? (lang === "lt" ? "⚠ Išsaugojus, slapyvardį bus galima keisti tik kartą per metus." : "⚠ Once saved, your username can only be changed once per year.") : undefined}
       />
 
       <Input
@@ -188,6 +190,7 @@ export function ProfileForm({
         placeholder={p.phonePlaceholder}
         type="tel"
         disabled={!canChangePhone}
+        hint={canChangePhone ? (lang === "lt" ? "⚠ Išsaugojus, telefoną bus galima keisti tik kartą per 6 mėnesius." : "⚠ Once saved, your phone can only be changed once every 6 months.") : undefined}
       />
 
       <Input
