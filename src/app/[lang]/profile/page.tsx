@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { createClient } from "@/lib/supabase/server";
 import { ProfileForm } from "@/components/ProfileForm";
+import { DeleteAccountForm } from "@/components/DeleteAccountForm";
 import { canChangeIdentity, nextEditDate } from "@/lib/utils";
 
 export default async function ProfilePage({
@@ -11,10 +12,10 @@ export default async function ProfilePage({
   searchParams,
 }: {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<{ saved?: string; error?: string }>;
+  searchParams: Promise<{ saved?: string; error?: string; delete_error?: string }>;
 }) {
   const { lang } = await params;
-  const { saved, error } = await searchParams;
+  const { saved, error, delete_error } = await searchParams;
   if (!hasLocale(lang)) notFound();
 
   const supabase = await createClient();
@@ -67,6 +68,14 @@ export default async function ProfilePage({
         saved={saved === "1"}
         error={error}
       />
+
+      <div className="mt-6">
+        <DeleteAccountForm
+          lang={lang}
+          email={user.email ?? ""}
+          deleteError={delete_error ? decodeURIComponent(delete_error) : undefined}
+        />
+      </div>
     </div>
   );
 }
