@@ -31,8 +31,10 @@ export default async function ProfilePage({
 
   const canName = canChangeIdentity(profile?.full_name_changed_at ?? null);
   const canUsername = canChangeIdentity(profile?.username_changed_at ?? null);
+  const canPhone = canChangeIdentity(profile?.phone_changed_at ?? null, 6);
   const nameUntil = nextEditDate(profile?.full_name_changed_at ?? null);
   const usernameUntil = nextEditDate(profile?.username_changed_at ?? null);
+  const phoneUntil = nextEditDate(profile?.phone_changed_at ?? null, 6);
 
   return (
     <div className="mx-auto max-w-lg px-4 sm:px-6 py-10">
@@ -58,8 +60,10 @@ export default async function ProfilePage({
         dict={dict}
         canChangeName={canName}
         canChangeUsername={canUsername}
+        canChangePhone={canPhone}
         nameLockedUntil={nameUntil}
         usernameLockedUntil={usernameUntil}
+        phoneLockedUntil={phoneUntil}
         saved={saved === "1"}
         error={error}
       />

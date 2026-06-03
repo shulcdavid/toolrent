@@ -16,12 +16,11 @@ export async function updateProfile(formData: FormData) {
   // Fetch current profile to check change timestamps
   const { data: current } = await db
     .from("profiles")
-    .select("full_name_changed_at, username_changed_at")
+    .select("full_name_changed_at, username_changed_at, phone_changed_at")
     .eq("id", user.id)
     .single();
 
   const updates: Record<string, unknown> = {
-    phone: (formData.get("phone") as string) || null,
     city: (formData.get("city") as string) || null,
     country: (formData.get("country") as string) || null,
     avatar_url: (formData.get("avatar_url") as string) || null,
@@ -29,6 +28,7 @@ export async function updateProfile(formData: FormData) {
 
   const newFullName = formData.get("full_name") as string;
   const newUsername = formData.get("username") as string;
+  const newPhone = formData.get("phone") as string;
 
   // Only update identity fields if allowed (once per year)
   if (canChangeIdentity(current?.full_name_changed_at)) {
@@ -39,6 +39,12 @@ export async function updateProfile(formData: FormData) {
   if (canChangeIdentity(current?.username_changed_at)) {
     updates.username = newUsername || null;
     updates.username_changed_at = new Date().toISOString();
+  }
+
+  // Phone: editable once per 6 months
+  if (canChangeIdentity(current?.phone_changed_at, 6)) {
+    updates.phone = newPhone || null;
+    updates.phone_changed_at = new Date().toISOString();
   }
 
   const { error } = await db

@@ -31,16 +31,18 @@ interface Props {
   };
   canChangeName: boolean;
   canChangeUsername: boolean;
+  canChangePhone: boolean;
   nameLockedUntil: string;
   usernameLockedUntil: string;
+  phoneLockedUntil: string;
   saved?: boolean;
   error?: string;
 }
 
 export function ProfileForm({
   profile, userId, email, lang, dict,
-  canChangeName, canChangeUsername,
-  nameLockedUntil, usernameLockedUntil,
+  canChangeName, canChangeUsername, canChangePhone,
+  nameLockedUntil, usernameLockedUntil, phoneLockedUntil,
   saved: savedProp, error: errorProp,
 }: Props) {
   const p = dict.profile;
@@ -139,7 +141,7 @@ export function ProfileForm({
       </div>
 
       {/* Identity lock notice */}
-      {(!canChangeName || !canChangeUsername) && (
+      {(!canChangeName || !canChangeUsername || !canChangePhone) && (
         <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800 leading-relaxed">
           {p.lockedMsg}
           {!canChangeName && nameLockedUntil && (
@@ -147,6 +149,9 @@ export function ProfileForm({
           )}
           {!canChangeUsername && usernameLockedUntil && (
             <div className="mt-0.5">{p.username}: {p.lockedUntil} <strong>{usernameLockedUntil}</strong></div>
+          )}
+          {!canChangePhone && phoneLockedUntil && (
+            <div className="mt-0.5">{p.phone}: {p.lockedUntil} <strong>{phoneLockedUntil}</strong></div>
           )}
         </div>
       )}
@@ -182,6 +187,7 @@ export function ProfileForm({
         defaultValue={profile?.phone ?? ""}
         placeholder={p.phonePlaceholder}
         type="tel"
+        disabled={!canChangePhone}
       />
 
       <Input

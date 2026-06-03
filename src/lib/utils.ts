@@ -54,17 +54,17 @@ export const CATEGORIES = [
 
 export type Category = (typeof CATEGORIES)[number];
 
-export function canChangeIdentity(changedAt: string | null): boolean {
+export function canChangeIdentity(changedAt: string | null, months = 12): boolean {
   if (!changedAt) return true;
-  const oneYearAgo = new Date();
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-  return new Date(changedAt) < oneYearAgo;
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - months);
+  return new Date(changedAt) < cutoff;
 }
 
-export function nextEditDate(changedAt: string | null): string {
+export function nextEditDate(changedAt: string | null, months = 12): string {
   if (!changedAt) return "";
   const d = new Date(changedAt);
-  d.setFullYear(d.getFullYear() + 1);
+  d.setMonth(d.getMonth() + months);
   return d.toLocaleDateString("lt-LT", { year: "numeric", month: "long", day: "numeric" });
 }
 

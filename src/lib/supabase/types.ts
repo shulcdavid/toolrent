@@ -10,6 +10,7 @@ export interface Database {
           username: string | null;
           avatar_url: string | null;
           phone: string | null;
+          phone_changed_at: string | null;
           city: string | null;
           country: string | null;
           created_at: string;
