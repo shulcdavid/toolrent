@@ -18,6 +18,7 @@ const COUNTRIES = [
 interface Props {
   profile: Profile | null;
   userId: string;
+  email: string;
   lang: Locale;
   dict: {
     profile: {
@@ -37,7 +38,7 @@ interface Props {
 }
 
 export function ProfileForm({
-  profile, userId, lang, dict,
+  profile, userId, email, lang, dict,
   canChangeName, canChangeUsername,
   nameLockedUntil, usernameLockedUntil,
   saved: savedProp, error: errorProp,
@@ -158,6 +159,14 @@ export function ProfileForm({
         disabled={!canChangeName}
         required
       />
+
+      {/* Read-only email */}
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-[#20201f]">{lang === "lt" ? "El. paštas" : "Email"}</label>
+        <div className="w-full rounded-xl border border-[#e5e2db] bg-[#f0ede6] px-3 py-2.5 text-sm text-[#20201f]/60 select-all">
+          {email}
+        </div>
+      </div>
 
       <Input
         name="username"

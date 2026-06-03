@@ -53,6 +53,7 @@ export default async function ProfilePage({
       <ProfileForm
         profile={profile}
         userId={user.id}
+        email={user.email ?? ""}
         lang={lang as Locale}
         dict={dict}
         canChangeName={canName}
