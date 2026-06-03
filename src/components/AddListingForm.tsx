@@ -7,6 +7,7 @@ import { Input } from "./ui/Input";
 import { CATEGORIES } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { createListing } from "@/lib/actions/listings";
+import { OwnerAvailabilityCalendar } from "@/components/AvailabilityCalendar";
 import type { Locale } from "@/i18n/config";
 
 interface Props {
@@ -99,6 +100,19 @@ export function AddListingForm({ dict, lang }: Props) {
       <div className="grid grid-cols-2 gap-4">
         <Input name="city" label={f.city} placeholder={f.cityPlaceholder} required />
         <Input name="address" label={f.address} placeholder={f.addressPlaceholder} />
+      </div>
+
+      {/* Availability calendar */}
+      <div>
+        <label className="text-sm font-medium text-[#20201f] block mb-1.5">
+          {lang === "lt" ? "Prieinamumas" : "Availability"}
+        </label>
+        <p className="text-xs text-[#20201f]/40 mb-3">
+          {lang === "lt"
+            ? "Pažymėkite dienas, kuriomis įrankis nebus prieinamas."
+            : "Mark the days when the tool will not be available."}
+        </p>
+        <OwnerAvailabilityCalendar lang={lang} />
       </div>
 
       {/* Toggle */}

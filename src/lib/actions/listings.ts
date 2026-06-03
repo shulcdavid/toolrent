@@ -22,6 +22,7 @@ export async function createListing(formData: FormData) {
     address: formData.get("address") as string,
     images: [],
     is_available: formData.get("is_available") === "on",
+    blocked_dates: JSON.parse((formData.get("blocked_dates") as string) || "[]"),
   }).select().single();
 
   if (error) redirect(`/${lang}/add-listing?error=${encodeURIComponent(error.message)}`);

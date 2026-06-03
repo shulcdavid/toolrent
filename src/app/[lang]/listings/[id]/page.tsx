@@ -6,7 +6,7 @@ import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { Badge } from "@/components/ui/Badge";
 import { BookingForm } from "@/components/BookingForm";
 import { ImageGallery } from "@/components/ImageGallery";
-import { AvailabilityCalendar } from "@/components/AvailabilityCalendar";
+import { RenterAvailabilityCalendar } from "@/components/AvailabilityCalendar";
 import { TrustBadges } from "@/components/TrustBadges";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate } from "@/lib/utils";
@@ -113,7 +113,11 @@ export default async function ListingDetailPage({
           )}
 
           {/* Availability calendar */}
-          <AvailabilityCalendar bookedRanges={bookedRanges} lang={lang} />
+          <RenterAvailabilityCalendar
+            bookedRanges={bookedRanges}
+            blockedDates={listing.blocked_dates ?? []}
+            lang={lang}
+          />
 
           {/* Owner */}
           <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">

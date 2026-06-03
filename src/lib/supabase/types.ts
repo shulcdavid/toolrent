@@ -32,6 +32,7 @@ export interface Database {
           city: string;
           address: string | null;
           images: string[];
+          blocked_dates: string[];
           is_available: boolean;
           created_at: string;
         };
