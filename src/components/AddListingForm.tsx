@@ -106,7 +106,7 @@ export function AddListingForm({ dict, lang }: Props) {
         {[...selectedCats].map((cat) => (
           <input key={cat} type="hidden" name="categories" value={cat} />
         ))}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {CATEGORIES.map((cat) => {
             const checked = selectedCats.has(cat);
             return (
