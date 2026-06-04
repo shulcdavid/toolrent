@@ -206,8 +206,8 @@ function FilterSection({ label, children }: { label: string; children: React.Rea
 
 function FilterLink({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
-    <a href={href} className={`flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs transition-colors ${
-      active ? "bg-[#20201f] text-[#f7f6f2] font-medium" : "text-[#20201f]/60 hover:bg-[#e5e2db] hover:text-[#20201f]"}`}>
+    <a href={href} className={`flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-sm transition-colors ${
+      active ? "bg-[#20201f] text-[#f7f6f2] font-medium" : "text-[#20201f]/75 hover:bg-[#e5e2db] hover:text-[#20201f]"}`}>
       {children}
     </a>
   );
