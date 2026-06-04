@@ -27,7 +27,7 @@ export default async function ListingsPage({
     .select("*, profiles(*)")
     .order("created_at", { ascending: false });
 
-  if (sp.category) query = query.eq("category", sp.category);
+  if (sp.category) query = query.contains("categories", [sp.category]);
   if (sp.city) query = query.eq("city", sp.city);
   if (sp.q) query = query.ilike("title", `%${sp.q}%`);
   if (sp.priceMax) query = query.lte("price_per_day", Number(sp.priceMax));

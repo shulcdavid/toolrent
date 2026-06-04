@@ -77,7 +77,7 @@ export default async function ListingDetailPage({
             <ImageGallery images={listing.images} title={listing.title} />
           ) : (
             <div className="flex h-72 sm:h-96 w-full items-center justify-center rounded-2xl bg-[#eeece3] border border-[#e5e2db] opacity-20">
-              <CategoryIcon category={listing.category} size={72} />
+              <CategoryIcon category={listing.categories?.[0] ?? "other"} size={72} />
             </div>
           )}
 
@@ -92,7 +92,9 @@ export default async function ListingDetailPage({
             <div className="flex flex-wrap items-center gap-3 mt-3">
               <span className="flex items-center gap-1.5 text-xs text-[#20201f]/50"><MapPin size={12} /> {listing.city}{listing.address && ` · ${listing.address}`}</span>
               <span className="flex items-center gap-1.5 text-xs text-[#20201f]/50"><Calendar size={12} /> {formatDate(listing.created_at)}</span>
-              <Badge variant="default">{dict.categories[listing.category as keyof typeof dict.categories]}</Badge>
+              {(listing.categories ?? []).map((cat: string) => (
+                <Badge key={cat} variant="default">{dict.categories[cat as keyof typeof dict.categories]}</Badge>
+              ))}
               {listing.is_available ? <Badge variant="green">{dict.listings.available}</Badge> : <Badge variant="gray">{dict.listings.unavailable}</Badge>}
             </div>
           </div>

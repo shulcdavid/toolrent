@@ -26,7 +26,7 @@ export interface Database {
           user_id: string;
           title: string;
           description: string | null;
-          category: string;
+          categories: string[];
           price_per_day: number;
           deposit: number;
           city: string;

@@ -28,7 +28,16 @@ interface Props {
 
 export function AddListingForm({ dict, lang }: Props) {
   const [images, setImages] = useState<string[]>([]);
+  const [selectedCats, setSelectedCats] = useState<Set<string>>(new Set());
   const f = dict.addListing.fields;
+
+  function toggleCat(cat: string) {
+    setSelectedCats((prev) => {
+      const next = new Set(prev);
+      if (next.has(cat)) next.delete(cat); else next.add(cat);
+      return next;
+    });
+  }
 
   function handleImageAdd(e: React.ChangeEvent<HTMLInputElement>) {
     const files = e.target.files;
@@ -78,17 +87,44 @@ export function AddListingForm({ dict, lang }: Props) {
       </div>
 
       <div>
-        <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.category}</label>
+        <label className="text-sm font-medium text-[#20201f] block mb-1">{f.category}</label>
+        <p className="text-xs text-[#20201f]/40 mb-3">
+          {lang === "lt" ? "Galite pasirinkti kelias kategorijas." : "You can select more than one."}
+        </p>
+        {/* Hidden validation sentinel — ensures at least one is checked */}
+        <input
+          type="text"
+          name="_categories_check"
+          value={selectedCats.size > 0 ? "ok" : ""}
+          onChange={() => {}}
+          required
+          className="sr-only"
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+        {/* Pass each selected category as a separate form value */}
+        {[...selectedCats].map((cat) => (
+          <input key={cat} type="hidden" name="categories" value={cat} />
+        ))}
         <div className="grid grid-cols-3 gap-2">
-          {CATEGORIES.map((cat) => (
-            <label key={cat} className="cursor-pointer">
-              <input type="radio" name="category" value={cat} className="sr-only peer" required />
-              <div className="flex items-center gap-2 rounded-xl border border-[#e5e2db] bg-[#eeece3] px-3 py-2.5 text-xs transition peer-checked:border-[#20201f] peer-checked:bg-[#20201f] peer-checked:text-[#f7f6f2] hover:border-[#20201f]/40">
+          {CATEGORIES.map((cat) => {
+            const checked = selectedCats.has(cat);
+            return (
+              <button
+                key={cat}
+                type="button"
+                onClick={() => toggleCat(cat)}
+                className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs transition text-left ${
+                  checked
+                    ? "border-[#20201f] bg-[#20201f] text-[#f7f6f2]"
+                    : "border-[#e5e2db] bg-[#eeece3] text-[#20201f] hover:border-[#20201f]/40"
+                }`}
+              >
                 <CategoryIcon category={cat} size={14} className="shrink-0" />
                 <span className="font-medium">{dict.categories[cat]}</span>
-              </div>
-            </label>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </div>
 

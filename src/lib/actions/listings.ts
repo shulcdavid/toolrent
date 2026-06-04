@@ -15,7 +15,7 @@ export async function createListing(formData: FormData) {
     user_id: user.id,
     title: formData.get("title") as string,
     description: formData.get("description") as string,
-    category: formData.get("category") as string,
+    categories: formData.getAll("categories") as string[],
     price_per_day: Number(formData.get("price_per_day")),
     deposit: Number(formData.get("deposit") ?? 0),
     city: formData.get("city") as string,

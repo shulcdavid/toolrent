@@ -34,7 +34,7 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
           />
         ) : (
           <div className="flex h-full items-center justify-center opacity-20">
-            <CategoryIcon category={listing.category} size={48} />
+            <CategoryIcon category={listing.categories?.[0] ?? "other"} size={48} />
           </div>
         )}
 
