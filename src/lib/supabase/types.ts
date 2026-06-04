@@ -33,6 +33,7 @@ export interface Database {
           address: string | null;
           images: string[];
           blocked_dates: string[];
+          available_dates: string[];
           is_available: boolean;
           created_at: string;
         };
