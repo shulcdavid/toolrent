@@ -49,7 +49,7 @@ export default async function ListingsPage({
 
       <div className="flex gap-8">
         {/* Sidebar */}
-        <aside className="hidden lg:flex flex-col gap-5 w-56 shrink-0">
+        <aside className="hidden lg:flex flex-col gap-5 w-fit shrink-0">
           <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5 flex flex-col gap-5">
             <div className="flex items-center gap-2 text-sm font-semibold text-[#20201f] font-outfit">
               <SlidersHorizontal size={14} /> Filters
@@ -206,7 +206,7 @@ function FilterSection({ label, children }: { label: string; children: React.Rea
 
 function FilterLink({ href, active, children }: { href: string; active: boolean; children: React.ReactNode }) {
   return (
-    <a href={href} className={`block rounded-lg px-3 py-1.5 text-xs transition-colors ${
+    <a href={href} className={`flex items-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-1.5 text-xs transition-colors ${
       active ? "bg-[#20201f] text-[#f7f6f2] font-medium" : "text-[#20201f]/60 hover:bg-[#e5e2db] hover:text-[#20201f]"}`}>
       {children}
     </a>
