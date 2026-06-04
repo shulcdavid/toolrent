@@ -103,7 +103,7 @@ export function ProfileForm({
           )}
         </div>
         <div className="flex flex-col gap-1.5">
-          <p className="text-xs font-medium text-[#20201f]/60">{p.avatar}</p>
+          <p className="text-xs font-medium text-[#20201f]/75">{p.avatar}</p>
           <div className="flex gap-2">
             <button
               type="button"
@@ -117,7 +117,7 @@ export function ProfileForm({
               <button
                 type="button"
                 onClick={() => setAvatarUrl("")}
-                className="text-xs text-[#20201f]/40 hover:text-red-500 transition-colors"
+                className="text-xs text-[#20201f]/75 hover:text-red-500 transition-colors"
               >
                 {p.removeAvatar}
               </button>
@@ -134,7 +134,7 @@ export function ProfileForm({
         </div>
         <div className="ml-auto text-right">
           <p className="font-outfit font-semibold text-[#20201f] text-sm">{profile?.full_name ?? ""}</p>
-          <p className="text-xs text-[#20201f]/40 mt-0.5">
+          <p className="text-xs text-[#20201f]/75 mt-0.5">
             {p.memberSince} {new Date(profile?.created_at ?? "").getFullYear()}
           </p>
         </div>
@@ -169,7 +169,7 @@ export function ProfileForm({
       {/* Read-only email */}
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-[#20201f]">{lang === "lt" ? "El. paštas" : "Email"}</label>
-        <div className="w-full rounded-xl border border-[#e5e2db] bg-[#f0ede6] px-3 py-2.5 text-sm text-[#20201f]/60 select-all">
+        <div className="w-full rounded-xl border border-[#e5e2db] bg-[#f0ede6] px-3 py-2.5 text-sm text-[#20201f]/75 select-all">
           {email}
         </div>
       </div>

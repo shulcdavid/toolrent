@@ -32,7 +32,7 @@ export default async function RegisterPage({
             <h1 className="font-outfit text-2xl font-bold text-[#20201f] mb-2">
               {lt ? "Patikrink el. paštą" : "Check your email"}
             </h1>
-            <p className="text-sm text-[#20201f]/55 leading-relaxed">
+            <p className="text-sm text-[#20201f]/70 leading-relaxed">
               {decodedEmail ? (
                 <>
                   {lt ? "Išsiuntėme patvirtinimo nuorodą į " : "We sent a confirmation link to "}
@@ -53,7 +53,7 @@ export default async function RegisterPage({
             </p>
           )}
 
-          <p className="text-xs text-[#20201f]/40">
+          <p className="text-xs text-[#20201f]/75">
             {lt ? "Negauni laiško? Patikrink šlamšto aplanką." : "No email? Check your spam folder."}
           </p>
 
@@ -66,7 +66,7 @@ export default async function RegisterPage({
             />
           )}
 
-          <Link href={`/${lang}/auth/login`} className="text-sm font-medium text-[#20201f]/50 hover:text-[#20201f] transition-colors">
+          <Link href={`/${lang}/auth/login`} className="text-sm font-medium text-[#20201f]/65 hover:text-[#20201f] transition-colors">
             {lt ? "Grįžti į prisijungimą" : "Back to login"}
           </Link>
         </div>
@@ -89,7 +89,7 @@ export default async function RegisterPage({
           {/* Divider */}
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-[#d4d0c8]" />
-            <span className="text-xs text-[#20201f]/40 font-medium">
+            <span className="text-xs text-[#20201f]/75 font-medium">
               {lt ? "arba el. paštu" : "or with email"}
             </span>
             <div className="flex-1 h-px bg-[#d4d0c8]" />
@@ -99,7 +99,7 @@ export default async function RegisterPage({
           <RegisterForm dict={dict.auth.register} lang={lang as Locale} />
         </div>
 
-        <p className="mt-5 text-center text-sm text-[#20201f]/50">
+        <p className="mt-5 text-center text-sm text-[#20201f]/65">
           {dict.auth.register.hasAccount}{" "}
           <Link href={`/${lang}/auth/login`} className="font-medium text-[#20201f] underline underline-offset-2 hover:opacity-70">
             {dict.auth.register.login}

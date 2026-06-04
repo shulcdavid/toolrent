@@ -23,7 +23,7 @@ export default async function ResetPasswordPage({
         <div className="flex flex-col items-center mb-8">
           <span className="font-outfit text-2xl font-bold text-[#20201f] mb-1">Rente</span>
           <h1 className="font-outfit text-lg font-semibold text-[#20201f]">{r.title}</h1>
-          <p className="text-sm text-[#20201f]/50 mt-1 text-center">{r.description}</p>
+          <p className="text-sm text-[#20201f]/65 mt-1 text-center">{r.description}</p>
         </div>
 
         <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-6">

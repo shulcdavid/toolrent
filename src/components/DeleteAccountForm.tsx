@@ -55,7 +55,7 @@ export function DeleteAccountForm({ lang, email, deleteError }: Props) {
               value={typed}
               onChange={(e) => setTyped(e.target.value)}
               placeholder={email}
-              className="w-full rounded-xl border border-red-200 bg-white px-3 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/25 outline-none focus:border-red-400 focus:ring-1 focus:ring-red-300 transition-colors"
+              className="w-full rounded-xl border border-red-200 bg-white px-3 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/75 outline-none focus:border-red-400 focus:ring-1 focus:ring-red-300 transition-colors"
             />
           </div>
 

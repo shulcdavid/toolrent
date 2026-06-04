@@ -55,7 +55,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
       {/* ── Announcement bar ── */}
       <div className="border-b border-[#e5e2db] bg-[#eeece3] px-4 py-2.5 text-center">
-        <p className="text-xs text-[#20201f]/60 tracking-wide">
+        <p className="text-xs text-[#20201f]/75 tracking-wide">
           {lt
             ? "🔧 Nuomok įrankius iš kaimynų · greita, pigu, patogu"
             : "🔧 Rent tools from your neighbours · fast, affordable, local"}
@@ -71,14 +71,14 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             <div className="flex flex-col gap-5">
               <div className="inline-flex items-center gap-2 rounded-full border border-[#e5e2db] bg-[#eeece3] px-4 py-1.5 w-fit">
                 <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <span className="text-xs text-[#20201f]/60 tracking-wide">
+                <span className="text-xs text-[#20201f]/75 tracking-wide">
                   {lt ? "Platforma veikia" : "Platform is live"}
                 </span>
               </div>
               <h1 className="font-outfit text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#20201f] leading-[1.05]">
                 {dict.home.hero.title}
               </h1>
-              <p className="text-base sm:text-lg text-[#20201f]/55 leading-relaxed max-w-md">
+              <p className="text-base sm:text-lg text-[#20201f]/70 leading-relaxed max-w-md">
                 {dict.home.hero.subtitle}
               </p>
             </div>
@@ -100,12 +100,12 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
             <div className="flex items-center gap-8 pt-2">
               <div>
                 <div className="font-outfit text-2xl font-bold text-[#20201f]">{toolCount ?? 0}</div>
-                <div className="text-xs text-[#20201f]/50 mt-0.5">{dict.home.stats.tools}</div>
+                <div className="text-xs text-[#20201f]/65 mt-0.5">{dict.home.stats.tools}</div>
               </div>
               <div className="w-px h-8 bg-[#e5e2db]" />
               <div>
                 <div className="font-outfit text-2xl font-bold text-[#20201f]">{bookingCount ?? 0}</div>
-                <div className="text-xs text-[#20201f]/50 mt-0.5">{dict.home.stats.renters}</div>
+                <div className="text-xs text-[#20201f]/65 mt-0.5">{dict.home.stats.renters}</div>
               </div>
             </div>
           </div>
@@ -128,7 +128,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
                       <div className="font-outfit font-semibold text-[#20201f] text-sm">
                         {lt ? "Gręžtuvas Bosch" : "Bosch Drill Set"}
                       </div>
-                      <div className="text-xs text-[#20201f]/50 mt-0.5">
+                      <div className="text-xs text-[#20201f]/65 mt-0.5">
                         {lt ? "Vilnius, Šeškinė" : "Vilnius, Šeškinė"}
                       </div>
                     </div>
@@ -138,7 +138,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
                     </div>
                   </div>
                   <div className="flex items-center justify-between pt-3 border-t border-[#e5e2db]">
-                    <span className="font-outfit text-base font-bold text-[#20201f]">5 € <span className="text-xs font-normal text-[#20201f]/50">{lt ? "/ diena" : "/ day"}</span></span>
+                    <span className="font-outfit text-base font-bold text-[#20201f]">5 € <span className="text-xs font-normal text-[#20201f]/65">{lt ? "/ diena" : "/ day"}</span></span>
                     <div className="h-7 w-7 rounded-full bg-[#20201f] flex items-center justify-center text-xs font-bold text-[#f7f6f2]">T</div>
                   </div>
                 </div>
@@ -153,7 +153,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         <div className="mx-auto max-w-7xl">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-xs uppercase tracking-widest text-[#20201f]/40 mb-2 font-outfit">{lt ? "Kategorijos" : "Categories"}</p>
+              <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-2 font-outfit">{lt ? "Kategorijos" : "Categories"}</p>
               <h2 className="font-outfit text-3xl sm:text-4xl font-bold text-[#20201f]">{dict.home.categories.title}</h2>
             </div>
           </div>
@@ -164,8 +164,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
                 href={`/${lang}/listings?category=${cat}`}
                 className="group flex flex-col items-center gap-3 rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5 hover:bg-[#e5e2db] hover:border-[#c8c4bc] transition-all duration-200"
               >
-                <CategoryIcon category={cat} size={24} className="text-[#20201f]/50 group-hover:text-[#20201f] transition-colors" />
-                <span className="text-xs font-medium text-[#20201f]/60 text-center group-hover:text-[#20201f] transition-colors leading-tight">
+                <CategoryIcon category={cat} size={24} className="text-[#20201f]/65 group-hover:text-[#20201f] transition-colors" />
+                <span className="text-xs font-medium text-[#20201f]/75 text-center group-hover:text-[#20201f] transition-colors leading-tight">
                   {dict.categories[cat]}
                 </span>
               </Link>
@@ -178,21 +178,21 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       <section className="border-t border-[#e5e2db] py-16 px-5 sm:px-8 bg-[#eeece3]">
         <div className="mx-auto max-w-7xl">
           <div className="mb-12">
-            <p className="text-xs uppercase tracking-widest text-[#20201f]/40 mb-2 font-outfit">{lt ? "Kaip tai veikia" : "How it works"}</p>
+            <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-2 font-outfit">{lt ? "Kaip tai veikia" : "How it works"}</p>
             <h2 className="font-outfit text-3xl sm:text-4xl font-bold text-[#20201f]">{dict.home.howItWorks.title}</h2>
           </div>
           <div className="grid gap-0 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e2db]">
             {steps.map((step, i) => (
               <div key={i} className="flex flex-col gap-5 p-8 sm:pr-12 first:pl-0 last:pr-0">
                 <div className="flex items-center gap-3">
-                  <span className="font-outfit text-xs text-[#20201f]/30 font-medium">0{i + 1}</span>
+                  <span className="font-outfit text-xs text-[#20201f]/65 font-medium">0{i + 1}</span>
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#20201f] text-[#f7f6f2]">
                     <step.icon size={18} />
                   </div>
                 </div>
                 <div>
                   <h3 className="font-outfit font-semibold text-[#20201f] mb-2">{step.title}</h3>
-                  <p className="text-sm text-[#20201f]/55 leading-relaxed">{step.desc}</p>
+                  <p className="text-sm text-[#20201f]/70 leading-relaxed">{step.desc}</p>
                 </div>
               </div>
             ))}
@@ -205,11 +205,11 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         <div className="mx-auto max-w-7xl">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <p className="text-xs uppercase tracking-widest text-[#20201f]/40 mb-2 font-outfit">{lt ? "Naujausi įrankiai" : "Recently listed"}</p>
+              <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-2 font-outfit">{lt ? "Naujausi įrankiai" : "Recently listed"}</p>
               <h2 className="font-outfit text-3xl sm:text-4xl font-bold text-[#20201f]">{dict.home.featured.title}</h2>
             </div>
             {featured.length > 0 && (
-              <Link href={`/${lang}/listings`} className="flex items-center gap-1.5 text-sm text-[#20201f]/60 hover:text-[#20201f] transition-colors">
+              <Link href={`/${lang}/listings`} className="flex items-center gap-1.5 text-sm text-[#20201f]/75 hover:text-[#20201f] transition-colors">
                 {dict.nav.browse} <ArrowRight size={14} />
               </Link>
             )}
@@ -221,7 +221,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
               <h3 className="font-outfit text-lg font-semibold text-[#20201f] mb-2">
                 {lt ? "Čia bus pirmieji įrankiai!" : "First tools coming soon!"}
               </h3>
-              <p className="text-sm text-[#20201f]/50 mb-8 max-w-xs leading-relaxed">
+              <p className="text-sm text-[#20201f]/65 mb-8 max-w-xs leading-relaxed">
                 {lt
                   ? "Platforma ką tik paleista. Būk pirmas ir įkelk savo įrankį."
                   : "The platform just launched. Be the first to list your tool."}

@@ -43,7 +43,7 @@ export default async function ListingsPage({
   return (
     <div className="mx-auto max-w-7xl px-5 sm:px-8 py-10">
       <div className="mb-8">
-        <p className="text-xs uppercase tracking-widest text-[#20201f]/40 mb-1 font-outfit">{lang === "lt" ? "Naršyti" : "Browse"}</p>
+        <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-1 font-outfit">{lang === "lt" ? "Naršyti" : "Browse"}</p>
         <h1 className="font-outfit text-3xl font-bold text-[#20201f]">{dict.listings.title}</h1>
       </div>
 
@@ -61,7 +61,7 @@ export default async function ListingsPage({
                 {sp.city && <input type="hidden" name="city" value={sp.city} />}
                 {sp.sort && <input type="hidden" name="sort" value={sp.sort} />}
                 <input name="q" defaultValue={sp.q} placeholder="Search..."
-                  className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2 text-sm text-[#20201f] placeholder:text-[#20201f]/35 focus:outline-none focus:ring-2 focus:ring-[#20201f]/15" />
+                  className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2 text-sm text-[#20201f] placeholder:text-[#20201f]/70 focus:outline-none focus:ring-2 focus:ring-[#20201f]/15" />
               </form>
             </FilterSection>
 
@@ -92,12 +92,12 @@ export default async function ListingsPage({
                     step="1"
                     defaultValue={sp.priceMax}
                     placeholder="e.g. 20"
-                    className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2 text-sm text-[#20201f] placeholder:text-[#20201f]/35 focus:outline-none focus:ring-2 focus:ring-[#20201f]/15"
+                    className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2 text-sm text-[#20201f] placeholder:text-[#20201f]/70 focus:outline-none focus:ring-2 focus:ring-[#20201f]/15"
                   />
                   <button type="submit" className="shrink-0 rounded-xl bg-[#20201f] px-3 py-2 text-xs font-medium text-[#f7f6f2] hover:bg-[#3a3a38] transition-colors">→</button>
                 </div>
                 {sp.priceMax && (
-                  <a href={buildUrl(lang, { ...sp, priceMax: undefined })} className="block mt-1.5 text-xs text-[#20201f]/50 hover:text-[#20201f] transition-colors">
+                  <a href={buildUrl(lang, { ...sp, priceMax: undefined })} className="block mt-1.5 text-xs text-[#20201f]/65 hover:text-[#20201f] transition-colors">
                     ✕ {lang === "lt" ? "Išvalyti" : "Clear"}
                   </a>
                 )}
@@ -127,7 +127,7 @@ export default async function ListingsPage({
                 className={`flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                   sp.category === cat
                     ? "border-[#20201f] bg-[#20201f] text-[#f7f6f2]"
-                    : "border-[#e5e2db] bg-[#eeece3] text-[#20201f]/60 hover:border-[#20201f]/30"}`}>
+                    : "border-[#e5e2db] bg-[#eeece3] text-[#20201f]/75 hover:border-[#20201f]/30"}`}>
                 <CategoryIcon category={cat} size={13} className="inline shrink-0" /> {dict.categories[cat]}
               </a>
             ))}
@@ -135,14 +135,14 @@ export default async function ListingsPage({
 
           {/* Sort + view toggle bar */}
           <div className="flex items-center justify-between mb-5 gap-2 flex-wrap">
-            <span className="text-sm text-[#20201f]/50">{listings.length} {lang === "lt" ? "rezultatai" : "results"}</span>
+            <span className="text-sm text-[#20201f]/65">{listings.length} {lang === "lt" ? "rezultatai" : "results"}</span>
             <div className="flex gap-2 flex-wrap">
               {(["newest", "priceLow", "priceHigh"] as const).map((s) => (
                 <a key={s} href={buildUrl(lang, { ...sp, sort: s })}
                   className={`rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
                     (sp.sort ?? "newest") === s
                       ? "border-[#20201f] bg-[#20201f] text-[#f7f6f2]"
-                      : "border-[#e5e2db] bg-[#eeece3] text-[#20201f]/60 hover:border-[#20201f]/30"}`}>
+                      : "border-[#e5e2db] bg-[#eeece3] text-[#20201f]/75 hover:border-[#20201f]/30"}`}>
                   {dict.listings.filters[s]}
                 </a>
               ))}
@@ -150,12 +150,12 @@ export default async function ListingsPage({
               <div className="flex rounded-full border border-[#e5e2db] overflow-hidden bg-[#eeece3]">
                 <a href={buildUrl(lang, { ...sp, view: "grid" })}
                   className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${
-                    (sp.view ?? "grid") === "grid" ? "bg-[#20201f] text-[#f7f6f2]" : "text-[#20201f]/60 hover:text-[#20201f]"}`}>
+                    (sp.view ?? "grid") === "grid" ? "bg-[#20201f] text-[#f7f6f2]" : "text-[#20201f]/75 hover:text-[#20201f]"}`}>
                   <LayoutGrid size={12} /> {lang === "lt" ? "Tinklelis" : "Grid"}
                 </a>
                 <a href={buildUrl(lang, { ...sp, view: "map" })}
                   className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${
-                    sp.view === "map" ? "bg-[#20201f] text-[#f7f6f2]" : "text-[#20201f]/60 hover:text-[#20201f]"}`}>
+                    sp.view === "map" ? "bg-[#20201f] text-[#f7f6f2]" : "text-[#20201f]/75 hover:text-[#20201f]"}`}>
                   <Map size={12} /> {lang === "lt" ? "Žemėlapis" : "Map"}
                 </a>
               </div>
@@ -163,7 +163,7 @@ export default async function ListingsPage({
           </div>
 
           {listings.length === 0 ? (
-            <div className="flex flex-col items-center py-20 text-[#20201f]/40">
+            <div className="flex flex-col items-center py-20 text-[#20201f]/75">
               <span className="text-5xl mb-4 opacity-40">🔍</span>
               <p className="text-sm">{dict.listings.noResults}</p>
             </div>
@@ -198,7 +198,7 @@ function buildUrl(lang: string, sp: SearchParams): string {
 function FilterSection({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <p className="text-xs font-semibold uppercase tracking-widest text-[#20201f]/30 mb-2 font-outfit">{label}</p>
+      <p className="text-xs font-semibold uppercase tracking-widest text-[#20201f]/65 mb-2 font-outfit">{label}</p>
       {children}
     </div>
   );

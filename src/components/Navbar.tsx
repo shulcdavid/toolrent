@@ -26,13 +26,13 @@ export function Navbar({ dict, lang, user }: NavbarProps) {
 
         {/* Center links – desktop only */}
         <div className="hidden items-center gap-0 md:flex">
-          <Link href={`/${lang}/listings`} className="text-sm text-[#20201f]/60 hover:text-[#20201f] transition-colors px-4">
+          <Link href={`/${lang}/listings`} className="text-sm text-[#20201f]/75 hover:text-[#20201f] transition-colors px-4">
             {dict.browse}
           </Link>
           {user && (
             <>
               <span className="text-[#e5e2db] select-none">/</span>
-              <Link href={`/${lang}/dashboard`} className="text-sm text-[#20201f]/60 hover:text-[#20201f] transition-colors px-4">
+              <Link href={`/${lang}/dashboard`} className="text-sm text-[#20201f]/75 hover:text-[#20201f] transition-colors px-4">
                 {dict.dashboard}
               </Link>
             </>
@@ -46,20 +46,20 @@ export function Navbar({ dict, lang, user }: NavbarProps) {
             <span className="text-[#e5e2db] select-none mx-1">/</span>
             {user ? (
               <>
-                <Link href={`/${lang}/add-listing`} className="text-sm text-[#20201f]/60 hover:text-[#20201f] transition-colors px-3">
+                <Link href={`/${lang}/add-listing`} className="text-sm text-[#20201f]/75 hover:text-[#20201f] transition-colors px-3">
                   {dict.addListing}
                 </Link>
                 <span className="text-[#e5e2db] select-none">/</span>
                 <form action={logout} className="flex">
                   <input type="hidden" name="lang" value={lang} />
-                  <button className="text-sm text-[#20201f]/60 hover:text-[#20201f] transition-colors px-3">
+                  <button className="text-sm text-[#20201f]/75 hover:text-[#20201f] transition-colors px-3">
                     {dict.logout}
                   </button>
                 </form>
               </>
             ) : (
               <>
-                <Link href={`/${lang}/auth/login`} className="text-sm text-[#20201f]/60 hover:text-[#20201f] transition-colors px-3">
+                <Link href={`/${lang}/auth/login`} className="text-sm text-[#20201f]/75 hover:text-[#20201f] transition-colors px-3">
                   {dict.login}
                 </Link>
                 <span className="text-[#e5e2db] select-none">/</span>

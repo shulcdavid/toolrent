@@ -58,7 +58,7 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
           {listing.title}
         </h3>
 
-        <div className="flex items-center gap-1 text-xs text-[#20201f]/50">
+        <div className="flex items-center gap-1 text-xs text-[#20201f]/65">
           <MapPin size={11} className="shrink-0" />
           <span>{listing.city}</span>
         </div>
@@ -66,7 +66,7 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
         <div className="flex items-center justify-between pt-2 mt-1 border-t border-[#e5e2db]">
           <span className="font-outfit text-sm font-semibold text-[#20201f]">
             {formatPrice(listing.price_per_day)}
-            <span className="text-xs font-normal text-[#20201f]/50 ml-1">{perDayLabel}</span>
+            <span className="text-xs font-normal text-[#20201f]/65 ml-1">{perDayLabel}</span>
           </span>
           {listing.profiles?.full_name && (
             <div className="h-6 w-6 rounded-full bg-[#20201f] flex items-center justify-center text-[10px] font-bold text-[#f7f6f2]">

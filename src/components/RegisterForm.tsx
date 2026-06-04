@@ -54,7 +54,7 @@ export function RegisterForm({ dict, lang }: Props) {
       {error && (
         <p className="text-sm text-red-500 rounded-lg bg-red-50 px-3 py-2">{decodeURIComponent(error)}</p>
       )}
-      <p className="text-xs text-[#20201f]/40">{dict.terms}</p>
+      <p className="text-xs text-[#20201f]/75">{dict.terms}</p>
       <Button type="submit" size="lg" className="w-full">
         {dict.submit}
       </Button>

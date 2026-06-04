@@ -41,13 +41,13 @@ export default async function ProfilePage({
     <div className="mx-auto max-w-lg px-4 sm:px-6 py-10">
       <Link
         href={`/${lang}/dashboard`}
-        className="inline-flex items-center gap-1.5 text-sm text-[#20201f]/50 hover:text-[#20201f] mb-6 transition-colors"
+        className="inline-flex items-center gap-1.5 text-sm text-[#20201f]/65 hover:text-[#20201f] mb-6 transition-colors"
       >
         <ArrowLeft size={14} /> {dict.common.back}
       </Link>
 
       <div className="mb-8">
-        <p className="text-xs uppercase tracking-widest text-[#20201f]/40 mb-1 font-outfit">
+        <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-1 font-outfit">
           {lang === "lt" ? "Paskyra" : "Account"}
         </p>
         <h1 className="font-outfit text-2xl font-bold text-[#20201f]">{dict.profile.title}</h1>

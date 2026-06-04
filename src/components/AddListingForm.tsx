@@ -56,7 +56,7 @@ export function AddListingForm({ dict, lang }: Props) {
       {/* Images */}
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.images}</label>
-        <p className="text-xs text-[#20201f]/40 mb-3">{f.imagesHint}</p>
+        <p className="text-xs text-[#20201f]/75 mb-3">{f.imagesHint}</p>
         <div className="flex flex-wrap gap-3">
           {images.map((src, i) => (
             <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#e5e2db]">
@@ -70,8 +70,8 @@ export function AddListingForm({ dict, lang }: Props) {
           ))}
           {images.length < 5 && (
             <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/40 hover:bg-[#e5e2db] transition-colors">
-              <Upload size={18} className="text-[#20201f]/30 mb-1" />
-              <span className="text-xs text-[#20201f]/40">Upload</span>
+              <Upload size={18} className="text-[#20201f]/65 mb-1" />
+              <span className="text-xs text-[#20201f]/75">Upload</span>
               <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageAdd} />
             </label>
           )}
@@ -83,12 +83,12 @@ export function AddListingForm({ dict, lang }: Props) {
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.description}</label>
         <textarea name="description" placeholder={f.descPlaceholder} rows={4}
-          className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/35 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15 resize-none" />
+          className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/70 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15 resize-none" />
       </div>
 
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1">{f.category}</label>
-        <p className="text-xs text-[#20201f]/40 mb-3">
+        <p className="text-xs text-[#20201f]/75 mb-3">
           {lang === "lt" ? "Galite pasirinkti kelias kategorijas." : "You can select more than one."}
         </p>
         {/* Hidden validation sentinel — ensures at least one is checked */}
@@ -143,7 +143,7 @@ export function AddListingForm({ dict, lang }: Props) {
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">
           {lang === "lt" ? "Prieinamumas" : "Availability"}
         </label>
-        <p className="text-xs text-[#20201f]/40 mb-3">
+        <p className="text-xs text-[#20201f]/75 mb-3">
           {lang === "lt"
             ? "Pažymėkite dienas, kuriomis įrankis nebus prieinamas."
             : "Mark the days when the tool will not be available."}

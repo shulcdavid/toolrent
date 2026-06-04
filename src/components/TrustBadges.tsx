@@ -29,7 +29,7 @@ export function TrustBadges({ hasPhone, responseRate, avgRating, totalReviews, l
         ? "text-emerald-700 bg-emerald-50 border-emerald-200"
         : level === "yellow"
         ? "text-amber-700 bg-amber-50 border-amber-200"
-        : "text-[#20201f]/50 bg-[#eeece3] border-[#e5e2db]",
+        : "text-[#20201f]/65 bg-[#eeece3] border-[#e5e2db]",
     });
   }
 

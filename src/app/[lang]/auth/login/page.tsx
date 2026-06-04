@@ -31,7 +31,7 @@ export default async function LoginPage({
           {/* Divider */}
           <div className="flex items-center gap-3">
             <div className="flex-1 h-px bg-[#d4d0c8]" />
-            <span className="text-xs text-[#20201f]/40 font-medium">
+            <span className="text-xs text-[#20201f]/75 font-medium">
               {lt ? "arba" : "or"}
             </span>
             <div className="flex-1 h-px bg-[#d4d0c8]" />
@@ -42,7 +42,7 @@ export default async function LoginPage({
         </div>
 
         {/* Footer link */}
-        <p className="mt-5 text-center text-sm text-[#20201f]/50">
+        <p className="mt-5 text-center text-sm text-[#20201f]/65">
           {dict.auth.login.noAccount}{" "}
           <Link
             href={`/${lang}/auth/register`}

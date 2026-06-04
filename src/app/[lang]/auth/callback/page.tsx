@@ -62,7 +62,7 @@ export default function AuthCallbackPage() {
     <div className="flex min-h-[80vh] items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#20201f] border-t-transparent" />
-        <p className="text-sm text-[#20201f]/50">Verifying…</p>
+        <p className="text-sm text-[#20201f]/65">Verifying…</p>
       </div>
     </div>
   );

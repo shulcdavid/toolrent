@@ -41,9 +41,9 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
     <div className="mx-auto max-w-5xl px-5 sm:px-8 py-10">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <p className="text-xs uppercase tracking-widest text-[#20201f]/40 mb-1 font-outfit">{lang === "lt" ? "Mano paskyra" : "My account"}</p>
+          <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-1 font-outfit">{lang === "lt" ? "Mano paskyra" : "My account"}</p>
           <h1 className="font-outfit text-3xl font-bold text-[#20201f]">{d.title}</h1>
-          <p className="text-sm text-[#20201f]/50 mt-1">{d.welcome}, {(profile as any)?.full_name?.split(" ")[0]} 👋</p>
+          <p className="text-sm text-[#20201f]/65 mt-1">{d.welcome}, {(profile as any)?.full_name?.split(" ")[0]} 👋</p>
         </div>
         <div className="flex items-center gap-2">
           <Link href={`/${lang}/profile`}>
@@ -72,7 +72,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-outfit font-semibold text-[#20201f] truncate text-sm">{listing.title}</p>
-                  <p className="text-xs text-[#20201f]/50 mt-0.5">{listing.city} · {formatPrice(listing.price_per_day)}{dict.listings.perDay}</p>
+                  <p className="text-xs text-[#20201f]/65 mt-0.5">{listing.city} · {formatPrice(listing.price_per_day)}{dict.listings.perDay}</p>
                 </div>
                 <Badge variant={listing.is_available ? "green" : "gray"}>
                   {listing.is_available ? dict.listings.available : dict.listings.unavailable}
@@ -101,8 +101,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div>
                     <p className="font-outfit font-semibold text-[#20201f] text-sm">{req.profiles?.full_name} → {req.listings?.title}</p>
-                    <p className="text-xs text-[#20201f]/50 mt-1">{formatDate(req.start_date)} – {formatDate(req.end_date)} · {formatPrice(req.total_price)}</p>
-                    {req.message && <p className="text-xs text-[#20201f]/60 mt-1.5 italic">"{req.message}"</p>}
+                    <p className="text-xs text-[#20201f]/65 mt-1">{formatDate(req.start_date)} – {formatDate(req.end_date)} · {formatPrice(req.total_price)}</p>
+                    {req.message && <p className="text-xs text-[#20201f]/75 mt-1.5 italic">"{req.message}"</p>}
                   </div>
                   <Badge variant={statusVariant[req.status]}>{d.status[req.status as keyof typeof d.status]}</Badge>
                 </div>
@@ -148,11 +148,11 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                     <Link href={`/${lang}/listings/${booking.listing_id}`} className="font-outfit font-semibold text-[#20201f] truncate text-sm hover:underline block">
                       {booking.listings?.title}
                     </Link>
-                    <p className="text-xs text-[#20201f]/50 mt-0.5">
+                    <p className="text-xs text-[#20201f]/65 mt-0.5">
                       {formatDate(booking.start_date)} – {formatDate(booking.end_date)} · {formatPrice(booking.total_price)}
                     </p>
                     {booking.listings?.city && (
-                      <p className="text-xs text-[#20201f]/40 mt-0.5">📍 {booking.listings.city}</p>
+                      <p className="text-xs text-[#20201f]/75 mt-0.5">📍 {booking.listings.city}</p>
                     )}
                   </div>
                   <Badge variant={statusVariant[booking.status]}>{d.status[booking.status as keyof typeof d.status]}</Badge>
@@ -174,7 +174,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
 function SectionHeader({ icon: Icon, title, badge }: { icon: React.ElementType; title: string; badge?: number }) {
   return (
     <h2 className="flex items-center gap-2.5 font-outfit font-semibold text-[#20201f] mb-4 text-sm uppercase tracking-wide">
-      <Icon size={16} className="text-[#20201f]/40" /> {title}
+      <Icon size={16} className="text-[#20201f]/75" /> {title}
       {badge ? (
         <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#20201f] text-[10px] font-bold text-[#f7f6f2]">
           {badge}
@@ -186,7 +186,7 @@ function SectionHeader({ icon: Icon, title, badge }: { icon: React.ElementType; 
 
 function EmptyState({ msg }: { msg: string }) {
   return (
-    <div className="rounded-2xl border border-dashed border-[#e5e2db] bg-[#eeece3] py-10 text-center text-sm text-[#20201f]/40">
+    <div className="rounded-2xl border border-dashed border-[#e5e2db] bg-[#eeece3] py-10 text-center text-sm text-[#20201f]/75">
       {msg}
     </div>
   );

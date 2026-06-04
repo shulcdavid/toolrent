@@ -13,9 +13,9 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
 
   return (
     <div className="mx-auto max-w-2xl px-5 sm:px-8 py-14">
-      <p className="text-xs uppercase tracking-widest text-[#20201f]/40 mb-2 font-outfit">{lt ? "Apie mus" : "About"}</p>
+      <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-2 font-outfit">{lt ? "Apie mus" : "About"}</p>
       <h1 className="font-outfit text-4xl font-bold text-[#20201f] mb-4">{lt ? "Apie Rente" : "About Rente"}</h1>
-      <p className="text-lg text-[#20201f]/55 mb-10 leading-relaxed">
+      <p className="text-lg text-[#20201f]/70 mb-10 leading-relaxed">
         {lt ? "Mes tikime, kad įrankiai turi dirbti, o ne dulkėti garaže."
              : "We believe tools should be working, not gathering dust in a garage."}
       </p>

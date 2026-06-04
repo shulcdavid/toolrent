@@ -29,17 +29,17 @@ export default async function ForgotPasswordPage({
           </div>
           <div>
             <h1 className="font-outfit text-2xl font-bold text-[#20201f] mb-2">{f.sentTitle}</h1>
-            <p className="text-sm text-[#20201f]/55 leading-relaxed">
+            <p className="text-sm text-[#20201f]/70 leading-relaxed">
               {f.sentDesc}{" "}
               {decoded && <span className="font-medium text-[#20201f]/80">{decoded}</span>}
             </p>
           </div>
-          <p className="text-xs text-[#20201f]/40">
+          <p className="text-xs text-[#20201f]/75">
             {lang === "lt" ? "Negauni laiško? Patikrink šlamšto aplanką." : "No email? Check your spam folder."}
           </p>
           <Link
             href={`/${lang}/auth/login`}
-            className="text-sm font-medium text-[#20201f]/50 hover:text-[#20201f] transition-colors"
+            className="text-sm font-medium text-[#20201f]/65 hover:text-[#20201f] transition-colors"
           >
             {f.backToLogin}
           </Link>
@@ -54,7 +54,7 @@ export default async function ForgotPasswordPage({
         <div className="flex flex-col items-center mb-8">
           <span className="font-outfit text-2xl font-bold text-[#20201f] mb-1">Rente</span>
           <h1 className="font-outfit text-lg font-semibold text-[#20201f]">{f.title}</h1>
-          <p className="text-sm text-[#20201f]/50 mt-1 text-center">{f.description}</p>
+          <p className="text-sm text-[#20201f]/65 mt-1 text-center">{f.description}</p>
         </div>
 
         <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-6">
@@ -70,7 +70,7 @@ export default async function ForgotPasswordPage({
           </form>
         </div>
 
-        <p className="mt-5 text-center text-sm text-[#20201f]/50">
+        <p className="mt-5 text-center text-sm text-[#20201f]/65">
           <Link
             href={`/${lang}/auth/login`}
             className="font-medium text-[#20201f] underline underline-offset-2 hover:opacity-70"

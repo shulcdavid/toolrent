@@ -38,12 +38,12 @@ export function BookingForm({ listing, dict, lang, isLoggedIn = false }: Props) 
       <h2 className="font-outfit font-semibold text-[#20201f] mb-4">{dict.listing.bookingTitle}</h2>
       <div className="mb-4 flex items-baseline gap-1">
         <span className="font-outfit text-2xl font-bold text-[#20201f]">{formatPrice(listing.price_per_day)}</span>
-        <span className="text-[#20201f]/50 text-sm">{dict.listing.perDay}</span>
+        <span className="text-[#20201f]/65 text-sm">{dict.listing.perDay}</span>
       </div>
 
       {!isLoggedIn ? (
         <div className="rounded-xl border border-[#e5e2db] bg-[#f7f6f2] p-4 text-center">
-          <p className="text-sm text-[#20201f]/60 mb-3">{dict.listing.loginToBook}</p>
+          <p className="text-sm text-[#20201f]/75 mb-3">{dict.listing.loginToBook}</p>
           <Link href={`/${lang}/auth/login`}>
             <Button className="w-full">{dict.listing.loginToBook}</Button>
           </Link>
@@ -64,16 +64,16 @@ export function BookingForm({ listing, dict, lang, isLoggedIn = false }: Props) 
           <div>
             <label className="text-sm font-medium text-[#20201f] block mb-1.5">{dict.listing.messageLabel}</label>
             <textarea name="message" placeholder={dict.listing.messagePlaceholder} rows={3}
-              className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/35 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15 resize-none" />
+              className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/70 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15 resize-none" />
           </div>
 
           <div className="rounded-xl border border-[#e5e2db] bg-[#f7f6f2] p-4 flex flex-col gap-2 text-sm">
-            <div className="flex justify-between text-[#20201f]/60">
+            <div className="flex justify-between text-[#20201f]/75">
               <span>{formatPrice(listing.price_per_day)} × {days} {dict.listing.totalDays}</span>
               <span>{formatPrice(total)}</span>
             </div>
             {listing.deposit > 0 && (
-              <div className="flex justify-between text-[#20201f]/60">
+              <div className="flex justify-between text-[#20201f]/75">
                 <span>{dict.listing.deposit}</span>
                 <span>{formatPrice(listing.deposit)}</span>
               </div>

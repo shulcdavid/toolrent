@@ -28,7 +28,7 @@ export function LanguageSwitcher({ currentLocale }: Props) {
           className={`px-2 py-1 text-xs font-medium transition-colors ${
             locale === currentLocale
               ? "text-[#20201f] font-semibold"
-              : "text-[#20201f]/40 hover:text-[#20201f]/70"
+              : "text-[#20201f]/75 hover:text-[#20201f]/70"
           }`}
         >
           {labels[locale]}

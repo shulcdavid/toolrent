@@ -114,7 +114,7 @@ export function OwnerAvailabilityCalendar({ lang, initialBlocked = [] }: OwnerPr
       {/* Weekday headers */}
       <div className="grid grid-cols-7 mb-1">
         {weekDays.map((d) => (
-          <div key={d} className="flex items-center justify-center py-1 text-xs text-[#20201f]/40 font-medium">
+          <div key={d} className="flex items-center justify-center py-1 text-xs text-[#20201f]/75 font-medium">
             {d}
           </div>
         ))}
@@ -124,7 +124,7 @@ export function OwnerAvailabilityCalendar({ lang, initialBlocked = [] }: OwnerPr
       <div className="grid grid-cols-7 gap-1">{cells}</div>
 
       {/* Legend */}
-      <div className="flex items-center gap-5 mt-4 text-xs text-[#20201f]/50">
+      <div className="flex items-center gap-5 mt-4 text-xs text-[#20201f]/65">
         <span className="flex items-center gap-1.5">
           <span className="h-3.5 w-3.5 rounded bg-[#f7f6f2] border border-[#e5e2db] shrink-0" />
           {isLt ? "Prieinama" : "Available"}
@@ -134,7 +134,7 @@ export function OwnerAvailabilityCalendar({ lang, initialBlocked = [] }: OwnerPr
           {isLt ? "Neprieinama" : "Unavailable"}
         </span>
       </div>
-      <p className="mt-2 text-xs text-[#20201f]/40">
+      <p className="mt-2 text-xs text-[#20201f]/75">
         {isLt
           ? "Spustelkite dieną, kad ją pažymėtumėte kaip neprieinamą."
           : "Click a day to mark it as unavailable."}
@@ -194,7 +194,7 @@ export function RenterAvailabilityCalendar({ lang, blockedDates, bookedRanges }:
 
     let bg = "text-emerald-700 bg-emerald-50";
     if (isPast) bg = "text-[#20201f]/20";
-    else if (isBlockedDay || isBookedDay) bg = "text-[#20201f]/30 bg-[#e5e2db] line-through";
+    else if (isBlockedDay || isBookedDay) bg = "text-[#20201f]/65 bg-[#e5e2db] line-through";
 
     cells.push(
       <div
@@ -233,7 +233,7 @@ export function RenterAvailabilityCalendar({ lang, blockedDates, bookedRanges }:
 
       <div className="grid grid-cols-7 mb-1">
         {weekDays.map((d) => (
-          <div key={d} className="flex items-center justify-center py-1 text-xs text-[#20201f]/40 font-medium">
+          <div key={d} className="flex items-center justify-center py-1 text-xs text-[#20201f]/75 font-medium">
             {d}
           </div>
         ))}
@@ -241,7 +241,7 @@ export function RenterAvailabilityCalendar({ lang, blockedDates, bookedRanges }:
 
       <div className="grid grid-cols-7 gap-1">{cells}</div>
 
-      <div className="flex items-center gap-5 mt-4 text-xs text-[#20201f]/50">
+      <div className="flex items-center gap-5 mt-4 text-xs text-[#20201f]/65">
         <span className="flex items-center gap-1.5">
           <span className="h-3.5 w-3.5 rounded bg-emerald-50 border border-emerald-200 shrink-0" />
           {isLt ? "Prieinama" : "Available"}

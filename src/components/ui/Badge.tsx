@@ -16,7 +16,7 @@ export function Badge({ children, variant = "default", className }: BadgeProps) 
           "bg-emerald-100 text-emerald-700": variant === "green",
           "bg-amber-100 text-amber-700": variant === "yellow",
           "bg-red-100 text-red-700": variant === "red",
-          "bg-[#e5e2db] text-[#20201f]/60": variant === "gray",
+          "bg-[#e5e2db] text-[#20201f]/75": variant === "gray",
         },
         className
       )}

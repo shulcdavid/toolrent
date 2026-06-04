@@ -60,7 +60,7 @@ export default async function ListingDetailPage({
   return (
     <div className="mx-auto max-w-5xl px-5 sm:px-8 py-8">
       <Link href={`/${lang}/listings`}
-        className="inline-flex items-center gap-1.5 text-sm text-[#20201f]/50 hover:text-[#20201f] mb-6 transition-colors">
+        className="inline-flex items-center gap-1.5 text-sm text-[#20201f]/65 hover:text-[#20201f] mb-6 transition-colors">
         <ArrowLeft size={14} /> {dict.common.back}
       </Link>
 
@@ -86,12 +86,12 @@ export default async function ListingDetailPage({
               <h1 className="font-outfit text-2xl font-bold text-[#20201f]">{listing.title}</h1>
               <span className="font-outfit text-xl font-bold text-[#20201f] whitespace-nowrap">
                 {formatPrice(listing.price_per_day)}
-                <span className="text-sm font-normal text-[#20201f]/50 ml-1">{dict.listing.perDay}</span>
+                <span className="text-sm font-normal text-[#20201f]/65 ml-1">{dict.listing.perDay}</span>
               </span>
             </div>
             <div className="flex flex-wrap items-center gap-3 mt-3">
-              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/50"><MapPin size={12} /> {listing.city}{listing.address && ` · ${listing.address}`}</span>
-              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/50"><Calendar size={12} /> {formatDate(listing.created_at)}</span>
+              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/65"><MapPin size={12} /> {listing.city}{listing.address && ` · ${listing.address}`}</span>
+              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/65"><Calendar size={12} /> {formatDate(listing.created_at)}</span>
               {(listing.categories ?? []).map((cat: string) => (
                 <Badge key={cat} variant="default">{dict.categories[cat as keyof typeof dict.categories]}</Badge>
               ))}
@@ -106,10 +106,10 @@ export default async function ListingDetailPage({
 
           {listing.deposit > 0 && (
             <div className="flex items-center gap-3 rounded-2xl border border-[#e5e2db] bg-[#eeece3] px-5 py-4">
-              <Shield size={18} className="text-[#20201f]/40 shrink-0" />
+              <Shield size={18} className="text-[#20201f]/75 shrink-0" />
               <div>
                 <p className="text-sm font-semibold text-[#20201f]">{dict.listing.deposit}</p>
-                <p className="text-sm text-[#20201f]/50">{formatPrice(listing.deposit)}</p>
+                <p className="text-sm text-[#20201f]/65">{formatPrice(listing.deposit)}</p>
               </div>
             </div>
           )}
@@ -130,7 +130,7 @@ export default async function ListingDetailPage({
               </div>
               <div>
                 <p className="font-outfit font-semibold text-[#20201f] text-sm">{listing.profiles?.full_name ?? "Anonymous"}</p>
-                <p className="text-xs text-[#20201f]/50">{dict.listing.memberSince} {formatDate(listing.profiles?.created_at)}</p>
+                <p className="text-xs text-[#20201f]/65">{dict.listing.memberSince} {formatDate(listing.profiles?.created_at)}</p>
               </div>
               {avgRating && (
                 <div className="ml-auto flex items-center gap-1 text-sm text-amber-600 font-medium">
@@ -153,7 +153,7 @@ export default async function ListingDetailPage({
               {dict.listing.reviews} {reviews?.length ? `(${reviews.length})` : ""}
             </h2>
             {!reviews?.length ? (
-              <p className="text-sm text-[#20201f]/40">{dict.listing.noReviews}</p>
+              <p className="text-sm text-[#20201f]/75">{dict.listing.noReviews}</p>
             ) : (
               <div className="flex flex-col gap-4">
                 {reviews.map((review) => (
@@ -169,7 +169,7 @@ export default async function ListingDetailPage({
                         ))}
                       </div>
                     </div>
-                    {review.comment && <p className="text-sm text-[#20201f]/60 ml-9">{review.comment}</p>}
+                    {review.comment && <p className="text-sm text-[#20201f]/75 ml-9">{review.comment}</p>}
                   </div>
                 ))}
               </div>
@@ -182,7 +182,7 @@ export default async function ListingDetailPage({
           <div className="sticky top-20">
             {isOwner ? (
               <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5 text-center">
-                <p className="text-sm text-[#20201f]/60 mb-4">{dict.listing.ownListing}</p>
+                <p className="text-sm text-[#20201f]/75 mb-4">{dict.listing.ownListing}</p>
                 <Link href={`/${lang}/add-listing?edit=${listing.id}`}
                   className="inline-flex items-center gap-2 rounded-full bg-[#20201f] px-5 py-2.5 text-sm font-semibold text-[#f7f6f2] hover:bg-[#3a3a38] transition-colors">
                   {dict.listing.editListing}

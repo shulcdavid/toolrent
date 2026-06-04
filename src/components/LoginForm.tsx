@@ -41,7 +41,7 @@ export function LoginForm({ dict, lang }: Props) {
             <label className="text-sm font-medium text-[#20201f]">{dict.password}</label>
             <Link
               href={`/${lang}/auth/forgot-password`}
-              className="text-xs text-[#20201f]/50 hover:text-[#20201f] transition-colors"
+              className="text-xs text-[#20201f]/65 hover:text-[#20201f] transition-colors"
             >
               {dict.forgot}
             </Link>
