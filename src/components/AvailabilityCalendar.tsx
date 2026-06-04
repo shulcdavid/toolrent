@@ -88,7 +88,7 @@ export function OwnerAvailabilityCalendar({ lang, initialBlocked = [] }: OwnerPr
   }
 
   return (
-    <div className="rounded-2xl border border-[#e5e2db] bg-[#f7f6f2] p-4 max-w-md">
+    <div className="rounded-2xl border border-[#e5e2db] bg-[#f7f6f2] p-4" style={{ width: "384px", margin: "0 auto" }}>
       <input type="hidden" name="blocked_dates" value={JSON.stringify([...blocked])} />
 
       {/* Month navigation */}

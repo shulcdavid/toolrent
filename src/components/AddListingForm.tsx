@@ -50,31 +50,31 @@ export function AddListingForm({ dict, lang }: Props) {
   }
 
   return (
-    <form action={createListing} className="flex flex-col gap-6">
+    <form action={createListing} className="flex flex-col gap-6 max-w-3xl mx-auto w-full">
       <input type="hidden" name="lang" value={lang} />
 
       {/* Images */}
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.images}</label>
         <p className="text-xs text-[#20201f]/75 mb-3">{f.imagesHint}</p>
-        <div className="flex flex-wrap gap-3">
-          {images.map((src, i) => (
-            <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#e5e2db]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className="h-full w-full object-cover" />
-              <button type="button" onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
-                className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#20201f]/70 text-[#f7f6f2] hover:bg-[#20201f]">
-                <X size={10} />
-              </button>
-            </div>
-          ))}
-          {images.length < 5 && (
-            <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/40 hover:bg-[#e5e2db] transition-colors">
-              <Upload size={18} className="text-[#20201f]/65 mb-1" />
-              <span className="text-xs text-[#20201f]/75">Upload</span>
-              <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageAdd} />
-            </label>
-          )}
+        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "12px" }}>
+            {images.map((src, i) => (
+              <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#e5e2db]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="h-full w-full object-cover" />
+                <button type="button" onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
+                  className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#20201f]/70 text-[#f7f6f2] hover:bg-[#20201f]">
+                  <X size={10} />
+                </button>
+              </div>
+            ))}
+            {images.length < 5 && (
+              <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/40 hover:bg-[#e5e2db] transition-colors">
+                <Upload size={18} className="text-[#20201f]/65 mb-1" />
+                <span className="text-xs text-[#20201f]/75">Upload</span>
+                <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageAdd} />
+              </label>
+            )}
         </div>
       </div>
 
