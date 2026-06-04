@@ -29,6 +29,7 @@ interface Props {
 export function AddListingForm({ dict, lang }: Props) {
   const [images, setImages] = useState<string[]>([]);
   const [selectedCats, setSelectedCats] = useState<Set<string>>(new Set());
+  const [isDragging, setIsDragging] = useState(false);
   const f = dict.addListing.fields;
 
   function toggleCat(cat: string) {
@@ -39,14 +40,35 @@ export function AddListingForm({ dict, lang }: Props) {
     });
   }
 
+  function processFiles(files: FileList | File[]) {
+    Array.from(files)
+      .filter((f) => f.type.startsWith("image/"))
+      .slice(0, 5 - images.length)
+      .forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => setImages((prev) => [...prev, ev.target?.result as string].slice(0, 5));
+        reader.readAsDataURL(file);
+      });
+  }
+
   function handleImageAdd(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = e.target.files;
-    if (!files) return;
-    Array.from(files).slice(0, 5 - images.length).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (ev) => setImages((prev) => [...prev, ev.target?.result as string].slice(0, 5));
-      reader.readAsDataURL(file);
-    });
+    if (e.target.files) processFiles(e.target.files);
+  }
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragging(false);
+    if (images.length < 5) processFiles(e.dataTransfer.files);
+  }
+
+  function handleDragOver(e: React.DragEvent) {
+    e.preventDefault();
+    setIsDragging(true);
+  }
+
+  function handleDragLeave(e: React.DragEvent) {
+    // Only clear if leaving the drop zone entirely (not entering a child)
+    if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsDragging(false);
   }
 
   return (
@@ -57,24 +79,49 @@ export function AddListingForm({ dict, lang }: Props) {
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.images}</label>
         <p className="text-xs text-[#20201f]/75 mb-3">{f.imagesHint}</p>
-        <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "12px" }}>
-            {images.map((src, i) => (
-              <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#e5e2db]">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" className="h-full w-full object-cover" />
-                <button type="button" onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
-                  className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#20201f]/70 text-[#f7f6f2] hover:bg-[#20201f]">
-                  <X size={10} />
-                </button>
-              </div>
-            ))}
-            {images.length < 5 && (
-              <label className="flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/40 hover:bg-[#e5e2db] transition-colors">
-                <Upload size={18} className="text-[#20201f]/65 mb-1" />
-                <span className="text-xs text-[#20201f]/75">Upload</span>
-                <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageAdd} />
-              </label>
-            )}
+
+        <div
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          className={`rounded-2xl border-2 border-dashed transition-colors ${
+            isDragging
+              ? "border-[#20201f] bg-[#e5e2db]"
+              : "border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/30"
+          }`}
+        >
+          {/* Thumbnails */}
+          {images.length > 0 && (
+            <div className="flex flex-wrap gap-3 p-4 pb-0 justify-center">
+              {images.map((src, i) => (
+                <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#e5e2db]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={src} alt="" className="h-full w-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
+                    className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#20201f]/70 text-[#f7f6f2] hover:bg-[#20201f]"
+                  >
+                    <X size={10} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Drop prompt / click to browse */}
+          {images.length < 5 && (
+            <label className="flex flex-col items-center justify-center gap-2 py-8 cursor-pointer">
+              <Upload size={24} className={isDragging ? "text-[#20201f]" : "text-[#20201f]/40"} />
+              <span className="text-sm font-medium text-[#20201f]/65">
+                {isDragging
+                  ? (lang === "lt" ? "Paleiskite norėdami įkelti" : "Drop to upload")
+                  : (lang === "lt" ? "Vilkite nuotraukas čia arba spauskite" : "Drag & drop photos here, or click to browse")}
+              </span>
+              <span className="text-xs text-[#20201f]/40">{images.length}/5 {lang === "lt" ? "nuotraukos" : "photos"}</span>
+              <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageAdd} />
+            </label>
+          )}
         </div>
       </div>
 
