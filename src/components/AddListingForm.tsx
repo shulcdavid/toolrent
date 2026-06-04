@@ -114,14 +114,14 @@ export function AddListingForm({ dict, lang }: Props) {
                 key={cat}
                 type="button"
                 onClick={() => toggleCat(cat)}
-                className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs transition text-left ${
+                className={`flex items-center gap-2 rounded-xl border px-3 text-xs transition h-14 ${
                   checked
                     ? "border-[#20201f] bg-[#20201f] text-[#f7f6f2]"
                     : "border-[#e5e2db] bg-[#eeece3] text-[#20201f] hover:border-[#20201f]/40"
                 }`}
               >
                 <CategoryIcon category={cat} size={14} className="shrink-0" />
-                <span className="font-medium">{dict.categories[cat]}</span>
+                <span className="font-medium leading-snug">{dict.categories[cat]}</span>
               </button>
             );
           })}
