@@ -15,15 +15,15 @@ const WEEK_LT = ["Pr", "An", "Tr", "Kt", "Pn", "Št", "Sk"];
 
 /* ─────────────────────────────────────────────────────────────────────────────
    OwnerAvailabilityCalendar
-   Owner clicks days to mark them as AVAILABLE. All future days are
-   unavailable by default. Saves as available_dates JSON array.
+   All days are neutral (available) by default. Owner clicks to mark specific
+   days as UNAVAILABLE (blocked). Saves blocked_dates as JSON array.
 ───────────────────────────────────────────────────────────────────────────── */
 interface OwnerProps {
   lang: string;
-  initialAvailable?: string[];
+  initialBlocked?: string[];
 }
 
-export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: OwnerProps) {
+export function OwnerAvailabilityCalendar({ lang, initialBlocked = [] }: OwnerProps) {
   const isLt = lang === "lt";
   const weekDays = isLt ? WEEK_LT : WEEK_EN;
 
@@ -32,7 +32,7 @@ export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: Owner
   const todayStr = toDateStr(today);
 
   const [monthOffset, setMonthOffset] = useState(0);
-  const [available, setAvailable] = useState<Set<string>>(new Set(initialAvailable));
+  const [blocked, setBlocked] = useState<Set<string>>(new Set(initialBlocked));
 
   const baseYear = today.getFullYear();
   const baseMonth = today.getMonth();
@@ -48,28 +48,28 @@ export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: Owner
   );
 
   const toggle = useCallback((dateStr: string) => {
-    setAvailable((prev) => {
+    setBlocked((prev) => {
       const next = new Set(prev);
       if (next.has(dateStr)) next.delete(dateStr); else next.add(dateStr);
       return next;
     });
   }, []);
 
-  // Select / clear all days in the current view month
-  const allDaysInMonth = Array.from({ length: daysInMonth }, (_, i) => {
+  // Future days in the current viewed month
+  const futureDaysInMonth = Array.from({ length: daysInMonth }, (_, i) => {
     const d = new Date(viewYear, viewMonth, i + 1);
     return d >= today ? toDateStr(d) : null;
   }).filter(Boolean) as string[];
 
-  const allSelected = allDaysInMonth.length > 0 && allDaysInMonth.every((d) => available.has(d));
+  const allBlocked = futureDaysInMonth.length > 0 && futureDaysInMonth.every((d) => blocked.has(d));
 
   const toggleMonth = () => {
-    setAvailable((prev) => {
+    setBlocked((prev) => {
       const next = new Set(prev);
-      if (allSelected) {
-        allDaysInMonth.forEach((d) => next.delete(d));
+      if (allBlocked) {
+        futureDaysInMonth.forEach((d) => next.delete(d));
       } else {
-        allDaysInMonth.forEach((d) => next.add(d));
+        futureDaysInMonth.forEach((d) => next.add(d));
       }
       return next;
     });
@@ -82,7 +82,7 @@ export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: Owner
     const date = new Date(viewYear, viewMonth, d);
     const dateStr = toDateStr(date);
     const isPast = date < today;
-    const isAvailable = available.has(dateStr);
+    const isBlocked = blocked.has(dateStr);
     const isToday = dateStr === todayStr;
 
     cells.push(
@@ -95,11 +95,11 @@ export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: Owner
           "flex h-9 w-full items-center justify-center rounded-lg text-sm font-medium transition-colors select-none",
           isPast
             ? "text-[#20201f]/20 cursor-default"
-            : isAvailable
-            ? "bg-emerald-500 text-white"
+            : isBlocked
+            ? "bg-[#20201f]/80 text-[#f7f6f2] line-through"
             : isToday
-            ? "ring-2 ring-[#20201f]/30 text-[#20201f]/40 hover:bg-[#e5e2db]"
-            : "text-[#20201f]/40 hover:bg-[#e5e2db]",
+            ? "ring-2 ring-[#20201f]/30 text-[#20201f] hover:bg-[#e5e2db]"
+            : "text-[#20201f] hover:bg-[#e5e2db]",
         ].join(" ")}
       >
         {d}
@@ -109,7 +109,7 @@ export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: Owner
 
   return (
     <div className="rounded-2xl border border-[#e5e2db] bg-[#f7f6f2] p-4" style={{ width: "384px", margin: "0 auto" }}>
-      <input type="hidden" name="available_dates" value={JSON.stringify([...available])} />
+      <input type="hidden" name="blocked_dates" value={JSON.stringify([...blocked])} />
 
       {/* Month navigation */}
       <div className="flex items-center justify-between mb-4">
@@ -143,32 +143,32 @@ export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: Owner
       {/* Day cells */}
       <div className="grid grid-cols-7 gap-1">{cells}</div>
 
-      {/* Select all / clear month */}
+      {/* Block/unblock entire month */}
       <button
         type="button"
         onClick={toggleMonth}
         className="mt-3 w-full text-xs text-[#20201f]/65 hover:text-[#20201f] underline underline-offset-2 transition-colors text-center"
       >
-        {allSelected
-          ? (isLt ? "Išvalyti visą mėnesį" : "Clear entire month")
-          : (isLt ? "Pasirinkti visą mėnesį" : "Select entire month")}
+        {allBlocked
+          ? (isLt ? "Atblokuoti visą mėnesį" : "Unblock entire month")
+          : (isLt ? "Blokuoti visą mėnesį" : "Block entire month")}
       </button>
 
       {/* Legend */}
       <div className="flex items-center gap-5 mt-3 text-xs text-[#20201f]/65">
         <span className="flex items-center gap-1.5">
-          <span className="h-3.5 w-3.5 rounded bg-emerald-500 shrink-0" />
+          <span className="h-3.5 w-3.5 rounded bg-[#f7f6f2] border border-[#e5e2db] shrink-0" />
           {isLt ? "Prieinama" : "Available"}
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="h-3.5 w-3.5 rounded bg-[#f7f6f2] border border-[#e5e2db] shrink-0" />
+          <span className="h-3.5 w-3.5 rounded bg-[#20201f]/80 shrink-0" />
           {isLt ? "Neprieinama" : "Unavailable"}
         </span>
       </div>
       <p className="mt-2 text-xs text-[#20201f]/75">
         {isLt
-          ? "Spustelkite dieną, kad ją pažymėtumėte kaip prieinamą."
-          : "Click a day to mark it as available."}
+          ? "Spustelkite dieną, kad ją pažymėtumėte kaip neprieinamą."
+          : "Click a day to mark it as unavailable."}
       </p>
     </div>
   );
@@ -176,15 +176,15 @@ export function OwnerAvailabilityCalendar({ lang, initialAvailable = [] }: Owner
 
 /* ─────────────────────────────────────────────────────────────────────────────
    RenterAvailabilityCalendar
-   Read-only view shown to renters. Green = available, grey = unavailable/booked.
+   Read-only view shown to renters. Green = available, grey = blocked/booked.
 ───────────────────────────────────────────────────────────────────────────── */
 interface RenterProps {
   lang: string;
-  availableDates: string[];
+  blockedDates: string[];
   bookedRanges: { start: string; end: string }[];
 }
 
-export function RenterAvailabilityCalendar({ lang, availableDates, bookedRanges }: RenterProps) {
+export function RenterAvailabilityCalendar({ lang, blockedDates, bookedRanges }: RenterProps) {
   const isLt = lang === "lt";
   const weekDays = isLt ? WEEK_LT : WEEK_EN;
 
@@ -192,7 +192,7 @@ export function RenterAvailabilityCalendar({ lang, availableDates, bookedRanges 
   today.setHours(0, 0, 0, 0);
 
   const [monthOffset, setMonthOffset] = useState(0);
-  const availableSet = new Set(availableDates);
+  const blockedSet = new Set(blockedDates);
 
   const baseYear = today.getFullYear();
   const baseMonth = today.getMonth();
@@ -219,14 +219,13 @@ export function RenterAvailabilityCalendar({ lang, availableDates, bookedRanges 
     const date = new Date(viewYear, viewMonth, d);
     const dateStr = toDateStr(date);
     const isPast = date < today;
-    const isAvailableDay = availableSet.has(dateStr);
+    const isBlockedDay = blockedSet.has(dateStr);
     const isBookedDay = isBooked(dateStr);
     const isToday = dateStr === todayStr;
 
-    let bg = "text-[#20201f]/65 bg-[#e5e2db]"; // default: unavailable
+    let bg = "text-emerald-700 bg-emerald-50";
     if (isPast) bg = "text-[#20201f]/20";
-    else if (isAvailableDay && !isBookedDay) bg = "text-emerald-700 bg-emerald-50";
-    else if (isBookedDay) bg = "text-[#20201f]/65 bg-[#e5e2db] line-through";
+    else if (isBlockedDay || isBookedDay) bg = "text-[#20201f]/65 bg-[#e5e2db] line-through";
 
     cells.push(
       <div

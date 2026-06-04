@@ -117,7 +117,7 @@ export default async function ListingDetailPage({
           {/* Availability calendar */}
           <RenterAvailabilityCalendar
             bookedRanges={bookedRanges}
-            availableDates={listing.available_dates ?? []}
+            blockedDates={listing.blocked_dates ?? []}
             lang={lang}
           />
 
