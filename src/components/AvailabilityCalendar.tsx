@@ -72,7 +72,7 @@ export function OwnerAvailabilityCalendar({ lang, initialBlocked = [] }: OwnerPr
         disabled={isPast}
         onClick={() => toggle(dateStr)}
         className={[
-          "flex aspect-square w-full items-center justify-center rounded-lg text-sm font-medium transition-colors select-none",
+          "flex h-9 w-full items-center justify-center rounded-lg text-sm font-medium transition-colors select-none",
           isPast
             ? "text-[#20201f]/20 cursor-default"
             : isBlocked
@@ -88,7 +88,7 @@ export function OwnerAvailabilityCalendar({ lang, initialBlocked = [] }: OwnerPr
   }
 
   return (
-    <div className="rounded-2xl border border-[#e5e2db] bg-[#f7f6f2] p-4">
+    <div className="rounded-2xl border border-[#e5e2db] bg-[#f7f6f2] p-4 max-w-md">
       <input type="hidden" name="blocked_dates" value={JSON.stringify([...blocked])} />
 
       {/* Month navigation */}

@@ -13,7 +13,7 @@ export default async function AddListingPage({
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <div className="mx-auto max-w-4xl px-5 sm:px-8 py-10">
+    <div className="mx-auto max-w-6xl px-5 sm:px-8 py-10">
       <div className="mb-8">
         <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-1 font-outfit">{lang === "lt" ? "Nuoma" : "List a tool"}</p>
         <h1 className="font-outfit text-3xl font-bold text-[#20201f]">{dict.addListing.title}</h1>
