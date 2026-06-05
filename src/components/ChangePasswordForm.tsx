@@ -35,6 +35,13 @@ export function ChangePasswordForm({ lang, error, saved }: Props) {
           <input type="hidden" name="lang" value={lang} />
           <Input
             type="password"
+            name="old_password"
+            label={isLt ? "Dabartinis slaptažodis" : "Current password"}
+            placeholder="••••••••"
+            required
+          />
+          <Input
+            type="password"
             name="new_password"
             label={isLt ? "Naujas slaptažodis" : "New password"}
             placeholder="••••••••"

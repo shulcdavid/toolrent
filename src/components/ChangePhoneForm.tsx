@@ -46,8 +46,8 @@ export function ChangePhoneForm({ lang, currentPhone, otpSent, error }: Props) {
               <input type="hidden" name="lang" value={lang} />
               <div className="rounded-xl bg-blue-50 border border-blue-200 px-4 py-3 text-sm text-blue-700">
                 {isLt
-                  ? "6 skaitmenų kodas išsiųstas į tavo el. paštą. Kodas galioja 15 minučių."
-                  : "A 6-digit code was sent to your email. It expires in 15 minutes."}
+                  ? "6 skaitmenų kodas išsiųstas į tavo telefono numerį. Kodas galioja 15 minučių."
+                  : "A 6-digit code was sent to your phone number. It expires in 15 minutes."}
               </div>
               <Input
                 name="otp"
@@ -57,7 +57,7 @@ export function ChangePhoneForm({ lang, currentPhone, otpSent, error }: Props) {
                 inputMode="numeric"
                 pattern="[0-9]{6}"
                 required
-                hint={isLt ? "Įvesk 6 skaitmenų kodą iš el. laiško" : "Enter the 6-digit code from your email"}
+                hint={isLt ? "Įvesk 6 skaitmenų kodą iš SMS žinutės" : "Enter the 6-digit code from the SMS"}
               />
               {error && (
                 <p className="text-sm text-red-500 rounded-lg bg-red-50 px-3 py-2">{error}</p>
@@ -86,8 +86,8 @@ export function ChangePhoneForm({ lang, currentPhone, otpSent, error }: Props) {
                 required
                 hint={
                   isLt
-                    ? "Patvirtinimo kodas bus išsiųstas į tavo el. paštą."
-                    : "A verification code will be sent to your email."
+                    ? "Patvirtinimo SMS kodas bus išsiųstas į šį numerį."
+                    : "A verification code will be sent via SMS to this number."
                 }
               />
               {error && (

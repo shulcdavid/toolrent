@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { canChangeIdentity } from "@/lib/utils";
-import { sendOtpEmail } from "@/lib/email";
+import { sendSms } from "@/lib/sms";
 
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient();
@@ -57,8 +57,21 @@ export async function updatePassword(formData: FormData) {
   const lang = (formData.get("lang") as string) ?? "en";
   if (!user) redirect(`/${lang}/auth/login`);
 
+  const oldPassword = formData.get("old_password") as string;
   const newPassword = formData.get("new_password") as string;
   const confirm = formData.get("confirm_password") as string;
+
+  // Verify current password
+  const { error: signInError } = await supabase.auth.signInWithPassword({
+    email: user.email!,
+    password: oldPassword,
+  });
+
+  if (signInError) {
+    redirect(`/${lang}/profile?password_error=${encodeURIComponent(
+      lang === "lt" ? "Dabartinis slaptažodis neteisingas" : "Current password is incorrect"
+    )}`);
+  }
 
   if (!newPassword || newPassword.length < 8) {
     redirect(`/${lang}/profile?password_error=${encodeURIComponent(
@@ -134,14 +147,13 @@ export async function requestPhoneOtp(formData: FormData) {
     redirect(`/${lang}/profile?phone_error=${encodeURIComponent(dbError.message)}`);
   }
 
-  await sendOtpEmail({
-    to: user.email!,
-    name: user.user_metadata?.full_name ?? "",
-    otp,
-    newValue: newPhone,
-    type: "phone",
-    lang,
-  });
+  const lt = lang === "lt";
+  await sendSms(
+    newPhone,
+    lt
+      ? `Rente patvirtinimo kodas: ${otp}. Galioja 15 min.`
+      : `Your Rente verification code: ${otp}. Expires in 15 min.`
+  );
 
   redirect(`/${lang}/profile?phone_otp_sent=1`);
 }
