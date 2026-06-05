@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { updateBookingStatus } from "@/lib/actions/bookings";
 import { deleteListing } from "@/lib/actions/listings";
+import { toggleOwnerAvailability } from "@/lib/actions/profile";
 import type { Listing } from "@/lib/supabase/types";
 
 const statusVariant: Record<string, "green" | "yellow" | "red" | "gray" | "default"> = {
@@ -45,7 +46,25 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
           <h1 className="font-outfit text-3xl font-bold text-[#20201f]">{d.title}</h1>
           <p className="text-sm text-[#20201f]/65 mt-1">{d.welcome}, {(profile as any)?.full_name?.split(" ")[0]} 👋</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          {/* Owner availability toggle */}
+          <form action={toggleOwnerAvailability}>
+            <input type="hidden" name="lang" value={lang} />
+            <input type="hidden" name="current_available" value={String(profile?.owner_available !== false)} />
+            <button
+              type="submit"
+              className={`flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold transition-colors ${
+                profile?.owner_available !== false
+                  ? "border-emerald-300 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
+                  : "border-red-300 bg-red-50 text-red-600 hover:bg-red-100"
+              }`}
+            >
+              <span className={`h-2 w-2 rounded-full ${profile?.owner_available !== false ? "bg-emerald-500" : "bg-red-500"}`} />
+              {profile?.owner_available !== false
+                ? (lang === "lt" ? "Esu prieinamas" : "Available")
+                : (lang === "lt" ? "Neprieinamas" : "Unavailable")}
+            </button>
+          </form>
           <Link href={`/${lang}/profile`}>
             <Button size="sm" variant="outline">
               <UserRound size={14} />

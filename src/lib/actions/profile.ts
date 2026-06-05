@@ -5,6 +5,22 @@ import { createClient } from "@/lib/supabase/server";
 import { canChangeIdentity } from "@/lib/utils";
 import { sendSms } from "@/lib/sms";
 
+export async function toggleOwnerAvailability(formData: FormData) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const lang = (formData.get("lang") as string) ?? "en";
+  if (!user) redirect(`/${lang}/auth/login`);
+
+  const currentAvailable = formData.get("current_available") === "true";
+
+  await (supabase as any)
+    .from("profiles")
+    .update({ owner_available: !currentAvailable })
+    .eq("id", user.id);
+
+  redirect(`/${lang}/dashboard`);
+}
+
 export async function updateProfile(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

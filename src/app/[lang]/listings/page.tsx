@@ -24,7 +24,7 @@ export default async function ListingsPage({
 
   let query = supabase
     .from("listings")
-    .select("*, profiles(*)")
+    .select("*, profiles(id, full_name, created_at, avatar_url, username, owner_available)")
     .order("created_at", { ascending: false });
 
   if (sp.category) query = query.contains("categories", [sp.category]);
@@ -35,7 +35,10 @@ export default async function ListingsPage({
   else if (sp.sort === "priceHigh") query = query.order("price_per_day", { ascending: false });
 
   const { data: listingsRaw } = await query;
-  const listings = (listingsRaw ?? []) as any[];
+  // Hide listings whose owner has set themselves as unavailable
+  const listings = ((listingsRaw ?? []) as any[]).filter(
+    (l) => l.profiles?.owner_available !== false
+  );
 
   const { data: cityData } = await supabase.from("listings").select("city");
   const cities = [...new Set(((cityData ?? []) as any[]).map((r) => r.city as string))].sort();
