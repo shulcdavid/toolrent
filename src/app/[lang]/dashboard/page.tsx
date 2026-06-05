@@ -61,8 +61,8 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
             >
               <span className={`h-2 w-2 rounded-full ${profile?.owner_available !== false ? "bg-emerald-500" : "bg-red-500"}`} />
               {profile?.owner_available !== false
-                ? (lang === "lt" ? "Esu prieinamas" : "Available")
-                : (lang === "lt" ? "Neprieinamas" : "Unavailable")}
+                ? (lang === "lt" ? "Slėpti skelbimus" : "Hide listings")
+                : (lang === "lt" ? "Rodyti skelbimus" : "Show listings")}
             </button>
           </form>
           <Link href={`/${lang}/profile`}>
