@@ -148,12 +148,16 @@ export async function requestPhoneOtp(formData: FormData) {
   }
 
   const lt = lang === "lt";
-  await sendSms(
+  const smsResult = await sendSms(
     newPhone,
     lt
       ? `Rente patvirtinimo kodas: ${otp}. Galioja 15 min.`
       : `Your Rente verification code: ${otp}. Expires in 15 min.`
   );
+
+  if (!smsResult.ok) {
+    redirect(`/${lang}/profile?phone_error=${encodeURIComponent(smsResult.error ?? "SMS failed")}`);
+  }
 
   redirect(`/${lang}/profile?phone_otp_sent=1`);
 }

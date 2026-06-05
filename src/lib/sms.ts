@@ -4,14 +4,13 @@
  * Requires env vars: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
  * Optional: TWILIO_FROM (defaults to "Rente")
  */
-export async function sendSms(to: string, body: string): Promise<boolean> {
+export async function sendSms(to: string, body: string): Promise<{ ok: boolean; error?: string }> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const from = process.env.TWILIO_FROM ?? "Rente";
 
   if (!accountSid || !authToken) {
-    console.warn("[SMS] Twilio env vars not set — skipping SMS send");
-    return false;
+    return { ok: false, error: "SMS not configured (missing Twilio env vars)" };
   }
 
   const response = await fetch(
@@ -28,8 +27,10 @@ export async function sendSms(to: string, body: string): Promise<boolean> {
 
   if (!response.ok) {
     const err = await response.json().catch(() => ({}));
+    const msg = `Twilio ${err.code ?? response.status}: ${err.message ?? "unknown error"}`;
     console.error("[SMS] Twilio error:", err);
+    return { ok: false, error: msg };
   }
 
-  return response.ok;
+  return { ok: true };
 }
