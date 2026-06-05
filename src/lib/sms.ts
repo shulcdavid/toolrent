@@ -1,14 +1,15 @@
 /**
- * Twilio SMS sender.
- * Requires env vars: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER
- * Sign up free at https://www.twilio.com — you get a free number + trial credits.
+ * Twilio SMS sender using alphanumeric sender ID ("Rente").
+ * No phone number purchase needed — works in Lithuania + most of Europe.
+ * Requires env vars: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+ * Optional: TWILIO_FROM (defaults to "Rente")
  */
 export async function sendSms(to: string, body: string): Promise<boolean> {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
-  const from = process.env.TWILIO_PHONE_NUMBER;
+  const from = process.env.TWILIO_FROM ?? "Rente";
 
-  if (!accountSid || !authToken || !from) {
+  if (!accountSid || !authToken) {
     console.warn("[SMS] Twilio env vars not set — skipping SMS send");
     return false;
   }
