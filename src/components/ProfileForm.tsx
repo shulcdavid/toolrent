@@ -140,22 +140,6 @@ export function ProfileForm({
         </div>
       </div>
 
-      {/* Identity lock notice */}
-      {(!canChangeName || !canChangeUsername || !canChangePhone) && (
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-800 leading-relaxed">
-          {p.lockedMsg}
-          {!canChangeName && nameLockedUntil && (
-            <div className="mt-1">{p.fullName}: {p.lockedUntil} <strong>{nameLockedUntil}</strong></div>
-          )}
-          {!canChangeUsername && usernameLockedUntil && (
-            <div className="mt-0.5">{p.username}: {p.lockedUntil} <strong>{usernameLockedUntil}</strong></div>
-          )}
-          {!canChangePhone && phoneLockedUntil && (
-            <div className="mt-0.5">{p.phone}: {p.lockedUntil} <strong>{phoneLockedUntil}</strong></div>
-          )}
-        </div>
-      )}
-
       <Input
         name="full_name"
         label={p.fullName}
@@ -163,7 +147,11 @@ export function ProfileForm({
         placeholder="Jonas Jonaitis"
         disabled={!canChangeName}
         required
-        hint={canChangeName ? (lang === "lt" ? "⚠ Išsaugojus, vardą bus galima keisti tik kartą per metus." : "⚠ Once saved, your name can only be changed once per year.") : undefined}
+        hint={
+          !canChangeName && nameLockedUntil
+            ? `🔒 ${lang === "lt" ? `Galima keisti nuo ${nameLockedUntil}` : `Editable again from ${nameLockedUntil}`}`
+            : (lang === "lt" ? "⚠ Išsaugojus, vardą bus galima keisti tik kartą per metus." : "⚠ Once saved, your name can only be changed once per year.")
+        }
       />
 
       {/* Read-only email */}
@@ -180,7 +168,11 @@ export function ProfileForm({
         defaultValue={profile?.username ?? ""}
         placeholder="jonas123"
         disabled={!canChangeUsername}
-        hint={canChangeUsername ? (lang === "lt" ? "⚠ Išsaugojus, slapyvardį bus galima keisti tik kartą per metus." : "⚠ Once saved, your username can only be changed once per year.") : undefined}
+        hint={
+          !canChangeUsername && usernameLockedUntil
+            ? `🔒 ${lang === "lt" ? `Galima keisti nuo ${usernameLockedUntil}` : `Editable again from ${usernameLockedUntil}`}`
+            : (lang === "lt" ? "⚠ Išsaugojus, slapyvardį bus galima keisti tik kartą per metus." : "⚠ Once saved, your username can only be changed once per year.")
+        }
       />
 
       <Input
@@ -190,7 +182,11 @@ export function ProfileForm({
         placeholder={p.phonePlaceholder}
         type="tel"
         disabled={!canChangePhone}
-        hint={canChangePhone ? (lang === "lt" ? "⚠ Išsaugojus, telefoną bus galima keisti tik kartą per 6 mėnesius." : "⚠ Once saved, your phone can only be changed once every 6 months.") : undefined}
+        hint={
+          !canChangePhone && phoneLockedUntil
+            ? `🔒 ${lang === "lt" ? `Galima keisti nuo ${phoneLockedUntil}` : `Editable again from ${phoneLockedUntil}`}`
+            : (lang === "lt" ? "⚠ Išsaugojus, telefoną bus galima keisti tik kartą per 6 mėnesius." : "⚠ Once saved, your phone can only be changed once every 6 months.")
+        }
       />
 
       <Input

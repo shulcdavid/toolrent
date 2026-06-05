@@ -58,11 +58,12 @@ export function canChangeIdentity(changedAt: string | null, months = 12): boolea
   return new Date(changedAt) < cutoff;
 }
 
-export function nextEditDate(changedAt: string | null, months = 12): string {
+export function nextEditDate(changedAt: string | null, months = 12, lang = "en"): string {
   if (!changedAt) return "";
   const d = new Date(changedAt);
   d.setMonth(d.getMonth() + months);
-  return d.toLocaleDateString("lt-LT", { year: "numeric", month: "long", day: "numeric" });
+  const locale = lang === "lt" ? "lt-LT" : lang === "lv" ? "lv-LV" : lang === "et" ? "et-EE" : lang === "pl" ? "pl-PL" : "en-GB";
+  return d.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
 }
 
 export const CATEGORY_ICONS: Record<Category, string> = {
