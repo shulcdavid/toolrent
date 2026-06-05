@@ -38,7 +38,6 @@ function FacebookIcon() {
 
 const providers: { id: Provider; label: string; Icon: () => React.ReactElement }[] = [
   { id: "google",   label: "Continue with Google",   Icon: GoogleIcon },
-  { id: "apple",    label: "Continue with Apple",    Icon: AppleIcon },
   { id: "facebook", label: "Continue with Facebook", Icon: FacebookIcon },
 ];
 
