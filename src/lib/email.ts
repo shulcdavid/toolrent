@@ -135,6 +135,70 @@ export async function sendPasswordResetEmail(opts: {
   });
 }
 
+export async function sendOtpEmail(opts: {
+  to: string;
+  name: string;
+  otp: string;
+  newValue: string;
+  type: "phone";
+  lang?: string;
+}) {
+  const resend = getResend();
+  if (!resend) return;
+
+  const lt = opts.lang === "lt";
+  const subject = lt ? `Rente patvirtinimo kodas` : `Rente verification code`;
+
+  await resend.emails.send({
+    from: FROM,
+    to: opts.to,
+    subject,
+    html: `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f7f6f2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f6f2;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;border:1px solid #e5e2db;overflow:hidden;max-width:520px;">
+        <tr>
+          <td style="background:#20201f;padding:28px 40px;">
+            <p style="margin:0;font-size:22px;font-weight:700;color:#f7f6f2;letter-spacing:-0.5px;">Rente</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:40px;">
+            <p style="margin:0 0 8px;font-size:24px;font-weight:700;color:#20201f;">
+              ${lt ? "Patvirtinimo kodas" : "Verification code"}
+            </p>
+            <p style="margin:0 0 28px;font-size:15px;color:rgba(32,32,31,0.6);line-height:1.6;">
+              ${lt
+                ? `Tavo naujas telefono numeris: <strong style="color:#20201f;">${opts.newValue}</strong><br>Įvesk žemiau esantį kodą, kad patvirtintum pakeitimą.`
+                : `Your new phone number: <strong style="color:#20201f;">${opts.newValue}</strong><br>Enter the code below to confirm the change.`}
+            </p>
+            <div style="background:#f7f6f2;border-radius:12px;padding:24px;text-align:center;margin-bottom:28px;">
+              <p style="margin:0;font-size:36px;font-weight:700;color:#20201f;letter-spacing:8px;">${opts.otp}</p>
+            </div>
+            <p style="margin:0;font-size:13px;color:rgba(32,32,31,0.4);line-height:1.6;">
+              ${lt
+                ? "Kodas galioja 15 minučių. Jei neprašei pakeisti telefono numerio, ignoruok šį laišką."
+                : "This code expires in 15 minutes. If you didn't request this change, you can safely ignore this email."}
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px;border-top:1px solid #e5e2db;">
+            <p style="margin:0;font-size:12px;color:rgba(32,32,31,0.35);">© ${new Date().getFullYear()} Rente · ${lt ? "P2P įrankių nuoma" : "P2P tool rental"}</p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+  });
+}
+
 export async function sendBookingRequestEmail(opts: {
   ownerEmail: string;
   ownerName: string;

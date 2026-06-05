@@ -5,6 +5,9 @@ import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { createClient } from "@/lib/supabase/server";
 import { ProfileForm } from "@/components/ProfileForm";
 import { DeleteAccountForm } from "@/components/DeleteAccountForm";
+import { ChangePasswordForm } from "@/components/ChangePasswordForm";
+import { ChangeEmailForm } from "@/components/ChangeEmailForm";
+import { ChangePhoneForm } from "@/components/ChangePhoneForm";
 import { canChangeIdentity, nextEditDate } from "@/lib/utils";
 
 export default async function ProfilePage({
@@ -12,10 +15,20 @@ export default async function ProfilePage({
   searchParams,
 }: {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<{ saved?: string; error?: string; delete_error?: string }>;
+  searchParams: Promise<{
+    saved?: string;
+    error?: string;
+    delete_error?: string;
+    password_saved?: string;
+    password_error?: string;
+    email_sent?: string;
+    email_error?: string;
+    phone_otp_sent?: string;
+    phone_error?: string;
+  }>;
 }) {
   const { lang } = await params;
-  const { saved, error, delete_error } = await searchParams;
+  const sp = await searchParams;
   if (!hasLocale(lang)) notFound();
 
   const supabase = await createClient();
@@ -31,11 +44,9 @@ export default async function ProfilePage({
   const dict = await getDictionary(lang as Locale);
 
   const canName = canChangeIdentity(profile?.full_name_changed_at ?? null);
-  const canUsername = canChangeIdentity(profile?.username_changed_at ?? null);
-  const canPhone = canChangeIdentity(profile?.phone_changed_at ?? null, 6);
+  const canUsername = canChangeIdentity(profile?.username_changed_at ?? null, 1); // monthly
   const nameUntil = nextEditDate(profile?.full_name_changed_at ?? null, 12, lang);
-  const usernameUntil = nextEditDate(profile?.username_changed_at ?? null, 12, lang);
-  const phoneUntil = nextEditDate(profile?.phone_changed_at ?? null, 6, lang);
+  const usernameUntil = nextEditDate(profile?.username_changed_at ?? null, 1, lang);
 
   return (
     <div className="mx-auto max-w-lg px-4 sm:px-6 py-10">
@@ -53,6 +64,7 @@ export default async function ProfilePage({
         <h1 className="font-outfit text-2xl font-bold text-[#20201f]">{dict.profile.title}</h1>
       </div>
 
+      {/* Main profile fields */}
       <ProfileForm
         profile={profile}
         userId={user.id}
@@ -61,19 +73,41 @@ export default async function ProfilePage({
         dict={dict}
         canChangeName={canName}
         canChangeUsername={canUsername}
-        canChangePhone={canPhone}
         nameLockedUntil={nameUntil}
         usernameLockedUntil={usernameUntil}
-        phoneLockedUntil={phoneUntil}
-        saved={saved === "1"}
-        error={error}
+        saved={sp.saved === "1"}
+        error={sp.error}
       />
 
-      <div className="mt-6">
+      <div className="mt-4 flex flex-col gap-3">
+        {/* Email */}
+        <ChangeEmailForm
+          lang={lang}
+          currentEmail={user.email ?? ""}
+          emailSent={sp.email_sent === "1"}
+          error={sp.email_error ? decodeURIComponent(sp.email_error) : undefined}
+        />
+
+        {/* Phone */}
+        <ChangePhoneForm
+          lang={lang}
+          currentPhone={profile?.phone ?? null}
+          otpSent={sp.phone_otp_sent === "1"}
+          error={sp.phone_error ? decodeURIComponent(sp.phone_error) : undefined}
+        />
+
+        {/* Password */}
+        <ChangePasswordForm
+          lang={lang}
+          saved={sp.password_saved === "1"}
+          error={sp.password_error ? decodeURIComponent(sp.password_error) : undefined}
+        />
+
+        {/* Delete account */}
         <DeleteAccountForm
           lang={lang}
           email={user.email ?? ""}
-          deleteError={delete_error ? decodeURIComponent(delete_error) : undefined}
+          deleteError={sp.delete_error ? decodeURIComponent(sp.delete_error) : undefined}
         />
       </div>
     </div>

@@ -31,18 +31,16 @@ interface Props {
   };
   canChangeName: boolean;
   canChangeUsername: boolean;
-  canChangePhone: boolean;
   nameLockedUntil: string;
   usernameLockedUntil: string;
-  phoneLockedUntil: string;
   saved?: boolean;
   error?: string;
 }
 
 export function ProfileForm({
   profile, userId, email, lang, dict,
-  canChangeName, canChangeUsername, canChangePhone,
-  nameLockedUntil, usernameLockedUntil, phoneLockedUntil,
+  canChangeName, canChangeUsername,
+  nameLockedUntil, usernameLockedUntil,
   saved: savedProp, error: errorProp,
 }: Props) {
   const p = dict.profile;
@@ -171,21 +169,7 @@ export function ProfileForm({
         hint={
           !canChangeUsername && usernameLockedUntil
             ? `🔒 ${lang === "lt" ? `Galima keisti nuo ${usernameLockedUntil}` : `Editable again from ${usernameLockedUntil}`}`
-            : (lang === "lt" ? "⚠ Išsaugojus, slapyvardį bus galima keisti tik kartą per metus." : "⚠ Once saved, your username can only be changed once per year.")
-        }
-      />
-
-      <Input
-        name="phone"
-        label={p.phone}
-        defaultValue={profile?.phone ?? ""}
-        placeholder={p.phonePlaceholder}
-        type="tel"
-        disabled={!canChangePhone}
-        hint={
-          !canChangePhone && phoneLockedUntil
-            ? `🔒 ${lang === "lt" ? `Galima keisti nuo ${phoneLockedUntil}` : `Editable again from ${phoneLockedUntil}`}`
-            : (lang === "lt" ? "⚠ Išsaugojus, telefoną bus galima keisti tik kartą per 6 mėnesius." : "⚠ Once saved, your phone can only be changed once every 6 months.")
+            : (lang === "lt" ? "⚠ Išsaugojus, slapyvardį bus galima keisti tik kartą per mėnesį." : "⚠ Once saved, your username can only be changed once per month.")
         }
       />
 

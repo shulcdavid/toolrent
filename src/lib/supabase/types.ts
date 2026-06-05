@@ -11,6 +11,9 @@ export interface Database {
           avatar_url: string | null;
           phone: string | null;
           phone_changed_at: string | null;
+          phone_pending: string | null;
+          phone_otp: string | null;
+          phone_otp_expires_at: string | null;
           city: string | null;
           country: string | null;
           created_at: string;

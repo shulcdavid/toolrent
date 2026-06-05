@@ -24,7 +24,7 @@ export default async function ListingDetailPage({
   const supabase = await createClient();
   const { data: listingRaw } = await supabase
     .from("listings")
-    .select("*, profiles(*)")
+    .select("*, profiles(id, full_name, created_at, avatar_url, username)")
     .eq("id", id)
     .single();
 
@@ -55,6 +55,17 @@ export default async function ListingDetailPage({
   const dict = await getDictionary(lang as Locale);
   const sp = await searchParams;
   const isOwner = user?.id === listing.user_id;
+
+  // Phone is private — only fetch it for the owner viewing their own listing
+  let ownerHasPhone = false;
+  if (isOwner) {
+    const { data: ownerProfile } = await (supabase as any)
+      .from("profiles")
+      .select("phone")
+      .eq("id", listing.user_id)
+      .single();
+    ownerHasPhone = !!ownerProfile?.phone;
+  }
   const avgRating = reviews?.length ? (reviews.reduce((s, r) => s + r.rating, 0) / reviews.length).toFixed(1) : null;
 
   return (
@@ -139,7 +150,7 @@ export default async function ListingDetailPage({
               )}
             </div>
             <TrustBadges
-              hasPhone={!!listing.profiles?.phone}
+              hasPhone={ownerHasPhone}
               responseRate={responseRate}
               avgRating={avgRating}
               totalReviews={reviews.length}
