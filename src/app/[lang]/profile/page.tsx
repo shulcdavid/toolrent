@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { ProfileForm } from "@/components/ProfileForm";
 import { DeleteAccountForm } from "@/components/DeleteAccountForm";
 import { ChangePasswordForm } from "@/components/ChangePasswordForm";
+import { PaymentSection } from "@/components/PaymentSection";
 import { ChangeEmailForm } from "@/components/ChangeEmailForm";
 import { ChangePhoneForm } from "@/components/ChangePhoneForm";
 import { canChangeIdentity, nextEditDate } from "@/lib/utils";
@@ -95,6 +96,9 @@ export default async function ProfilePage({
           otpSent={sp.phone_otp_sent === "1"}
           error={sp.phone_error ? decodeURIComponent(sp.phone_error) : undefined}
         />
+
+        {/* Payment card */}
+        <PaymentSection lang={lang} />
 
         {/* Password */}
         <ChangePasswordForm

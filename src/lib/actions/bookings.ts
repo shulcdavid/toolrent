@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { daysBetween } from "@/lib/utils";
 import { sendBookingRequestEmail, sendBookingStatusEmail } from "@/lib/email";
+import { getStripe } from "@/lib/stripe";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolrent.lt";
 
@@ -69,6 +70,49 @@ export async function updateBookingStatus(bookingId: string, status: "approved" 
 
   const db = supabase as any;
   await db.from("bookings").update({ status }).eq("id", bookingId);
+
+  // Charge the renter's saved card when a booking is approved
+  if (status === "approved") {
+    try {
+      const { data: booking } = await db
+        .from("bookings")
+        .select("renter_id, total_price")
+        .eq("id", bookingId)
+        .single();
+
+      const { data: renterProfile } = await db
+        .from("profiles")
+        .select("stripe_customer_id")
+        .eq("id", booking?.renter_id)
+        .single();
+
+      if (renterProfile?.stripe_customer_id) {
+        const stripe = getStripe();
+        const paymentMethods = await stripe.paymentMethods.list({
+          customer: renterProfile.stripe_customer_id,
+          type: "card",
+          limit: 1,
+        });
+
+        if (paymentMethods.data.length > 0) {
+          const paymentIntent = await stripe.paymentIntents.create({
+            amount: Math.round((booking.total_price ?? 0) * 100),
+            currency: "eur",
+            customer: renterProfile.stripe_customer_id,
+            payment_method: paymentMethods.data[0].id,
+            confirm: true,
+            off_session: true,
+          });
+          await db
+            .from("bookings")
+            .update({ stripe_payment_intent_id: paymentIntent.id })
+            .eq("id", bookingId);
+        }
+      }
+    } catch (err) {
+      console.error("[Stripe] Failed to charge renter:", err);
+    }
+  }
 
   // Send email notification to renter
   if (status === "approved" || status === "rejected") {
