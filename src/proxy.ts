@@ -4,12 +4,6 @@ import type { NextRequest } from "next/server";
 const locales = ["en", "lt"];
 const defaultLocale = "lt";
 
-function getLocale(request: NextRequest): string {
-  const acceptLanguage = request.headers.get("accept-language") ?? "";
-  const preferred = acceptLanguage.split(",")[0].split("-")[0].toLowerCase();
-  return locales.includes(preferred) ? preferred : defaultLocale;
-}
-
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -20,8 +14,7 @@ export function proxy(request: NextRequest) {
 
   if (pathnameHasLocale) return NextResponse.next();
 
-  const locale = getLocale(request);
-  request.nextUrl.pathname = `/${locale}${pathname}`;
+  request.nextUrl.pathname = `/${defaultLocale}${pathname}`;
   return NextResponse.redirect(request.nextUrl);
 }
 
