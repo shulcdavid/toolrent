@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const locales = ["en", "lt", "pl", "lv", "et"];
-const defaultLocale = "en";
+const locales = ["en", "lt"];
+const defaultLocale = "lt";
 
 function getLocale(request: NextRequest): string {
   const acceptLanguage = request.headers.get("accept-language") ?? "";
@@ -26,5 +26,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|api/|.*\\..*).*)"],
 };
