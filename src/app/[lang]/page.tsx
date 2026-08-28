@@ -69,12 +69,6 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           {/* Left: editorial text */}
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-5">
-              <div className="inline-flex items-center gap-2 rounded-full border border-[#e5e2db] bg-[#eeece3] px-4 py-1.5 w-fit">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <span className="text-xs text-[#20201f]/75 tracking-wide">
-                  {lt ? "Platforma veikia" : "Platform is live"}
-                </span>
-              </div>
               <h1 className="font-outfit text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#20201f] leading-[1.05]">
                 {dict.home.hero.title}
               </h1>
