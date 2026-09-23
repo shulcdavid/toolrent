@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { daysBetween } from "@/lib/utils";
+import { daysBetween, calcServiceFee } from "@/lib/utils";
 import { sendBookingRequestEmail, sendBookingStatusEmail } from "@/lib/email";
 import { getStripe } from "@/lib/stripe";
 
@@ -22,6 +22,8 @@ export async function createBooking(formData: FormData) {
   const pricePerDay = Number(formData.get("price_per_day"));
   const message = (formData.get("message") as string) ?? "";
   const days = daysBetween(startDate, endDate);
+  const toolCost = days * pricePerDay;
+  const serviceFee = calcServiceFee(toolCost);
   const db = supabase as any;
 
   const { error } = await db.from("bookings").insert({
@@ -29,7 +31,9 @@ export async function createBooking(formData: FormData) {
     renter_id: user.id,
     start_date: startDate,
     end_date: endDate,
-    total_price: days * pricePerDay,
+    tool_price: toolCost,
+    service_fee: serviceFee,
+    total_price: toolCost + serviceFee,
     message,
     status: "pending",
   });

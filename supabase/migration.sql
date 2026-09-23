@@ -6,9 +6,13 @@
 ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
 
--- 2. Add Stripe payment intent column to bookings
+-- 2. Add Stripe and fee columns to bookings
 ALTER TABLE public.bookings
   ADD COLUMN IF NOT EXISTS stripe_payment_intent_id TEXT;
+ALTER TABLE public.bookings
+  ADD COLUMN IF NOT EXISTS tool_price NUMERIC(10,2);
+ALTER TABLE public.bookings
+  ADD COLUMN IF NOT EXISTS service_fee NUMERIC(10,2);
 
 -- 3. Create reviews table
 CREATE TABLE IF NOT EXISTS public.reviews (

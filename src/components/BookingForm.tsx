@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
-import { formatPrice, daysBetween } from "@/lib/utils";
+import { formatPrice, daysBetween, calcServiceFee, SERVICE_FEE_RATE } from "@/lib/utils";
 import { createBooking } from "@/lib/actions/bookings";
 import type { Listing } from "@/lib/supabase/types";
 import type { Locale } from "@/i18n/config";
@@ -31,7 +31,9 @@ export function BookingForm({ listing, dict, lang, isLoggedIn = false }: Props) 
   const [endDate, setEndDate] = useState(tomorrow);
 
   const days = daysBetween(startDate, endDate);
-  const total = days * listing.price_per_day;
+  const toolCost = days * listing.price_per_day;
+  const serviceFee = calcServiceFee(toolCost);
+  const total = toolCost + serviceFee;
 
   return (
     <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">
@@ -70,7 +72,11 @@ export function BookingForm({ listing, dict, lang, isLoggedIn = false }: Props) 
           <div className="rounded-xl border border-[#e5e2db] bg-[#f7f6f2] p-4 flex flex-col gap-2 text-sm">
             <div className="flex justify-between text-[#20201f]/75">
               <span>{formatPrice(listing.price_per_day)} × {days} {dict.listing.totalDays}</span>
-              <span>{formatPrice(total)}</span>
+              <span>{formatPrice(toolCost)}</span>
+            </div>
+            <div className="flex justify-between text-[#20201f]/75">
+              <span>{lang === "lt" ? `Aptarnavimo mokestis (${SERVICE_FEE_RATE * 100}%)` : `Service fee (${SERVICE_FEE_RATE * 100}%)`}</span>
+              <span>{formatPrice(serviceFee)}</span>
             </div>
             {listing.deposit > 0 && (
               <div className="flex justify-between text-[#20201f]/75">

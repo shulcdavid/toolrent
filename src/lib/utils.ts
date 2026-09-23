@@ -27,6 +27,12 @@ export function daysBetween(start: string, end: string): number {
   return Math.max(1, Math.ceil(ms / (1000 * 60 * 60 * 24)));
 }
 
+export const SERVICE_FEE_RATE = 0.10;
+
+export function calcServiceFee(toolCost: number): number {
+  return Math.round(toolCost * SERVICE_FEE_RATE * 100) / 100;
+}
+
 export const CATEGORIES = [
   "power",
   "hand",
