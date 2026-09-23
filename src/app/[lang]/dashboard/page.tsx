@@ -4,6 +4,7 @@ import { PlusCircle, Package, CalendarCheck, Bell, UserRound } from "lucide-reac
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { LeaveReviewForm } from "@/components/LeaveReviewForm";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { updateBookingStatus } from "@/lib/actions/bookings";
@@ -15,8 +16,15 @@ const statusVariant: Record<string, "green" | "yellow" | "red" | "gray" | "defau
   pending: "yellow", approved: "green", rejected: "red", completed: "gray", cancelled: "gray",
 };
 
-export default async function DashboardPage({ params }: { params: Promise<{ lang: string }> }) {
+export default async function DashboardPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ lang: string }>;
+  searchParams: Promise<{ review_sent?: string; review_error?: string }>;
+}) {
   const { lang } = await params;
+  const sp = await searchParams;
   if (!hasLocale(lang)) notFound();
 
   const supabase = await createClient();
@@ -26,28 +34,38 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
   const dict = await getDictionary(lang as Locale);
   const d = dict.dashboard;
 
-  const [{ data: profileRaw }, { data: myListingsRaw }, { data: myBookings }, { data: incomingRaw }] = await Promise.all([
+  const today = new Date().toISOString().split("T")[0];
+
+  const [{ data: profileRaw }, { data: myListingsRaw }, { data: myBookings }, { data: incomingRaw }, { data: myReviews }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase.from("listings").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
     supabase.from("bookings").select("*, listings(title, city, price_per_day)").eq("renter_id", user.id).order("created_at", { ascending: false }),
     supabase.from("bookings").select("*, listings!inner(title, user_id), profiles!renter_id(full_name, phone, city)").eq("listings.user_id", user.id).order("created_at", { ascending: false }),
+    (supabase as any).from("reviews").select("booking_id").eq("reviewer_id", user.id),
   ]);
 
   const profile = profileRaw as any;
   const myListings = (myListingsRaw ?? []) as Listing[];
   const incoming = (incomingRaw ?? []).filter((b: any) => b.listings?.user_id === user.id);
   const pendingCount = incoming.filter((b: any) => b.status === "pending").length;
+  const reviewedBookingIds = new Set(((myReviews ?? []) as any[]).map((r) => r.booking_id));
+
+  const lt = lang === "lt";
+  const lv = lang === "lv";
+  const et = lang === "et";
+  const pl = lang === "pl";
+
+  const markReturnedLabel = lt ? "Pažymėti kaip grąžintą" : lv ? "Atzīmēt kā atgrieztu" : et ? "Märgi tagastatuks" : pl ? "Oznacz jako zwrócone" : "Mark as returned";
 
   return (
     <div className="mx-auto max-w-5xl px-5 sm:px-8 py-10">
       <div className="flex items-center justify-between mb-10">
         <div>
-          <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-1 font-outfit">{lang === "lt" ? "Mano paskyra" : "My account"}</p>
+          <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-1 font-outfit">{lt ? "Mano paskyra" : "My account"}</p>
           <h1 className="font-outfit text-3xl font-bold text-[#20201f]">{d.title}</h1>
           <p className="text-sm text-[#20201f]/65 mt-1">{d.welcome}, {(profile as any)?.full_name?.split(" ")[0]} 👋</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap justify-end">
-          {/* Owner availability toggle */}
           <form action={toggleOwnerAvailability}>
             <input type="hidden" name="lang" value={lang} />
             <input type="hidden" name="current_available" value={String(profile?.owner_available !== false)} />
@@ -61,14 +79,14 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
             >
               <span className={`h-2 w-2 rounded-full ${profile?.owner_available !== false ? "bg-emerald-500" : "bg-red-500"}`} />
               {profile?.owner_available !== false
-                ? (lang === "lt" ? "Slėpti skelbimus" : "Hide listings")
-                : (lang === "lt" ? "Rodyti skelbimus" : "Show listings")}
+                ? (lt ? "Slėpti skelbimus" : "Hide listings")
+                : (lt ? "Rodyti skelbimus" : "Show listings")}
             </button>
           </form>
           <Link href={`/${lang}/profile`}>
             <Button size="sm" variant="outline">
               <UserRound size={14} />
-              {lang === "lt" ? "Profilis" : "Profile"}
+              {lt ? "Profilis" : "Profile"}
             </Button>
           </Link>
           <Link href={`/${lang}/add-listing`}>
@@ -76,6 +94,12 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
           </Link>
         </div>
       </div>
+
+      {sp.review_sent === "1" && (
+        <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-700 font-medium">
+          ⭐ {lt ? "Atsiliepimas išsiųstas. Ačiū!" : lv ? "Atsauksme iesniegta. Paldies!" : et ? "Arvustus esitatud. Täname!" : pl ? "Opinia wysłana. Dziękujemy!" : "Review submitted. Thank you!"}
+        </div>
+      )}
 
       {/* My Listings */}
       <section className="mb-10">
@@ -128,7 +152,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                 {req.status === "approved" && req.profiles && (
                   <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl bg-emerald-50 border border-emerald-200 px-4 py-3">
                     <span className="text-xs font-semibold text-emerald-800">
-                      {lang === "lt" ? "📞 Kontaktai" : "📞 Contact"}
+                      {lt ? "📞 Kontaktai" : "📞 Contact"}
                     </span>
                     <span className="text-xs text-emerald-700">{req.profiles.full_name}</span>
                     {req.profiles.phone && (
@@ -149,6 +173,15 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                     </form>
                   </div>
                 )}
+                {req.status === "approved" && req.end_date <= today && (
+                  <div className="mt-4">
+                    <form action={updateBookingStatus.bind(null, req.id, "completed", lang)}>
+                      <Button size="sm" variant="outline" type="submit">
+                        ✓ {markReturnedLabel}
+                      </Button>
+                    </form>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -160,7 +193,7 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
         <SectionHeader icon={CalendarCheck} title={d.myBookings} />
         {!myBookings?.length ? <EmptyState msg={d.noBookings} /> : (
           <div className="flex flex-col gap-3">
-            {myBookings.map((booking: any) => (
+            {(myBookings as any[]).map((booking) => (
               <div key={booking.id} className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-4">
                 <div className="flex items-center gap-4 flex-wrap">
                   <div className="flex-1 min-w-0">
@@ -181,6 +214,19 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
                     </form>
                   )}
                 </div>
+                {booking.status === "completed" && !reviewedBookingIds.has(booking.id) && (
+                  <LeaveReviewForm
+                    lang={lang}
+                    bookingId={booking.id}
+                    listingId={booking.listing_id}
+                    listingTitle={booking.listings?.title ?? ""}
+                  />
+                )}
+                {booking.status === "completed" && reviewedBookingIds.has(booking.id) && (
+                  <p className="mt-2 text-xs text-[#20201f]/45">
+                    {lt ? "✓ Atsiliepimas paliktas" : lv ? "✓ Atsauksme atstāta" : et ? "✓ Arvustus jäetud" : pl ? "✓ Opinia wystawiona" : "✓ Review submitted"}
+                  </p>
+                )}
               </div>
             ))}
           </div>

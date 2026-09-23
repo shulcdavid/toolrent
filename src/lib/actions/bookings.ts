@@ -63,7 +63,7 @@ export async function createBooking(formData: FormData) {
   redirect(`/${lang}/listings/${listingId}?booked=1`);
 }
 
-export async function updateBookingStatus(bookingId: string, status: "approved" | "rejected" | "cancelled", lang: string) {
+export async function updateBookingStatus(bookingId: string, status: "approved" | "rejected" | "cancelled" | "completed", lang: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return;

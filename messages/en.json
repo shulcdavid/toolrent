@@ -187,7 +187,14 @@
     "delete": "Delete",
     "dates": "Dates",
     "renter": "Renter",
-    "tool": "Tool"
+    "tool": "Tool",
+    "markComplete": "Mark as returned",
+    "leaveReview": "Leave a review",
+    "reviewSent": "Review submitted. Thank you!",
+    "alreadyReviewed": "Review submitted",
+    "submitReview": "Submit review",
+    "reviewLabel": "Your rating",
+    "reviewPlaceholder": "Share your experience (optional)..."
   },
   "categories": {
     "power": "Power Tools",

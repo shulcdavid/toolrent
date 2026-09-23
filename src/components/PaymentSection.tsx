@@ -20,26 +20,31 @@ function AddCardForm({ lang, onSuccess, onCancel }: { lang: string; onSuccess: (
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!stripe || !elements) return;
+    if (!stripe || !elements) { setError("Stripe not loaded, refresh and try again"); return; }
     setLoading(true);
     setError("");
 
-    const res = await fetch("/api/stripe/setup-intent", { method: "POST" });
-    const { clientSecret, error: apiError } = await res.json();
-    if (apiError) { setError(apiError); setLoading(false); return; }
+    try {
+      const res = await fetch("/api/stripe/setup-intent", { method: "POST" });
+      const { clientSecret, error: apiError } = await res.json();
+      if (apiError) { setError(apiError); setLoading(false); return; }
 
-    const cardElement = elements.getElement(CardElement);
-    if (!cardElement) return;
+      const cardElement = elements.getElement(CardElement);
+      if (!cardElement) { setError("Card element not found"); setLoading(false); return; }
 
-    const { error: stripeError } = await stripe.confirmCardSetup(clientSecret, {
-      payment_method: { card: cardElement },
-    });
+      const { error: stripeError } = await stripe.confirmCardSetup(clientSecret, {
+        payment_method: { card: cardElement },
+      });
 
-    if (stripeError) {
-      setError(stripeError.message ?? "Failed to save card");
+      if (stripeError) {
+        setError(stripeError.message ?? "Failed to save card");
+        setLoading(false);
+      } else {
+        onSuccess();
+      }
+    } catch (err: any) {
+      setError(err?.message ?? "Unexpected error, please try again");
       setLoading(false);
-    } else {
-      onSuccess();
     }
   }
 
@@ -48,6 +53,7 @@ function AddCardForm({ lang, onSuccess, onCancel }: { lang: string; onSuccess: (
       <div className="rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-3.5">
         <CardElement
           options={{
+            hidePostalCode: true,
             style: {
               base: { fontSize: "14px", color: "#20201f", "::placeholder": { color: "rgba(32,32,31,0.4)" } },
             },
@@ -77,6 +83,7 @@ function PaymentSectionInner({ lang }: { lang: string }) {
   const [adding, setAdding] = useState(false);
   const [methods, setMethods] = useState<PaymentMethod[]>([]);
   const [loadingCards, setLoadingCards] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const loadMethods = useCallback(async () => {
     setLoadingCards(true);
@@ -154,10 +161,16 @@ function PaymentSectionInner({ lang }: { lang: string }) {
             </div>
           ))}
 
+          {saved && (
+            <p className="text-sm text-emerald-700 rounded-lg bg-emerald-50 px-3 py-2">
+              {isLt ? "Kortelė išsaugota" : "Card saved successfully"}
+            </p>
+          )}
+
           {adding ? (
             <AddCardForm
               lang={lang}
-              onSuccess={() => { setAdding(false); loadMethods(); }}
+              onSuccess={() => { setAdding(false); setSaved(true); loadMethods(); setTimeout(() => setSaved(false), 4000); }}
               onCancel={() => setAdding(false)}
             />
           ) : (

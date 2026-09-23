@@ -187,7 +187,14 @@
     "delete": "Usuń",
     "dates": "Daty",
     "renter": "Najemca",
-    "tool": "Narzędzie"
+    "tool": "Narzędzie",
+    "markComplete": "Oznacz jako zwrócone",
+    "leaveReview": "Zostaw opinię",
+    "reviewSent": "Opinia wysłana. Dziękujemy!",
+    "alreadyReviewed": "Opinia wystawiona",
+    "submitReview": "Wyślij opinię",
+    "reviewLabel": "Twoja ocena",
+    "reviewPlaceholder": "Podziel się doświadczeniem (opcjonalnie)..."
   },
   "categories": {
     "power": "Narzędzia elektryczne",

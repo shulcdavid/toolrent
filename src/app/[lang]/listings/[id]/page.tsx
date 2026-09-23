@@ -136,9 +136,13 @@ export default async function ListingDetailPage({
           <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">
             <h2 className="font-outfit font-semibold text-[#20201f] mb-4 text-sm uppercase tracking-wide">{dict.listing.owner}</h2>
             <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#20201f] text-lg font-bold text-[#f7f6f2]">
-                {listing.profiles?.full_name?.[0]?.toUpperCase() ?? "?"}
-              </div>
+              {listing.profiles?.avatar_url ? (
+                <img src={listing.profiles.avatar_url} alt="" className="h-11 w-11 rounded-full object-cover border border-[#e5e2db]" />
+              ) : (
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#20201f] text-lg font-bold text-[#f7f6f2]">
+                  {listing.profiles?.full_name?.[0]?.toUpperCase() ?? "?"}
+                </div>
+              )}
               <div>
                 <p className="font-outfit font-semibold text-[#20201f] text-sm">{listing.profiles?.full_name ?? "Anonymous"}</p>
                 <p className="text-xs text-[#20201f]/65">{dict.listing.memberSince} {formatDate(listing.profiles?.created_at)}</p>
@@ -170,9 +174,13 @@ export default async function ListingDetailPage({
                 {reviews.map((review) => (
                   <div key={review.id} className="border-b border-[#e5e2db] pb-4 last:border-0 last:pb-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <div className="h-7 w-7 rounded-full bg-[#20201f] flex items-center justify-center text-xs font-bold text-[#f7f6f2]">
-                        {(review.profiles as any)?.full_name?.[0]?.toUpperCase() ?? "?"}
-                      </div>
+                      {(review.profiles as any)?.avatar_url ? (
+                        <img src={(review.profiles as any).avatar_url} alt="" className="h-7 w-7 rounded-full object-cover" />
+                      ) : (
+                        <div className="h-7 w-7 rounded-full bg-[#20201f] flex items-center justify-center text-xs font-bold text-[#f7f6f2]">
+                          {(review.profiles as any)?.full_name?.[0]?.toUpperCase() ?? "?"}
+                        </div>
+                      )}
                       <span className="text-sm font-medium text-[#20201f]">{(review.profiles as any)?.full_name}</span>
                       <div className="flex ml-auto">
                         {Array.from({ length: 5 }).map((_, i) => (

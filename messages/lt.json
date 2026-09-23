@@ -187,7 +187,14 @@
     "delete": "Ištrinti",
     "dates": "Datos",
     "renter": "Nuomininkas",
-    "tool": "Įrankis"
+    "tool": "Įrankis",
+    "markComplete": "Pažymėti kaip grąžintą",
+    "leaveReview": "Palikti atsiliepimą",
+    "reviewSent": "Atsiliepimas išsiųstas. Ačiū!",
+    "alreadyReviewed": "Atsiliepimas paliktas",
+    "submitReview": "Siųsti atsiliepimą",
+    "reviewLabel": "Jūsų įvertinimas",
+    "reviewPlaceholder": "Pasidalink patirtimi (neprivaloma)..."
   },
   "categories": {
     "power": "Elektriniai įrankiai",

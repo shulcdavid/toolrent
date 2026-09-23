@@ -187,7 +187,14 @@
     "delete": "Kustuta",
     "dates": "Kuupäevad",
     "renter": "Rentija",
-    "tool": "Tööriist"
+    "tool": "Tööriist",
+    "markComplete": "Märgi tagastatuks",
+    "leaveReview": "Jäta arvustus",
+    "reviewSent": "Arvustus esitatud. Täname!",
+    "alreadyReviewed": "Arvustus esitatud",
+    "submitReview": "Esita arvustus",
+    "reviewLabel": "Teie hinnang",
+    "reviewPlaceholder": "Jagage oma kogemust (vabatahtlik)..."
   },
   "categories": {
     "power": "Elektrilised tööriistad",

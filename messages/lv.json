@@ -187,7 +187,14 @@
     "delete": "Dzēst",
     "dates": "Datumi",
     "renter": "Īrnieks",
-    "tool": "Rīks"
+    "tool": "Rīks",
+    "markComplete": "Atzīmēt kā atgrieztu",
+    "leaveReview": "Atstāt atsauksmi",
+    "reviewSent": "Atsauksme iesniegta. Paldies!",
+    "alreadyReviewed": "Atsauksme atstāta",
+    "submitReview": "Iesniegt atsauksmi",
+    "reviewLabel": "Jūsu vērtējums",
+    "reviewPlaceholder": "Dalieties pieredzē (pēc izvēles)..."
   },
   "categories": {
     "power": "Elektroinstrumenti",
