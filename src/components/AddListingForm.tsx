@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition, useRef } from "react";
 import { Upload, X } from "lucide-react";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
@@ -8,6 +8,7 @@ import { CATEGORIES } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { createListing } from "@/lib/actions/listings";
 import { OwnerAvailabilityCalendar } from "@/components/AvailabilityCalendar";
+import { createClient } from "@/lib/supabase/client";
 import type { Locale } from "@/i18n/config";
 
 interface Props {
@@ -27,10 +28,15 @@ interface Props {
 }
 
 export function AddListingForm({ dict, lang }: Props) {
-  const [images, setImages] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
   const [selectedCats, setSelectedCats] = useState<Set<string>>(new Set());
   const [isDragging, setIsDragging] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const formRef = useRef<HTMLFormElement>(null);
   const f = dict.addListing.fields;
+  const isLt = lang === "lt";
 
   function toggleCat(cat: string) {
     setSelectedCats((prev) => {
@@ -40,39 +46,72 @@ export function AddListingForm({ dict, lang }: Props) {
     });
   }
 
-  function processFiles(files: FileList | File[]) {
-    Array.from(files)
+  function addFiles(newFiles: FileList | File[]) {
+    const valid = Array.from(newFiles)
       .filter((f) => f.type.startsWith("image/"))
-      .slice(0, 5 - images.length)
-      .forEach((file) => {
-        const reader = new FileReader();
-        reader.onload = (ev) => setImages((prev) => [...prev, ev.target?.result as string].slice(0, 5));
-        reader.readAsDataURL(file);
-      });
+      .slice(0, 5 - files.length);
+
+    valid.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => setPreviews((prev) => [...prev, ev.target?.result as string].slice(0, 5));
+      reader.readAsDataURL(file);
+    });
+    setFiles((prev) => [...prev, ...valid].slice(0, 5));
+  }
+
+  function removeImage(i: number) {
+    setFiles((prev) => prev.filter((_, j) => j !== i));
+    setPreviews((prev) => prev.filter((_, j) => j !== i));
   }
 
   function handleImageAdd(e: React.ChangeEvent<HTMLInputElement>) {
-    if (e.target.files) processFiles(e.target.files);
+    if (e.target.files) addFiles(e.target.files);
   }
 
   function handleDrop(e: React.DragEvent) {
     e.preventDefault();
     setIsDragging(false);
-    if (images.length < 5) processFiles(e.dataTransfer.files);
+    if (files.length < 5) addFiles(e.dataTransfer.files);
   }
 
-  function handleDragOver(e: React.DragEvent) {
-    e.preventDefault();
-    setIsDragging(true);
-  }
-
+  function handleDragOver(e: React.DragEvent) { e.preventDefault(); setIsDragging(true); }
   function handleDragLeave(e: React.DragEvent) {
-    // Only clear if leaving the drop zone entirely (not entering a child)
     if (!e.currentTarget.contains(e.relatedTarget as Node)) setIsDragging(false);
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setUploadError("");
+
+    startTransition(async () => {
+      const formData = new FormData(e.currentTarget);
+
+      // Upload images to Supabase Storage
+      if (files.length > 0) {
+        const supabase = createClient();
+        const urls: string[] = [];
+
+        for (const file of files) {
+          const ext = file.name.split(".").pop();
+          const path = `${crypto.randomUUID()}.${ext}`;
+          const { error } = await supabase.storage.from("listings").upload(path, file, { upsert: false });
+          if (error) {
+            setUploadError(isLt ? "Nuotraukų įkėlimas nepavyko. Bandykite dar kartą." : "Image upload failed. Please try again.");
+            return;
+          }
+          const { data } = supabase.storage.from("listings").getPublicUrl(path);
+          urls.push(data.publicUrl);
+        }
+
+        urls.forEach((url) => formData.append("images", url));
+      }
+
+      await createListing(formData);
+    });
+  }
+
   return (
-    <form action={createListing} className="flex flex-col gap-6 max-w-3xl mx-auto w-full">
+    <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-3xl mx-auto w-full">
       <input type="hidden" name="lang" value={lang} />
 
       {/* Images */}
@@ -85,21 +124,18 @@ export function AddListingForm({ dict, lang }: Props) {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           className={`rounded-2xl border-2 border-dashed transition-colors ${
-            isDragging
-              ? "border-[#20201f] bg-[#e5e2db]"
-              : "border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/30"
+            isDragging ? "border-[#20201f] bg-[#e5e2db]" : "border-[#e5e2db] bg-[#eeece3] hover:border-[#20201f]/30"
           }`}
         >
-          {/* Thumbnails */}
-          {images.length > 0 && (
+          {previews.length > 0 && (
             <div className="flex flex-wrap gap-3 p-4 pb-0 justify-center">
-              {images.map((src, i) => (
+              {previews.map((src, i) => (
                 <div key={i} className="relative h-24 w-24 rounded-xl overflow-hidden border border-[#e5e2db]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={src} alt="" className="h-full w-full object-cover" />
                   <button
                     type="button"
-                    onClick={() => setImages((p) => p.filter((_, j) => j !== i))}
+                    onClick={() => removeImage(i)}
                     className="absolute top-1 right-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#20201f]/70 text-[#f7f6f2] hover:bg-[#20201f]"
                   >
                     <X size={10} />
@@ -109,20 +145,23 @@ export function AddListingForm({ dict, lang }: Props) {
             </div>
           )}
 
-          {/* Drop prompt / click to browse */}
-          {images.length < 5 && (
+          {files.length < 5 && (
             <label className="flex flex-col items-center justify-center gap-2 py-8 cursor-pointer">
               <Upload size={24} className={isDragging ? "text-[#20201f]" : "text-[#20201f]/40"} />
               <span className="text-sm font-medium text-[#20201f]/65">
                 {isDragging
-                  ? (lang === "lt" ? "Paleiskite norėdami įkelti" : "Drop to upload")
-                  : (lang === "lt" ? "Vilkite nuotraukas čia arba spauskite" : "Drag & drop photos here, or click to browse")}
+                  ? (isLt ? "Paleiskite norėdami įkelti" : "Drop to upload")
+                  : (isLt ? "Vilkite nuotraukas čia arba spauskite" : "Drag & drop photos here, or click to browse")}
               </span>
-              <span className="text-xs text-[#20201f]/40">{images.length}/5 {lang === "lt" ? "nuotraukos" : "photos"}</span>
+              <span className="text-xs text-[#20201f]/40">{files.length}/5 {isLt ? "nuotraukos" : "photos"}</span>
               <input type="file" accept="image/*" multiple className="hidden" onChange={handleImageAdd} />
             </label>
           )}
         </div>
+
+        {uploadError && (
+          <p className="mt-2 text-sm text-red-500 rounded-lg bg-red-50 px-3 py-2">{uploadError}</p>
+        )}
       </div>
 
       <Input name="title" label={f.title} placeholder={f.titlePlaceholder} required />
@@ -136,20 +175,10 @@ export function AddListingForm({ dict, lang }: Props) {
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1">{f.category}</label>
         <p className="text-xs text-[#20201f]/75 mb-3">
-          {lang === "lt" ? "Galite pasirinkti kelias kategorijas." : "You can select more than one."}
+          {isLt ? "Galite pasirinkti kelias kategorijas." : "You can select more than one."}
         </p>
-        {/* Hidden validation sentinel — ensures at least one is checked */}
-        <input
-          type="text"
-          name="_categories_check"
-          value={selectedCats.size > 0 ? "ok" : ""}
-          onChange={() => {}}
-          required
-          className="sr-only"
-          aria-hidden="true"
-          tabIndex={-1}
-        />
-        {/* Pass each selected category as a separate form value */}
+        <input type="text" name="_categories_check" value={selectedCats.size > 0 ? "ok" : ""}
+          onChange={() => {}} required className="sr-only" aria-hidden="true" tabIndex={-1} />
         {[...selectedCats].map((cat) => (
           <input key={cat} type="hidden" name="categories" value={cat} />
         ))}
@@ -157,14 +186,9 @@ export function AddListingForm({ dict, lang }: Props) {
           {CATEGORIES.map((cat) => {
             const checked = selectedCats.has(cat);
             return (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => toggleCat(cat)}
+              <button key={cat} type="button" onClick={() => toggleCat(cat)}
                 className={`flex items-center gap-2 rounded-xl border px-3 py-2.5 text-xs transition whitespace-nowrap ${
-                  checked
-                    ? "border-[#20201f] bg-[#20201f] text-[#f7f6f2]"
-                    : "border-[#e5e2db] bg-[#eeece3] text-[#20201f] hover:border-[#20201f]/40"
+                  checked ? "border-[#20201f] bg-[#20201f] text-[#f7f6f2]" : "border-[#e5e2db] bg-[#eeece3] text-[#20201f] hover:border-[#20201f]/40"
                 }`}
               >
                 <CategoryIcon category={cat} size={14} className="shrink-0" />
@@ -185,20 +209,16 @@ export function AddListingForm({ dict, lang }: Props) {
         <Input name="address" label={f.address} placeholder={f.addressPlaceholder} />
       </div>
 
-      {/* Availability calendar */}
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">
-          {lang === "lt" ? "Prieinamumas" : "Availability"}
+          {isLt ? "Prieinamumas" : "Availability"}
         </label>
         <p className="text-xs text-[#20201f]/75 mb-3">
-          {lang === "lt"
-            ? "Pažymėkite dienas, kuriomis įrankis nebus prieinamas."
-            : "Mark the days when the tool will not be available."}
+          {isLt ? "Pažymėkite dienas, kuriomis įrankis nebus prieinamas." : "Mark the days when the tool will not be available."}
         </p>
         <OwnerAvailabilityCalendar lang={lang} />
       </div>
 
-      {/* Toggle */}
       <label className="flex items-center gap-3 cursor-pointer">
         <div className="relative">
           <input type="checkbox" name="is_available" defaultChecked className="sr-only peer" />
@@ -208,7 +228,9 @@ export function AddListingForm({ dict, lang }: Props) {
         <span className="text-sm font-medium text-[#20201f]">{f.available}</span>
       </label>
 
-      <Button type="submit" size="lg">{dict.addListing.submit}</Button>
+      <Button type="submit" size="lg" disabled={isPending}>
+        {isPending ? (isLt ? "Įkeliama…" : "Uploading…") : dict.addListing.submit}
+      </Button>
     </form>
   );
 }

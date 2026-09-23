@@ -20,7 +20,7 @@ export async function createListing(formData: FormData) {
     deposit: Number(formData.get("deposit") ?? 0),
     city: formData.get("city") as string,
     address: formData.get("address") as string,
-    images: [],
+    images: formData.getAll("images") as string[],
     is_available: formData.get("is_available") === "on",
     blocked_dates: JSON.parse((formData.get("blocked_dates") as string) || "[]"),
   }).select().single();

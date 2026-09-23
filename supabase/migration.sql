@@ -2,6 +2,19 @@
 -- Rente – run this once in Supabase SQL editor
 -- ============================================================
 
+-- 0. Create storage bucket for listing images
+INSERT INTO storage.buckets (id, name, public) VALUES ('listings', 'listings', true)
+  ON CONFLICT (id) DO NOTHING;
+
+DROP POLICY IF EXISTS "Public read listing images" ON storage.objects;
+CREATE POLICY "Public read listing images" ON storage.objects FOR SELECT USING (bucket_id = 'listings');
+
+DROP POLICY IF EXISTS "Auth upload listing images" ON storage.objects;
+CREATE POLICY "Auth upload listing images" ON storage.objects FOR INSERT WITH CHECK (bucket_id = 'listings' AND auth.role() = 'authenticated');
+
+DROP POLICY IF EXISTS "Auth delete own listing images" ON storage.objects;
+CREATE POLICY "Auth delete own listing images" ON storage.objects FOR DELETE USING (bucket_id = 'listings' AND auth.uid()::text = (storage.foldername(name))[1]);
+
 -- 1. Add Stripe columns to profiles
 ALTER TABLE public.profiles
   ADD COLUMN IF NOT EXISTS stripe_customer_id TEXT;
