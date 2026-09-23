@@ -6,7 +6,7 @@ import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
 import { CATEGORIES } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
-import { createListing } from "@/lib/actions/listings";
+import { createListing, updateListing } from "@/lib/actions/listings";
 import { OwnerAvailabilityCalendar } from "@/components/AvailabilityCalendar";
 import { createClient } from "@/lib/supabase/client";
 import type { Locale } from "@/i18n/config";
@@ -25,12 +25,15 @@ interface Props {
     categories: Record<string, string>;
   };
   lang: Locale;
+  initialData?: any;
 }
 
-export function AddListingForm({ dict, lang }: Props) {
+export function AddListingForm({ dict, lang, initialData }: Props) {
+  const isEditing = !!initialData;
   const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
-  const [selectedCats, setSelectedCats] = useState<Set<string>>(new Set());
+  const [previews, setPreviews] = useState<string[]>(initialData?.images ?? []);
+  const [existingImageUrls, setExistingImageUrls] = useState<string[]>(initialData?.images ?? []);
+  const [selectedCats, setSelectedCats] = useState<Set<string>>(new Set(initialData?.categories ?? []));
   const [isDragging, setIsDragging] = useState(false);
   const [uploadError, setUploadError] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -60,7 +63,13 @@ export function AddListingForm({ dict, lang }: Props) {
   }
 
   function removeImage(i: number) {
-    setFiles((prev) => prev.filter((_, j) => j !== i));
+    const isExisting = i < existingImageUrls.length;
+    if (isExisting) {
+      setExistingImageUrls((prev) => prev.filter((_, j) => j !== i));
+    } else {
+      const newIndex = i - existingImageUrls.length;
+      setFiles((prev) => prev.filter((_, j) => j !== newIndex));
+    }
     setPreviews((prev) => prev.filter((_, j) => j !== i));
   }
 
@@ -86,10 +95,12 @@ export function AddListingForm({ dict, lang }: Props) {
     startTransition(async () => {
       const formData = new FormData(e.currentTarget);
 
-      // Upload images to Supabase Storage
+      // Keep existing image URLs
+      existingImageUrls.forEach((url) => formData.append("images", url));
+
+      // Upload new files to Supabase Storage
       if (files.length > 0) {
         const supabase = createClient();
-        const urls: string[] = [];
 
         for (const file of files) {
           const ext = file.name.split(".").pop();
@@ -100,19 +111,22 @@ export function AddListingForm({ dict, lang }: Props) {
             return;
           }
           const { data } = supabase.storage.from("listings").getPublicUrl(path);
-          urls.push(data.publicUrl);
+          formData.append("images", data.publicUrl);
         }
-
-        urls.forEach((url) => formData.append("images", url));
       }
 
-      await createListing(formData);
+      if (isEditing) {
+        await updateListing(formData);
+      } else {
+        await createListing(formData);
+      }
     });
   }
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-6 max-w-3xl mx-auto w-full">
       <input type="hidden" name="lang" value={lang} />
+      {isEditing && <input type="hidden" name="listing_id" value={initialData.id} />}
 
       {/* Images */}
       <div>
@@ -164,11 +178,11 @@ export function AddListingForm({ dict, lang }: Props) {
         )}
       </div>
 
-      <Input name="title" label={f.title} placeholder={f.titlePlaceholder} required />
+      <Input name="title" label={f.title} placeholder={f.titlePlaceholder} required defaultValue={initialData?.title ?? ""} />
 
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">{f.description}</label>
-        <textarea name="description" placeholder={f.descPlaceholder} rows={4}
+        <textarea name="description" placeholder={f.descPlaceholder} rows={4} defaultValue={initialData?.description ?? ""}
           className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/70 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15 resize-none" />
       </div>
 
@@ -200,13 +214,13 @@ export function AddListingForm({ dict, lang }: Props) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Input name="price_per_day" label={f.pricePerDay} type="number" min="1" step="0.5" placeholder="8" required />
-        <Input name="deposit" label={f.deposit} type="number" min="0" step="1" placeholder="0" hint={f.depositHint} />
+        <Input name="price_per_day" label={f.pricePerDay} type="number" min="1" step="0.5" placeholder="8" required defaultValue={initialData?.price_per_day ?? ""} />
+        <Input name="deposit" label={f.deposit} type="number" min="0" step="1" placeholder="0" hint={f.depositHint} defaultValue={initialData?.deposit ?? ""} />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Input name="city" label={f.city} placeholder={f.cityPlaceholder} required />
-        <Input name="address" label={f.address} placeholder={f.addressPlaceholder} />
+        <Input name="city" label={f.city} placeholder={f.cityPlaceholder} required defaultValue={initialData?.city ?? ""} />
+        <Input name="address" label={f.address} placeholder={f.addressPlaceholder} defaultValue={initialData?.address ?? ""} />
       </div>
 
       <div>
@@ -221,7 +235,7 @@ export function AddListingForm({ dict, lang }: Props) {
 
       <label className="flex items-center gap-3 cursor-pointer">
         <div className="relative">
-          <input type="checkbox" name="is_available" defaultChecked className="sr-only peer" />
+          <input type="checkbox" name="is_available" defaultChecked={initialData ? initialData.is_available : true} className="sr-only peer" />
           <div className="w-11 h-6 rounded-full bg-[#e5e2db] peer-checked:bg-[#20201f] transition-colors" />
           <div className="absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-[#f7f6f2] shadow transition-transform peer-checked:translate-x-5" />
         </div>

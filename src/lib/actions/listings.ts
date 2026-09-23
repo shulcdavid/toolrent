@@ -29,6 +29,32 @@ export async function createListing(formData: FormData) {
   redirect(`/${lang}/listings/${data.id}`);
 }
 
+export async function updateListing(formData: FormData) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const lang = (formData.get("lang") as string) ?? "en";
+  const listingId = formData.get("listing_id") as string;
+
+  if (!user) redirect(`/${lang}/auth/login`);
+
+  const db = supabase as any;
+  const { error } = await db.from("listings").update({
+    title: formData.get("title") as string,
+    description: formData.get("description") as string,
+    categories: formData.getAll("categories") as string[],
+    price_per_day: Number(formData.get("price_per_day")),
+    deposit: Number(formData.get("deposit") ?? 0),
+    city: formData.get("city") as string,
+    address: formData.get("address") as string,
+    images: formData.getAll("images") as string[],
+    is_available: formData.get("is_available") === "on",
+    blocked_dates: JSON.parse((formData.get("blocked_dates") as string) || "[]"),
+  }).eq("id", listingId).eq("user_id", user.id);
+
+  if (error) redirect(`/${lang}/add-listing?edit=${listingId}&error=${encodeURIComponent(error.message)}`);
+  redirect(`/${lang}/listings/${listingId}`);
+}
+
 export async function updateListingAvailability(listingId: string, isAvailable: boolean) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
