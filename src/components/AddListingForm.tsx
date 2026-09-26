@@ -17,7 +17,7 @@ interface Props {
       fields: {
         title: string; titlePlaceholder: string; description: string; descPlaceholder: string;
         category: string; pricePerDay: string; deposit: string; depositHint: string;
-        city: string; cityPlaceholder: string; address: string; addressPlaceholder: string;
+        city: string; cityPlaceholder: string;
         images: string; imagesHint: string; available: string;
       };
       submit: string;
@@ -218,10 +218,7 @@ export function AddListingForm({ dict, lang, initialData }: Props) {
         <Input name="deposit" label={f.deposit} type="number" min="0" step="1" placeholder="0" hint={f.depositHint} defaultValue={initialData?.deposit ?? ""} />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <Input name="city" label={f.city} placeholder={f.cityPlaceholder} required defaultValue={initialData?.city ?? ""} />
-        <Input name="address" label={f.address} placeholder={f.addressPlaceholder} defaultValue={initialData?.address ?? ""} />
-      </div>
+      <Input name="city" label={f.city} placeholder={f.cityPlaceholder} required defaultValue={initialData?.city ?? ""} />
 
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">

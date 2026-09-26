@@ -101,7 +101,7 @@ export default async function ListingDetailPage({
               </span>
             </div>
             <div className="flex flex-wrap items-center gap-3 mt-3">
-              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/65"><MapPin size={12} /> {listing.city}{listing.address && ` · ${listing.address}`}</span>
+              <span className="flex items-center gap-1.5 text-xs text-[#20201f]/65"><MapPin size={12} /> {listing.city}</span>
               <span className="flex items-center gap-1.5 text-xs text-[#20201f]/65"><Calendar size={12} /> {formatDate(listing.created_at)}</span>
               {(listing.categories ?? []).map((cat: string) => (
                 <Badge key={cat} variant="default">{dict.categories[cat as keyof typeof dict.categories]}</Badge>
