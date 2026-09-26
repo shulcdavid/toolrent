@@ -230,7 +230,7 @@ export function AddListingForm({ dict, lang, initialData }: Props) {
         <p className="text-xs text-[#20201f]/75 mb-3">
           {isLt ? "Pažymėkite dienas, kuriomis įrankis nebus prieinamas." : "Mark the days when the tool will not be available."}
         </p>
-        <OwnerAvailabilityCalendar lang={lang} />
+        <OwnerAvailabilityCalendar lang={lang} initialBlocked={initialData?.blocked_dates ?? []} />
       </div>
 
       <label className="flex items-center gap-3 cursor-pointer">
