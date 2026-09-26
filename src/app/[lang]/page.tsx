@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowRight, Search, Send, PackageCheck, PlusCircle } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
@@ -111,32 +112,36 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
               <div className="absolute top-8 left-6 right-0 bottom-0 rounded-3xl bg-[#eeece3] border border-[#e5e2db] rotate-[4deg]" />
               {/* Mid card */}
               <div className="absolute top-4 left-3 right-2 bottom-2 rounded-3xl bg-[#e8e5de] border border-[#e5e2db] rotate-[2deg]" />
-              {/* Front card */}
-              <div className="absolute inset-0 rounded-3xl bg-[#f7f6f2] border border-[#e5e2db] shadow-xl overflow-hidden flex flex-col">
-                <div className="flex-1 bg-[#eeece3] flex items-center justify-center text-8xl">
-                  🔧
-                </div>
-                <div className="p-5 flex flex-col gap-3">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <div className="font-outfit font-semibold text-[#20201f] text-sm">
-                        {lt ? "Gręžtuvas Bosch" : "Bosch Drill Set"}
+              {/* Front card — uses first real listing if available */}
+              {(() => {
+                const hero = featured[0];
+                const heroImage = hero?.images?.[0];
+                const heroName = hero ? hero.title : (lt ? "Gręžtuvas Bosch" : "Bosch Drill Set");
+                const heroCity = hero ? hero.city : (lt ? "Vilnius, Šeškinė" : "Vilnius, Šeškinė");
+                const heroPrice = hero ? `${hero.price_per_day} €` : "5 €";
+                const heroInitial = hero?.profiles?.full_name?.[0]?.toUpperCase() ?? "T";
+                return (
+                  <div className="absolute inset-0 rounded-3xl bg-[#f7f6f2] border border-[#e5e2db] shadow-xl overflow-hidden flex flex-col">
+                    <div className="flex-1 bg-[#eeece3] relative flex items-center justify-center">
+                      {heroImage ? (
+                        <Image src={heroImage} alt={heroName} fill className="object-contain" sizes="340px" />
+                      ) : (
+                        <span className="text-8xl">🔧</span>
+                      )}
+                    </div>
+                    <div className="p-5 flex flex-col gap-3">
+                      <div>
+                        <div className="font-outfit font-semibold text-[#20201f] text-sm">{heroName}</div>
+                        <div className="text-xs text-[#20201f]/65 mt-0.5">{heroCity}</div>
                       </div>
-                      <div className="text-xs text-[#20201f]/65 mt-0.5">
-                        {lt ? "Vilnius, Šeškinė" : "Vilnius, Šeškinė"}
+                      <div className="flex items-center justify-between pt-3 border-t border-[#e5e2db]">
+                        <span className="font-outfit text-base font-bold text-[#20201f]">{heroPrice} <span className="text-xs font-normal text-[#20201f]/65">{lt ? "/ diena" : "/ day"}</span></span>
+                        <div className="h-7 w-7 rounded-full bg-[#20201f] flex items-center justify-center text-xs font-bold text-[#f7f6f2]">{heroInitial}</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 rounded-full bg-[#eeece3] px-2.5 py-1 text-xs font-medium text-[#20201f]">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      {lt ? "Laisva" : "Available"}
-                    </div>
                   </div>
-                  <div className="flex items-center justify-between pt-3 border-t border-[#e5e2db]">
-                    <span className="font-outfit text-base font-bold text-[#20201f]">5 € <span className="text-xs font-normal text-[#20201f]/65">{lt ? "/ diena" : "/ day"}</span></span>
-                    <div className="h-7 w-7 rounded-full bg-[#20201f] flex items-center justify-center text-xs font-bold text-[#f7f6f2]">T</div>
-                  </div>
-                </div>
-              </div>
+                );
+              })()}
             </div>
           </div>
         </div>
