@@ -68,7 +68,7 @@ export function nextEditDate(changedAt: string | null, months = 12, lang = "en")
   if (!changedAt) return "";
   const d = new Date(changedAt);
   d.setMonth(d.getMonth() + months);
-  const locale = lang === "lt" ? "lt-LT" : lang === "lv" ? "lv-LV" : lang === "et" ? "et-EE" : lang === "pl" ? "pl-PL" : "en-GB";
+  const locale = lang === "lt" ? "lt-LT" : "en-GB";
   return d.toLocaleDateString(locale, { year: "numeric", month: "long", day: "numeric" });
 }
 

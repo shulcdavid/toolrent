@@ -17,16 +17,13 @@ export function LeaveReviewForm({ lang, bookingId, listingId, listingTitle }: Pr
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const isLt = lang === "lt";
-  const isLv = lang === "lv";
-  const isEt = lang === "et";
-  const isPl = lang === "pl";
 
   const t = {
-    leaveReview: isLt ? "Palikti atsiliepimą" : isLv ? "Atstāt atsauksmi" : isEt ? "Jäta arvustus" : isPl ? "Zostaw opinię" : "Leave a review",
-    yourRating: isLt ? "Jūsų įvertinimas" : isLv ? "Jūsu vērtējums" : isEt ? "Teie hinnang" : isPl ? "Twoja ocena" : "Your rating",
-    placeholder: isLt ? "Pasidalink patirtimi (neprivaloma)..." : isLv ? "Dalieties pieredzē (pēc izvēles)..." : isEt ? "Jagage oma kogemust (vabatahtlik)..." : isPl ? "Podziel się doświadczeniem (opcjonalnie)..." : "Share your experience (optional)...",
-    submit: isLt ? "Siųsti atsiliepimą" : isLv ? "Iesniegt atsauksmi" : isEt ? "Esita arvustus" : isPl ? "Wyślij opinię" : "Submit review",
-    cancel: isLt ? "Atšaukti" : isLv ? "Atcelt" : isEt ? "Tühista" : isPl ? "Anuluj" : "Cancel",
+    leaveReview: isLt ? "Palikti atsiliepimą" : "Leave a review",
+    yourRating: isLt ? "Jūsų įvertinimas" : "Your rating",
+    placeholder: isLt ? "Pasidalink patirtimi (neprivaloma)..." : "Share your experience (optional)...",
+    submit: isLt ? "Siųsti atsiliepimą" : "Submit review",
+    cancel: isLt ? "Atšaukti" : "Cancel",
     selectRating: isLt ? "Pasirinkite įvertinimą" : "Select a rating",
   };
 

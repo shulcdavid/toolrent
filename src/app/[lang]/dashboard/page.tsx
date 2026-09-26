@@ -51,11 +51,8 @@ export default async function DashboardPage({
   const reviewedBookingIds = new Set(((myReviews ?? []) as any[]).map((r) => r.booking_id));
 
   const lt = lang === "lt";
-  const lv = lang === "lv";
-  const et = lang === "et";
-  const pl = lang === "pl";
 
-  const markReturnedLabel = lt ? "Pažymėti kaip grąžintą" : lv ? "Atzīmēt kā atgrieztu" : et ? "Märgi tagastatuks" : pl ? "Oznacz jako zwrócone" : "Mark as returned";
+  const markReturnedLabel = lt ? "Pažymėti kaip grąžintą" : "Mark as returned";
 
   return (
     <div className="mx-auto max-w-5xl px-5 sm:px-8 py-10">
@@ -97,7 +94,7 @@ export default async function DashboardPage({
 
       {sp.review_sent === "1" && (
         <div className="mb-6 rounded-2xl border border-emerald-200 bg-emerald-50 px-5 py-4 text-sm text-emerald-700 font-medium">
-          ⭐ {lt ? "Atsiliepimas išsiųstas. Ačiū!" : lv ? "Atsauksme iesniegta. Paldies!" : et ? "Arvustus esitatud. Täname!" : pl ? "Opinia wysłana. Dziękujemy!" : "Review submitted. Thank you!"}
+          ⭐ {lt ? "Atsiliepimas išsiųstas. Ačiū!" : "Review submitted. Thank you!"}
         </div>
       )}
 
@@ -224,7 +221,7 @@ export default async function DashboardPage({
                 )}
                 {booking.status === "completed" && reviewedBookingIds.has(booking.id) && (
                   <p className="mt-2 text-xs text-[#20201f]/45">
-                    {lt ? "✓ Atsiliepimas paliktas" : lv ? "✓ Atsauksme atstāta" : et ? "✓ Arvustus jäetud" : pl ? "✓ Opinia wystawiona" : "✓ Review submitted"}
+                    {lt ? "✓ Atsiliepimas paliktas" : "✓ Review submitted"}
                   </p>
                 )}
               </div>
