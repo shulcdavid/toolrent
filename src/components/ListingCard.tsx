@@ -49,7 +49,7 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
         {/* Hover overlay */}
         <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-full bg-[#20201f]/80 backdrop-blur-sm py-3 px-4 text-center text-xs font-semibold tracking-widest uppercase text-[#f7f6f2]">
-            View Details
+            {lang === "lt" ? "Peržiūrėti" : "View Details"}
           </div>
         </div>
       </div>
