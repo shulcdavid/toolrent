@@ -7,6 +7,7 @@ import { updateProfile } from "@/lib/actions/profile";
 import { createClient } from "@/lib/supabase/client";
 import type { Profile } from "@/lib/supabase/types";
 import type { Locale } from "@/i18n/config";
+import { LT_CITIES } from "@/components/RegisterForm";
 
 const COUNTRIES = [
   { value: "LT", label: "🇱🇹 Lithuania / Lietuva" },
@@ -173,12 +174,17 @@ export function ProfileForm({
         }
       />
 
-      <Input
-        name="city"
-        label={p.city}
-        defaultValue={profile?.city ?? ""}
-        placeholder="Vilnius"
-      />
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-[#20201f]">{p.city}</label>
+        <select
+          name="city"
+          defaultValue={profile?.city ?? ""}
+          className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2.5 text-sm text-[#20201f] outline-none focus:border-[#20201f] focus:ring-1 focus:ring-[#20201f] transition-colors appearance-none"
+        >
+          <option value="">{lang === "lt" ? "Pasirinkite miestą" : "Select city"}</option>
+          {LT_CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+      </div>
 
       {/* Country */}
       <div className="flex flex-col gap-1.5">

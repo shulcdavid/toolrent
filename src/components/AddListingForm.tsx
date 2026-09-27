@@ -5,6 +5,7 @@ import { Upload, X } from "lucide-react";
 import { Button } from "./ui/Button";
 import { Input } from "./ui/Input";
 import { CATEGORIES } from "@/lib/utils";
+import { LT_CITIES } from "@/components/RegisterForm";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { createListing, updateListing } from "@/lib/actions/listings";
 import { OwnerAvailabilityCalendar } from "@/components/AvailabilityCalendar";
@@ -218,7 +219,18 @@ export function AddListingForm({ dict, lang, initialData }: Props) {
         <Input name="deposit" label={f.deposit} type="number" min="0" step="1" placeholder="0" hint={f.depositHint} defaultValue={initialData?.deposit ?? ""} />
       </div>
 
-      <Input name="city" label={f.city} placeholder={f.cityPlaceholder} required defaultValue={initialData?.city ?? ""} />
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-[#20201f]">{f.city}</label>
+        <select
+          name="city"
+          required
+          defaultValue={initialData?.city ?? ""}
+          className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2.5 text-sm text-[#20201f] outline-none focus:border-[#20201f] focus:ring-1 focus:ring-[#20201f] transition-colors appearance-none"
+        >
+          <option value="" disabled>{isLt ? "Pasirinkite miestą" : "Select city"}</option>
+          {LT_CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+      </div>
 
       <div>
         <label className="text-sm font-medium text-[#20201f] block mb-1.5">

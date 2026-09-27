@@ -13,6 +13,17 @@ const COUNTRIES = [
   { value: "PL", label: "🇵🇱 Poland" },
 ];
 
+export const LT_CITIES = [
+  "Vilnius", "Kaunas", "Klaipėda", "Šiauliai", "Panevėžys",
+  "Alytus", "Marijampolė", "Mažeikiai", "Jonava", "Utena",
+  "Kėdainiai", "Telšiai", "Visaginas", "Tauragė", "Ukmergė",
+  "Plungė", "Kretinga", "Palanga", "Radviliškis", "Gargždai",
+  "Druskininkai", "Rokiškis", "Biržai", "Elektrėnai", "Kuršėnai",
+  "Skuodas", "Jurbarkas", "Anykščiai", "Lentvaris", "Garliava",
+  "Varėna", "Prienai", "Kelmė", "Šilutė", "Raseiniai",
+  "Ignalina", "Zarasai", "Molėtai", "Trakai", "Šalčininkai",
+];
+
 interface Props {
   dict: {
     fullName: string; username: string; usernamePlaceholder: string;
@@ -33,7 +44,18 @@ export function RegisterForm({ dict, lang }: Props) {
       <Input name="username" label={dict.username} placeholder={dict.usernamePlaceholder} required />
       <Input name="email" label={dict.email} type="email" placeholder="you@example.com" required />
       <Input name="password" label={dict.password} type="password" placeholder="••••••••" hint={dict.passwordHint} required />
-      <Input name="city" label={dict.city} placeholder="Vilnius" required />
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-[#20201f]">{dict.city}</label>
+        <select
+          name="city"
+          required
+          defaultValue=""
+          className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2.5 text-sm text-[#20201f] outline-none focus:border-[#20201f] focus:ring-1 focus:ring-[#20201f] transition-colors appearance-none"
+        >
+          <option value="" disabled>{lang === "lt" ? "Pasirinkite miestą" : "Select city"}</option>
+          {LT_CITIES.map((c) => <option key={c} value={c}>{c}</option>)}
+        </select>
+      </div>
 
       {/* Country select */}
       <div className="flex flex-col gap-1.5">
