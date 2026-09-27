@@ -7,7 +7,7 @@ import { daysBetween, calcServiceFee } from "@/lib/utils";
 import { sendBookingRequestEmail, sendBookingStatusEmail } from "@/lib/email";
 import { getStripe } from "@/lib/stripe";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://toolrent.lt";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://rente.lt";
 
 export async function createBooking(formData: FormData) {
   const supabase = await createClient();
