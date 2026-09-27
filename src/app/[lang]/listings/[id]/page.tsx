@@ -208,7 +208,7 @@ export default async function ListingDetailPage({
                 </Link>
               </div>
             ) : (
-              <BookingForm listing={listing} dict={dict} lang={lang as Locale} isLoggedIn={!!user} />
+              <BookingForm listing={listing} dict={dict} lang={lang as Locale} isLoggedIn={!!user} blockedDates={listing.blocked_dates ?? []} bookedRanges={bookedRanges} />
             )}
           </div>
         </div>
