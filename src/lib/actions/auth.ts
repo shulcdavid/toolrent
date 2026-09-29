@@ -59,7 +59,7 @@ export async function register(formData: FormData) {
     email,
     password,
     options: {
-      redirectTo: `${siteUrl}/auth/callback?next=/${lang}/dashboard`,
+      redirectTo: `${siteUrl}/auth/callback?next=/${lang}/onboarding`,
     },
   });
 

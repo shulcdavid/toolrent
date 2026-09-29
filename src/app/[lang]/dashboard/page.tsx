@@ -211,6 +211,19 @@ export default async function DashboardPage({
                     </form>
                   )}
                 </div>
+                {booking.status === "approved" && !(booking as any).stripe_payment_intent_id && (
+                  <div className="mt-3 flex items-center gap-3 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
+                    <span className="text-base">💳</span>
+                    <p className="text-xs text-amber-800 flex-1">
+                      {lt
+                        ? "Mokėjimas dar neapdorotas. Pridėkite mokėjimo kortelę profilio puslapyje."
+                        : "Payment not processed yet. Add your payment card on the profile page."}
+                    </p>
+                    <Link href={`/${lang}/profile`} className="text-xs font-semibold text-amber-800 underline underline-offset-2 shrink-0">
+                      {lt ? "Atidaryti" : "Open profile"}
+                    </Link>
+                  </div>
+                )}
                 {booking.status === "completed" && !reviewedBookingIds.has(booking.id) && (
                   <LeaveReviewForm
                     lang={lang}
