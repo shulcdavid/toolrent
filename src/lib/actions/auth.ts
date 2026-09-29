@@ -45,11 +45,11 @@ export async function register(formData: FormData) {
     redirect(`/${lang}/auth/register?error=${encodeURIComponent(createError.message)}`);
   }
 
-  // 1b. Save username & country to profile (trigger creates the row but doesn't know these fields)
+  // 1b. Save username, city & country to profile (trigger creates the row but doesn't know these fields)
   if (userData.user) {
     await (admin as any)
       .from("profiles")
-      .update({ username, country })
+      .update({ username, country, city })
       .eq("id", userData.user.id);
   }
 

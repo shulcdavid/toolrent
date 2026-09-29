@@ -144,3 +144,61 @@ export async function updateBookingStatus(bookingId: string, status: "approved" 
 
   redirect(`/${lang}/dashboard`);
 }
+
+export async function retryBookingPayment(bookingId: string, lang: string) {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const db = supabase as any;
+  const { data: booking } = await db
+    .from("bookings")
+    .select("renter_id, total_price, stripe_payment_intent_id")
+    .eq("id", bookingId)
+    .single();
+
+  if (!booking || booking.renter_id !== user.id || booking.stripe_payment_intent_id) {
+    redirect(`/${lang}/dashboard`);
+  }
+
+  const { data: profile } = await db
+    .from("profiles")
+    .select("stripe_customer_id")
+    .eq("id", user.id)
+    .single();
+
+  if (!profile?.stripe_customer_id) {
+    redirect(`/${lang}/profile`);
+  }
+
+  try {
+    const stripe = getStripe();
+    const paymentMethods = await stripe.paymentMethods.list({
+      customer: profile.stripe_customer_id,
+      type: "card",
+      limit: 1,
+    });
+
+    if (paymentMethods.data.length === 0) {
+      redirect(`/${lang}/profile`);
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round((booking.total_price ?? 0) * 100),
+      currency: "eur",
+      customer: profile.stripe_customer_id,
+      payment_method: paymentMethods.data[0].id,
+      confirm: true,
+      off_session: true,
+    });
+
+    await db
+      .from("bookings")
+      .update({ stripe_payment_intent_id: paymentIntent.id })
+      .eq("id", bookingId);
+  } catch (err) {
+    console.error("[Stripe] Retry charge failed:", err);
+  }
+
+  redirect(`/${lang}/dashboard`);
+}

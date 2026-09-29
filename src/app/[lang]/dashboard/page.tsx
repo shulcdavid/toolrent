@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/Badge";
 import { LeaveReviewForm } from "@/components/LeaveReviewForm";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate } from "@/lib/utils";
-import { updateBookingStatus } from "@/lib/actions/bookings";
+import { updateBookingStatus, retryBookingPayment } from "@/lib/actions/bookings";
 import { deleteListing } from "@/lib/actions/listings";
 import { toggleOwnerAvailability } from "@/lib/actions/profile";
 import type { Listing } from "@/lib/supabase/types";
@@ -215,13 +215,13 @@ export default async function DashboardPage({
                   <div className="mt-3 flex items-center gap-3 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
                     <span className="text-base">💳</span>
                     <p className="text-xs text-amber-800 flex-1">
-                      {lt
-                        ? "Mokėjimas dar neapdorotas. Pridėkite mokėjimo kortelę profilio puslapyje."
-                        : "Payment not processed yet. Add your payment card on the profile page."}
+                      {lt ? "Mokėjimas dar neapdorotas." : "Payment not processed yet."}
                     </p>
-                    <Link href={`/${lang}/profile`} className="text-xs font-semibold text-amber-800 underline underline-offset-2 shrink-0">
-                      {lt ? "Atidaryti" : "Open profile"}
-                    </Link>
+                    <form action={retryBookingPayment.bind(null, booking.id, lang)}>
+                      <Button size="sm" type="submit" variant="outline">
+                        {lt ? "Mokėti" : "Pay now"}
+                      </Button>
+                    </form>
                   </div>
                 )}
                 {booking.status === "completed" && !reviewedBookingIds.has(booking.id) && (
