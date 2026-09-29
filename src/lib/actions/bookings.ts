@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { daysBetween, calcServiceFee } from "@/lib/utils";
-import { sendBookingRequestEmail, sendBookingStatusEmail } from "@/lib/email";
+import { sendBookingRequestEmail, sendBookingStatusEmail, sendPaymentReceivedEmail } from "@/lib/email";
 import { getStripe } from "@/lib/stripe";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://rente.lt";
@@ -107,10 +107,15 @@ export async function updateBookingStatus(bookingId: string, status: "approved" 
             confirm: true,
             off_session: true,
           });
-          await db
+          const { data: bookingFull } = await db
             .from("bookings")
-            .update({ stripe_payment_intent_id: paymentIntent.id })
-            .eq("id", bookingId);
+            .select("listing_id")
+            .eq("id", bookingId)
+            .single();
+          await Promise.all([
+            db.from("bookings").update({ stripe_payment_intent_id: paymentIntent.id }).eq("id", bookingId),
+            db.from("listings").update({ is_available: false }).eq("id", bookingFull?.listing_id),
+          ]);
         }
       }
     } catch (err) {
@@ -192,10 +197,37 @@ export async function retryBookingPayment(bookingId: string, lang: string) {
       off_session: true,
     });
 
-    await db
+    // Save payment intent and mark listing unavailable
+    const { data: fullBooking } = await db
       .from("bookings")
-      .update({ stripe_payment_intent_id: paymentIntent.id })
-      .eq("id", bookingId);
+      .select("listing_id, listings(title, user_id)")
+      .eq("id", bookingId)
+      .single();
+
+    await Promise.all([
+      db.from("bookings").update({ stripe_payment_intent_id: paymentIntent.id }).eq("id", bookingId),
+      db.from("listings").update({ is_available: false }).eq("id", fullBooking?.listing_id),
+    ]);
+
+    // Email owner: payment received
+    try {
+      const admin = createAdminClient();
+      const { data: renterProfile } = await db.from("profiles").select("full_name").eq("id", user.id).single();
+      const { data: ownerAuth } = await admin.auth.admin.getUserById(fullBooking?.listings?.user_id);
+      const { data: ownerProfile } = await db.from("profiles").select("full_name").eq("id", fullBooking?.listings?.user_id).single();
+      if (ownerAuth?.user?.email) {
+        await sendPaymentReceivedEmail({
+          ownerEmail: ownerAuth.user.email,
+          ownerName: ownerProfile?.full_name ?? "there",
+          renterName: renterProfile?.full_name ?? "Renter",
+          listingTitle: fullBooking?.listings?.title ?? "",
+          amount: booking.total_price ?? 0,
+          listingUrl: `${BASE_URL}/${lang}/listings/${fullBooking?.listing_id}`,
+        });
+      }
+    } catch (err) {
+      console.error("Failed to send payment email:", err);
+    }
   } catch (err) {
     console.error("[Stripe] Retry charge failed:", err);
   }

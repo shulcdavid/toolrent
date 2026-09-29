@@ -199,6 +199,65 @@ export async function sendOtpEmail(opts: {
   });
 }
 
+export async function sendPaymentReceivedEmail(opts: {
+  ownerEmail: string;
+  ownerName: string;
+  renterName: string;
+  listingTitle: string;
+  amount: number;
+  listingUrl: string;
+}) {
+  const resend = getResend();
+  if (!resend) return;
+
+  const year = new Date().getFullYear();
+  const amountFormatted = opts.amount.toLocaleString("lt-LT", { style: "currency", currency: "EUR" });
+
+  await resend.emails.send({
+    from: FROM,
+    to: opts.ownerEmail,
+    subject: `Gautas mokėjimas: "${opts.listingTitle}"`,
+    html: `
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></head>
+<body style="margin:0;padding:0;background:#f7f6f2;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f6f2;padding:40px 16px;">
+    <tr><td align="center">
+      <table width="520" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;border:1px solid #e5e2db;overflow:hidden;max-width:520px;">
+        <tr>
+          <td style="background:#20201f;padding:28px 40px;">
+            <p style="margin:0;font-size:22px;font-weight:700;color:#f7f6f2;letter-spacing:-0.5px;">Rente</p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:40px;">
+            <p style="margin:0 0 8px;font-size:24px;font-weight:700;color:#20201f;">💳 Mokėjimas gautas!</p>
+            <p style="margin:0 0 24px;font-size:15px;color:rgba(32,32,31,0.6);line-height:1.6;">
+              Sveiki, ${opts.ownerName}! <strong style="color:#20201f;">${opts.renterName}</strong> sumokėjo už įrankio nuomą.
+            </p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="background:#f7f6f2;border-radius:12px;padding:20px;margin-bottom:28px;">
+              <tr><td style="padding:6px 0;font-size:14px;color:#20201f;"><strong>Įrankis:</strong> ${opts.listingTitle}</td></tr>
+              <tr><td style="padding:6px 0;font-size:14px;color:#20201f;"><strong>Suma:</strong> ${amountFormatted}</td></tr>
+            </table>
+            <a href="${opts.listingUrl}" style="display:inline-block;background:#20201f;color:#f7f6f2;text-decoration:none;padding:14px 28px;border-radius:999px;font-size:15px;font-weight:600;">
+              Peržiūrėti &rarr;
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:20px 40px;border-top:1px solid #e5e2db;">
+            <p style="margin:0;font-size:12px;color:rgba(32,32,31,0.35);">© ${year} Rente · P2P įrankių nuoma</p>
+          </td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`,
+  });
+}
+
 export async function sendBookingRequestEmail(opts: {
   ownerEmail: string;
   ownerName: string;
