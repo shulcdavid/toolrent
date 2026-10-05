@@ -54,7 +54,7 @@ function CardForm({ lang, onSuccess }: { lang: string; onSuccess: () => void }) 
   );
 }
 
-function Inner({ lang }: { lang: string }) {
+function Inner({ lang, redirectTo }: { lang: string; redirectTo?: string }) {
   const [hasCard, setHasCard] = useState<boolean | null>(null);
   const [saved, setSaved] = useState(false);
   const isLt = lang === "lt";
@@ -65,6 +65,13 @@ function Inner({ lang }: { lang: string }) {
       .then(d => setHasCard((d.paymentMethods ?? []).length > 0))
       .catch(() => setHasCard(false));
   }, []);
+
+  function handleSaved() {
+    setSaved(true);
+    if (redirectTo) {
+      setTimeout(() => { window.location.href = redirectTo; }, 1500);
+    }
+  }
 
   if (hasCard === null) return null; // still loading — show nothing
 
@@ -96,15 +103,15 @@ function Inner({ lang }: { lang: string }) {
           </p>
         </div>
       </div>
-      <CardForm lang={lang} onSuccess={() => setSaved(true)} />
+      <CardForm lang={lang} onSuccess={handleSaved} />
     </div>
   );
 }
 
-export function PaymentPrompt({ lang }: { lang: string }) {
+export function PaymentPrompt({ lang, redirectTo }: { lang: string; redirectTo?: string }) {
   return (
     <Elements stripe={getStripeClient()}>
-      <Inner lang={lang} />
+      <Inner lang={lang} redirectTo={redirectTo} />
     </Elements>
   );
 }

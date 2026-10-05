@@ -43,6 +43,16 @@ export default async function ListingsPage({
   const { data: cityData } = await supabase.from("listings").select("city");
   const cities = [...new Set(((cityData ?? []) as any[]).map((r) => r.city as string))].sort();
 
+  const { data: { user } } = await supabase.auth.getUser();
+  let favouriteIds = new Set<string>();
+  if (user) {
+    const { data: favs } = await (supabase as any)
+      .from("favourites")
+      .select("listing_id")
+      .eq("user_id", user.id);
+    favouriteIds = new Set(((favs ?? []) as any[]).map((f: any) => f.listing_id as string));
+  }
+
   return (
     <div className="mx-auto max-w-7xl px-5 sm:px-8 py-10">
       <div className="mb-8">
@@ -176,7 +186,8 @@ export default async function ListingsPage({
             <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
               {listings.map((listing) => (
                 <ListingCard key={listing.id} listing={listing as any} lang={lang as Locale}
-                  perDayLabel={dict.listings.perDay} availableLabel={dict.listings.available} unavailableLabel={dict.listings.unavailable} />
+                  perDayLabel={dict.listings.perDay} availableLabel={dict.listings.available} unavailableLabel={dict.listings.unavailable}
+                  userId={user?.id} isFavourited={favouriteIds.has(listing.id)} />
               ))}
             </div>
           )}

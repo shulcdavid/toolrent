@@ -3,6 +3,7 @@ import Image from "next/image";
 import { MapPin } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { FavouriteButton } from "@/components/FavouriteButton";
 import type { ListingWithProfile } from "@/lib/supabase/types";
 import type { Locale } from "@/i18n/dictionaries";
 
@@ -12,9 +13,11 @@ interface Props {
   perDayLabel: string;
   availableLabel: string;
   unavailableLabel: string;
+  userId?: string;
+  isFavourited?: boolean;
 }
 
-export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavailableLabel }: Props) {
+export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavailableLabel, userId, isFavourited }: Props) {
   const coverImage = listing.images?.[0];
 
   return (
@@ -44,6 +47,11 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
             <span className="h-1.5 w-1.5 rounded-full bg-[#20201f]/30" />
             {unavailableLabel}
           </div>
+        )}
+
+        {/* Favourite button — only shown for logged-in users */}
+        {userId && (
+          <FavouriteButton listingId={listing.id} initialFavourited={isFavourited ?? false} />
         )}
 
         {/* Hover overlay */}

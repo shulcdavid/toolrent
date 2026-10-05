@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
-import { PlusCircle, Package, CalendarCheck, Bell, UserRound } from "lucide-react";
+import { PlusCircle, Package, CalendarCheck, Bell, UserRound, Heart, FileText } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -36,17 +36,19 @@ export default async function DashboardPage({
 
   const today = new Date().toISOString().split("T")[0];
 
-  const [{ data: profileRaw }, { data: myListingsRaw }, { data: myBookings }, { data: incomingRaw }, { data: myReviews }] = await Promise.all([
+  const [{ data: profileRaw }, { data: myListingsRaw }, { data: myBookings }, { data: incomingRaw }, { data: myReviews }, { data: myFavsRaw }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
     supabase.from("listings").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
-    supabase.from("bookings").select("*, listings(title, city, price_per_day)").eq("renter_id", user.id).order("created_at", { ascending: false }),
+    supabase.from("bookings").select("*, listings(title, city, price_per_day, id)").eq("renter_id", user.id).order("created_at", { ascending: false }),
     supabase.from("bookings").select("*, listings!inner(title, user_id), profiles!renter_id(full_name, phone, city)").eq("listings.user_id", user.id).order("created_at", { ascending: false }),
     (supabase as any).from("reviews").select("booking_id").eq("reviewer_id", user.id),
+    (supabase as any).from("favourites").select("listing_id, listings(id, title, city, price_per_day, images, is_available)").eq("user_id", user.id).order("created_at", { ascending: false }),
   ]);
 
   const profile = profileRaw as any;
   const myListings = (myListingsRaw ?? []) as Listing[];
   const incoming = (incomingRaw ?? []).filter((b: any) => b.listings?.user_id === user.id);
+  const myFavourites = ((myFavsRaw ?? []) as any[]).map((f: any) => f.listings).filter(Boolean);
   const pendingCount = incoming.filter((b: any) => b.status === "pending").length;
   const reviewedBookingIds = new Set(((myReviews ?? []) as any[]).map((r) => r.booking_id));
 
@@ -56,13 +58,13 @@ export default async function DashboardPage({
 
   return (
     <div className="mx-auto max-w-5xl px-5 sm:px-8 py-10">
-      <div className="flex items-center justify-between mb-10">
+      <div className="flex flex-col gap-4 mb-10 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-widest text-[#20201f]/75 mb-1 font-outfit">{lt ? "Mano paskyra" : "My account"}</p>
           <h1 className="font-outfit text-3xl font-bold text-[#20201f]">{d.title}</h1>
           <p className="text-sm text-[#20201f]/65 mt-1">{d.welcome}, {(profile as any)?.full_name?.split(" ")[0]} 👋</p>
         </div>
-        <div className="flex items-center gap-2 flex-wrap justify-end">
+        <div className="flex items-center gap-2 flex-wrap sm:justify-end">
           <form action={toggleOwnerAvailability}>
             <input type="hidden" name="lang" value={lang} />
             <input type="hidden" name="current_available" value={String(profile?.owner_available !== false)} />
@@ -185,6 +187,34 @@ export default async function DashboardPage({
         )}
       </section>
 
+      {/* Favourites */}
+      {myFavourites.length > 0 && (
+        <section className="mb-10">
+          <SectionHeader icon={Heart} title={lt ? `Mėgstamiausi (${myFavourites.length})` : `Favourites (${myFavourites.length})`} />
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            {myFavourites.map((listing: any) => (
+              <Link
+                key={listing.id}
+                href={`/${lang}/listings/${listing.id}`}
+                className="flex flex-col overflow-hidden rounded-xl border border-[#e5e2db] bg-[#eeece3] hover:border-[#c8c4bc] transition-all"
+              >
+                <div className="aspect-[4/3] w-full bg-[#e5e2db] overflow-hidden">
+                  {listing.images?.[0] ? (
+                    <img src={listing.images[0]} alt={listing.title} className="h-full w-full object-contain" />
+                  ) : (
+                    <div className="h-full flex items-center justify-center text-2xl opacity-20">📦</div>
+                  )}
+                </div>
+                <div className="p-3">
+                  <p className="font-outfit font-semibold text-[#20201f] text-xs truncate">{listing.title}</p>
+                  <p className="text-[11px] text-[#20201f]/65 mt-0.5">{listing.city}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* My Bookings */}
       <section>
         <SectionHeader icon={CalendarCheck} title={d.myBookings} />
@@ -211,6 +241,19 @@ export default async function DashboardPage({
                     </form>
                   )}
                 </div>
+                {(booking as any).stripe_payment_intent_id && (booking.status === "approved" || booking.status === "completed") && (
+                  <div className="mt-3">
+                    <a
+                      href={`/api/invoice/${booking.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-[#20201f]/65 hover:text-[#20201f] transition-colors underline underline-offset-2"
+                    >
+                      <FileText size={12} />
+                      {lt ? "Atsisiųsti sąskaitą" : "Download invoice"}
+                    </a>
+                  </div>
+                )}
                 {booking.status === "approved" && !(booking as any).stripe_payment_intent_id && (
                   <div className="mt-3 flex items-center gap-3 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3">
                     <span className="text-base">💳</span>

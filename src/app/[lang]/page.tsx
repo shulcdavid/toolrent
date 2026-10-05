@@ -38,6 +38,16 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
   const featured = (listingsRaw ?? []) as any[];
 
+  const { data: { user } } = await supabase.auth.getUser();
+  let favouriteIds = new Set<string>();
+  if (user) {
+    const { data: favs } = await (supabase as any)
+      .from("favourites")
+      .select("listing_id")
+      .eq("user_id", user.id);
+    favouriteIds = new Set(((favs ?? []) as any[]).map((f: any) => f.listing_id as string));
+  }
+
   const [{ count: toolCount }, { count: bookingCount }] = await Promise.all([
     (supabase as any).from("listings").select("*", { count: "exact", head: true }),
     (supabase as any).from("bookings").select("*", { count: "exact", head: true }).eq("status", "completed"),
@@ -241,6 +251,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
                   perDayLabel={dict.listings.perDay}
                   availableLabel={dict.listings.available}
                   unavailableLabel={dict.listings.unavailable}
+                  userId={user?.id}
+                  isFavourited={favouriteIds.has(listing.id)}
                 />
               ))}
             </div>

@@ -10,6 +10,7 @@ import { TrustBadges } from "@/components/TrustBadges";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, formatDate } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { ContactOwnerForm } from "@/components/ContactOwnerForm";
 
 export default async function ListingDetailPage({
   params, searchParams,
@@ -153,6 +154,11 @@ export default async function ListingDetailPage({
               lang={lang}
             />
           </div>
+
+          {/* Contact owner — shown to logged-in non-owners */}
+          {user && !isOwner && (
+            <ContactOwnerForm lang={lang} listingId={id} />
+          )}
 
           {/* Reviews */}
           <div className="rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-5">

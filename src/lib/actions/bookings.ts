@@ -109,13 +109,30 @@ export async function updateBookingStatus(bookingId: string, status: "approved" 
           });
           const { data: bookingFull } = await db
             .from("bookings")
-            .select("listing_id")
+            .select("listing_id, listings(title)")
             .eq("id", bookingId)
             .single();
           await Promise.all([
             db.from("bookings").update({ stripe_payment_intent_id: paymentIntent.id }).eq("id", bookingId),
             db.from("listings").update({ is_available: false }).eq("id", bookingFull?.listing_id),
           ]);
+          // Email the owner: payment confirmed
+          try {
+            const { data: renterProfileFull } = await db.from("profiles").select("full_name").eq("id", booking?.renter_id).single();
+            const { data: ownerProfile } = await db.from("profiles").select("full_name").eq("id", user.id).single();
+            if (user.email) {
+              await sendPaymentReceivedEmail({
+                ownerEmail: user.email,
+                ownerName: ownerProfile?.full_name ?? "there",
+                renterName: renterProfileFull?.full_name ?? "Renter",
+                listingTitle: bookingFull?.listings?.title ?? "",
+                amount: booking.total_price ?? 0,
+                listingUrl: `${BASE_URL}/${lang}/listings/${bookingFull?.listing_id}`,
+              });
+            }
+          } catch (emailErr) {
+            console.error("Failed to send payment confirmation email:", emailErr);
+          }
         }
       }
     } catch (err) {
@@ -153,7 +170,7 @@ export async function updateBookingStatus(bookingId: string, status: "approved" 
 export async function retryBookingPayment(bookingId: string, lang: string) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return;
+  if (!user) redirect(`/${lang}/auth/login`);
 
   const db = supabase as any;
   const { data: booking } = await db
@@ -162,19 +179,20 @@ export async function retryBookingPayment(bookingId: string, lang: string) {
     .eq("id", bookingId)
     .single();
 
+  // All safety-check redirects are OUTSIDE try/catch so they work correctly
   if (!booking || booking.renter_id !== user.id || booking.stripe_payment_intent_id) {
     redirect(`/${lang}/dashboard`);
   }
 
   const { data: profile } = await db
     .from("profiles")
-    .select("stripe_customer_id")
+    .select("stripe_customer_id, full_name")
     .eq("id", user.id)
     .single();
 
-  if (!profile?.stripe_customer_id) {
-    redirect(`/${lang}/profile`);
-  }
+  if (!profile?.stripe_customer_id) redirect(`/${lang}/profile`);
+
+  let charged = false;
 
   try {
     const stripe = getStripe();
@@ -184,53 +202,54 @@ export async function retryBookingPayment(bookingId: string, lang: string) {
       limit: 1,
     });
 
-    if (paymentMethods.data.length === 0) {
-      redirect(`/${lang}/profile`);
-    }
+    if (paymentMethods.data.length > 0) {
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round((booking.total_price ?? 0) * 100),
+        currency: "eur",
+        customer: profile.stripe_customer_id,
+        payment_method: paymentMethods.data[0].id,
+        confirm: true,
+        off_session: true,
+      });
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round((booking.total_price ?? 0) * 100),
-      currency: "eur",
-      customer: profile.stripe_customer_id,
-      payment_method: paymentMethods.data[0].id,
-      confirm: true,
-      off_session: true,
-    });
+      const { data: fullBooking } = await db
+        .from("bookings")
+        .select("listing_id, listings(title, user_id)")
+        .eq("id", bookingId)
+        .single();
 
-    // Save payment intent and mark listing unavailable
-    const { data: fullBooking } = await db
-      .from("bookings")
-      .select("listing_id, listings(title, user_id)")
-      .eq("id", bookingId)
-      .single();
+      await Promise.all([
+        db.from("bookings").update({ stripe_payment_intent_id: paymentIntent.id }).eq("id", bookingId),
+        db.from("listings").update({ is_available: false }).eq("id", fullBooking?.listing_id),
+      ]);
 
-    await Promise.all([
-      db.from("bookings").update({ stripe_payment_intent_id: paymentIntent.id }).eq("id", bookingId),
-      db.from("listings").update({ is_available: false }).eq("id", fullBooking?.listing_id),
-    ]);
+      charged = true;
 
-    // Email owner: payment received
-    try {
-      const admin = createAdminClient();
-      const { data: renterProfile } = await db.from("profiles").select("full_name").eq("id", user.id).single();
-      const { data: ownerAuth } = await admin.auth.admin.getUserById(fullBooking?.listings?.user_id);
-      const { data: ownerProfile } = await db.from("profiles").select("full_name").eq("id", fullBooking?.listings?.user_id).single();
-      if (ownerAuth?.user?.email) {
-        await sendPaymentReceivedEmail({
-          ownerEmail: ownerAuth.user.email,
-          ownerName: ownerProfile?.full_name ?? "there",
-          renterName: renterProfile?.full_name ?? "Renter",
-          listingTitle: fullBooking?.listings?.title ?? "",
-          amount: booking.total_price ?? 0,
-          listingUrl: `${BASE_URL}/${lang}/listings/${fullBooking?.listing_id}`,
-        });
+      // Email owner: payment received
+      try {
+        const admin = createAdminClient();
+        const { data: ownerAuth } = await admin.auth.admin.getUserById(fullBooking?.listings?.user_id);
+        const { data: ownerProfile } = await db.from("profiles").select("full_name").eq("id", fullBooking?.listings?.user_id).single();
+        if (ownerAuth?.user?.email) {
+          await sendPaymentReceivedEmail({
+            ownerEmail: ownerAuth.user.email,
+            ownerName: ownerProfile?.full_name ?? "there",
+            renterName: profile?.full_name ?? "Renter",
+            listingTitle: fullBooking?.listings?.title ?? "",
+            amount: booking.total_price ?? 0,
+            listingUrl: `${BASE_URL}/${lang}/listings/${fullBooking?.listing_id}`,
+          });
+        }
+      } catch (err) {
+        console.error("Failed to send payment email:", err);
       }
-    } catch (err) {
-      console.error("Failed to send payment email:", err);
     }
   } catch (err) {
     console.error("[Stripe] Retry charge failed:", err);
   }
 
+  // Redirects are OUTSIDE try/catch — Next.js redirect() throws NEXT_REDIRECT internally
+  // which would be swallowed if placed inside a catch block
+  if (!charged) redirect(`/${lang}/profile`);
   redirect(`/${lang}/dashboard`);
 }

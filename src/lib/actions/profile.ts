@@ -40,6 +40,8 @@ export async function updateProfile(formData: FormData) {
     city: (formData.get("city") as string) || null,
     country: (formData.get("country") as string) || null,
     avatar_url: (formData.get("avatar_url") as string) || null,
+    company_name: (formData.get("company_name") as string) || null,
+    vat_code: (formData.get("vat_code") as string) || null,
   };
 
   const newFullName = formData.get("full_name") as string;

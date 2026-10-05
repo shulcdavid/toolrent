@@ -36,7 +36,7 @@ export default async function OnboardingPage({
       </div>
 
       <div className="w-full">
-        <PaymentPrompt lang={lang} />
+        <PaymentPrompt lang={lang} redirectTo={`/${lang}/dashboard`} />
       </div>
 
       <Link
