@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { MobileNav } from "./MobileNav";
 import { logout } from "@/lib/actions/auth";
 import type { Locale } from "@/i18n/config";
 
@@ -70,8 +69,6 @@ export function Navbar({ dict, lang, user }: NavbarProps) {
             )}
           </div>
 
-          {/* Mobile hamburger */}
-          <MobileNav dict={dict} lang={lang} user={user} />
         </div>
       </nav>
     </header>
