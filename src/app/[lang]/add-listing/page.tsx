@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { AddListingForm } from "@/components/AddListingForm";
 import { createClient } from "@/lib/supabase/server";
@@ -13,12 +13,15 @@ export default async function AddListingPage({
   const { lang } = await params;
   if (!hasLocale(lang)) notFound();
 
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect(`/${lang}/auth/login`);
+
   const dict = await getDictionary(lang as Locale);
   const { edit } = await searchParams;
 
   let initialData: any = null;
   if (edit) {
-    const supabase = await createClient();
     const { data } = await (supabase as any).from("listings").select("*").eq("id", edit).single();
     initialData = data ?? null;
   }

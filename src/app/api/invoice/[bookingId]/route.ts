@@ -23,10 +23,26 @@ export async function GET(
   const isOwner = booking.listings?.user_id === user.id;
   if (!isRenter && !isOwner) return new Response("Forbidden", { status: 403 });
 
-  const [{ data: renterProfile }, { data: ownerProfile }] = await Promise.all([
-    db.from("profiles").select("full_name, company_name, vat_code, city").eq("id", booking.renter_id).single(),
-    db.from("profiles").select("full_name, company_name, vat_code, city").eq("id", booking.listings?.user_id).single(),
-  ]);
+  // Try to fetch with optional invoice columns; fall back to basics if columns don't exist yet
+  let renterProfile: any = null;
+  let ownerProfile: any = null;
+  {
+    const [r, o] = await Promise.all([
+      db.from("profiles").select("full_name, city").eq("id", booking.renter_id).single(),
+      db.from("profiles").select("full_name, city").eq("id", booking.listings?.user_id).single(),
+    ]);
+    renterProfile = r.data;
+    ownerProfile = o.data;
+  }
+  // Extend with company/VAT if columns exist
+  {
+    const [r, o] = await Promise.all([
+      db.from("profiles").select("company_name, vat_code").eq("id", booking.renter_id).maybeSingle(),
+      db.from("profiles").select("company_name, vat_code").eq("id", booking.listings?.user_id).maybeSingle(),
+    ]);
+    if (!r.error && r.data) renterProfile = { ...renterProfile, ...r.data };
+    if (!o.error && o.data) ownerProfile = { ...ownerProfile, ...o.data };
+  }
 
   const invoiceNumber = bookingId.slice(0, 8).toUpperCase();
   const today = new Date().toLocaleDateString("lt-LT");
