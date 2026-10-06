@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { Navbar } from "@/components/Navbar";
+import { BottomNav } from "@/components/BottomNav";
 import { createClient } from "@/lib/supabase/server";
 
 export function generateStaticParams() {
@@ -27,6 +28,7 @@ export default async function LocaleLayout({
     <div className="flex min-h-screen flex-col">
       <Navbar dict={dict.nav} lang={lang as Locale} user={user} />
       <main className="flex-1 pb-20 md:pb-0">{children}</main>
+      <BottomNav lang={lang as Locale} dict={dict.nav} user={user} />
 
       {/* Footer */}
       <footer className="hidden md:block border-t border-[#e5e2db] bg-[#f7f6f2] mt-8">

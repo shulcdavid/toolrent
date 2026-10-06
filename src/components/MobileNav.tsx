@@ -76,15 +76,6 @@ export function MobileNav({ dict, lang, user }: Props) {
         </div>
       )}
 
-      {/* Bottom nav for mobile */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#e5e2db] bg-[#f7f6f2]/95 backdrop-blur-sm md:hidden">
-        <div className="flex items-center justify-around py-2">
-          <BottomNavItem href={`/${lang}`} icon={Home} label="Home" />
-          <BottomNavItem href={`/${lang}/listings`} icon={Search} label={dict.browse} />
-          <BottomNavItem href={`/${lang}/add-listing`} icon={PlusCircle} label={dict.addListing} primary />
-          <BottomNavItem href={user ? `/${lang}/dashboard` : `/${lang}/auth/login`} icon={LayoutDashboard} label={user ? dict.dashboard : dict.login} />
-        </div>
-      </div>
     </div>
   );
 }
@@ -97,17 +88,6 @@ function NavItem({ href, icon: Icon, children, onClick }: { href: string; icon: 
       className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm text-[#20201f]/70 hover:text-[#20201f] hover:bg-[#eeece3] transition-colors"
     >
       <Icon size={16} className="text-[#20201f]/75" /> {children}
-    </Link>
-  );
-}
-
-function BottomNavItem({ href, icon: Icon, label, primary }: { href: string; icon: React.ElementType; label: string; primary?: boolean }) {
-  return (
-    <Link href={href} className="flex flex-col items-center gap-1 px-4 py-1">
-      <span className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${primary ? "bg-[#20201f] text-[#f7f6f2]" : "text-[#20201f]/65"}`}>
-        <Icon size={18} />
-      </span>
-      <span className={`text-[10px] font-medium ${primary ? "text-[#20201f]" : "text-[#20201f]/75"} truncate max-w-[60px] text-center`}>{label}</span>
     </Link>
   );
 }
