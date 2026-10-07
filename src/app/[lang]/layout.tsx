@@ -28,7 +28,7 @@ export default async function LocaleLayout({
     <div className="flex min-h-screen flex-col">
       <Navbar dict={dict.nav} lang={lang as Locale} user={user} />
       <main className="flex-1 pb-20 md:pb-0">{children}</main>
-      <BottomNav lang={lang as Locale} dict={dict.nav} user={user} />
+      <BottomNav lang={lang as Locale} dict={dict.nav} user={user} lt={lang === "lt"} />
 
       {/* Footer */}
       <footer className="hidden md:block border-t border-[#e5e2db] bg-[#f7f6f2] mt-8">

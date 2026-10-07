@@ -1,26 +1,32 @@
 "use client";
 
 import Link from "next/link";
-import { Home, Search, PlusCircle, LayoutDashboard } from "lucide-react";
+import { Home, Search, PlusCircle, Heart, UserRound } from "lucide-react";
 import type { Locale } from "@/i18n/config";
 
 interface Props {
   lang: Locale;
   dict: { browse: string; addListing: string; dashboard: string; login: string };
   user?: { id: string } | null;
+  lt?: boolean;
 }
 
-export function BottomNav({ lang, dict, user }: Props) {
+export function BottomNav({ lang, dict, user, lt }: Props) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#e5e2db] bg-[#f7f6f2] md:hidden">
       <div className="flex items-center justify-around py-2">
-        <NavItem href={`/${lang}`} icon={Home} label="Home" />
+        <NavItem href={`/${lang}`} icon={Home} label={lt ? "Pradžia" : "Home"} />
         <NavItem href={`/${lang}/listings`} icon={Search} label={dict.browse} />
         <NavItem href={`/${lang}/add-listing`} icon={PlusCircle} label={dict.addListing} primary />
         <NavItem
           href={user ? `/${lang}/dashboard` : `/${lang}/auth/login`}
-          icon={LayoutDashboard}
-          label={user ? dict.dashboard : dict.login}
+          icon={Heart}
+          label={lt ? "Mėgstami" : "Saved"}
+        />
+        <NavItem
+          href={user ? `/${lang}/profile` : `/${lang}/auth/login`}
+          icon={UserRound}
+          label={lt ? "Profilis" : "Profile"}
         />
       </div>
     </div>

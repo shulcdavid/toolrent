@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect, notFound } from "next/navigation";
-import { PlusCircle, Package, CalendarCheck, Bell, UserRound, Heart, FileText } from "lucide-react";
+import { PlusCircle, Package, CalendarCheck, Bell, UserRound, Heart, FileText, HeartHandshake } from "lucide-react";
 import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
@@ -36,19 +36,30 @@ export default async function DashboardPage({
 
   const today = new Date().toISOString().split("T")[0];
 
-  const [{ data: profileRaw }, { data: myListingsRaw }, { data: myBookings }, { data: incomingRaw }, { data: myReviews }, { data: myFavsRaw }] = await Promise.all([
+  // Fetch listings first so we can query their favourites count
+  const { data: myListingsRaw } = await supabase
+    .from("listings").select("*").eq("user_id", user.id).order("created_at", { ascending: false });
+  const myListings = (myListingsRaw ?? []) as Listing[];
+  const myListingIds = myListings.map(l => l.id);
+
+  const [{ data: profileRaw }, { data: myBookings }, { data: incomingRaw }, { data: myReviews }, { data: myFavsRaw }, { data: favCountsRaw }] = await Promise.all([
     supabase.from("profiles").select("*").eq("id", user.id).single(),
-    supabase.from("listings").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
     supabase.from("bookings").select("*, listings(title, city, price_per_day, id)").eq("renter_id", user.id).order("created_at", { ascending: false }),
-    supabase.from("bookings").select("*, listings!inner(title, user_id), profiles!renter_id(full_name, phone, city)").eq("listings.user_id", user.id).order("created_at", { ascending: false }),
+    (supabase as any).from("bookings").select("*, proposed_price, listings!inner(title, user_id), profiles!renter_id(full_name, phone, city)").eq("listings.user_id", user.id).order("created_at", { ascending: false }),
     (supabase as any).from("reviews").select("booking_id").eq("reviewer_id", user.id),
     (supabase as any).from("favourites").select("listing_id, listings(id, title, city, price_per_day, images, is_available)").eq("user_id", user.id).order("created_at", { ascending: false }),
+    myListingIds.length > 0
+      ? (supabase as any).from("favourites").select("listing_id").in("listing_id", myListingIds)
+      : Promise.resolve({ data: [] }),
   ]);
 
   const profile = profileRaw as any;
-  const myListings = (myListingsRaw ?? []) as Listing[];
   const incoming = (incomingRaw ?? []).filter((b: any) => b.listings?.user_id === user.id);
   const myFavourites = ((myFavsRaw ?? []) as any[]).map((f: any) => f.listings).filter(Boolean);
+  const favCountMap = new Map<string, number>();
+  ((favCountsRaw ?? []) as any[]).forEach((f: any) => {
+    favCountMap.set(f.listing_id, (favCountMap.get(f.listing_id) ?? 0) + 1);
+  });
   const pendingCount = incoming.filter((b: any) => b.status === "pending").length;
   const reviewedBookingIds = new Set(((myReviews ?? []) as any[]).map((r) => r.booking_id));
 
@@ -105,30 +116,42 @@ export default async function DashboardPage({
         <SectionHeader icon={Package} title={`${d.myListings} (${myListings?.length ?? 0})`} />
         {!myListings?.length ? <EmptyState msg={d.noListings} /> : (
           <div className="flex flex-col gap-3">
-            {myListings.map((listing) => (
-              <div key={listing.id} className="flex items-center gap-4 rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-4">
-                <div className="h-14 w-14 rounded-xl bg-[#e5e2db] overflow-hidden shrink-0 flex items-center justify-center text-2xl">
-                  {listing.images?.[0]
-                    ? <img src={listing.images[0]} alt="" className="h-full w-full object-cover" />
-                    : "📦"}
+            {myListings.map((listing) => {
+              const favCount = favCountMap.get(listing.id) ?? 0;
+              return (
+                <div key={listing.id} className="relative flex items-center gap-4 rounded-2xl border border-[#e5e2db] bg-[#eeece3] p-4">
+                  {/* Invisible full-card link for click-to-open */}
+                  <Link href={`/${lang}/listings/${listing.id}`} className="absolute inset-0 rounded-2xl" aria-label={listing.title} />
+                  <div className="h-14 w-14 rounded-xl bg-[#e5e2db] overflow-hidden shrink-0 flex items-center justify-center text-2xl">
+                    {listing.images?.[0]
+                      ? <img src={listing.images[0]} alt="" className="h-full w-full object-cover" />
+                      : "📦"}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-outfit font-semibold text-[#20201f] text-sm">{listing.title}</p>
+                    <div className="flex items-center gap-3 mt-0.5 flex-wrap">
+                      <p className="text-xs text-[#20201f]/65">{listing.city} · {formatPrice(listing.price_per_day)}{dict.listings.perDay}</p>
+                      {favCount > 0 && (
+                        <span className="flex items-center gap-1 text-xs text-[#20201f]/65">
+                          <Heart size={11} className="fill-current text-rose-400" /> {favCount}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <Badge variant={listing.is_available ? "green" : "gray"}>
+                    {listing.is_available ? dict.listings.available : dict.listings.unavailable}
+                  </Badge>
+                  <div className="relative z-10 flex gap-2">
+                    <Link href={`/${lang}/add-listing?edit=${listing.id}`}>
+                      <Button variant="ghost" size="sm">{d.edit}</Button>
+                    </Link>
+                    <form action={deleteListing.bind(null, listing.id, lang)}>
+                      <Button variant="danger" size="sm" type="submit">{d.delete}</Button>
+                    </form>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-outfit font-semibold text-[#20201f] truncate text-sm">{listing.title}</p>
-                  <p className="text-xs text-[#20201f]/65 mt-0.5">{listing.city} · {formatPrice(listing.price_per_day)}{dict.listings.perDay}</p>
-                </div>
-                <Badge variant={listing.is_available ? "green" : "gray"}>
-                  {listing.is_available ? dict.listings.available : dict.listings.unavailable}
-                </Badge>
-                <div className="flex gap-2">
-                  <Link href={`/${lang}/add-listing?edit=${listing.id}`}>
-                    <Button variant="ghost" size="sm">{d.edit}</Button>
-                  </Link>
-                  <form action={deleteListing.bind(null, listing.id, lang)}>
-                    <Button variant="danger" size="sm" type="submit">{d.delete}</Button>
-                  </form>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
@@ -144,6 +167,12 @@ export default async function DashboardPage({
                   <div>
                     <p className="font-outfit font-semibold text-[#20201f] text-sm">{req.profiles?.full_name} → {req.listings?.title}</p>
                     <p className="text-xs text-[#20201f]/65 mt-1">{formatDate(req.start_date)} – {formatDate(req.end_date)} · {formatPrice(req.total_price)}</p>
+                    {req.proposed_price && (
+                      <p className="text-xs mt-1 text-amber-700 font-medium flex items-center gap-1">
+                        <HeartHandshake size={12} />
+                        {lt ? `Pasiūlyta kaina: ${formatPrice(req.proposed_price)}/d.` : `Proposed price: ${formatPrice(req.proposed_price)}/day`}
+                      </p>
+                    )}
                     {req.message && <p className="text-xs text-[#20201f]/75 mt-1.5 italic">"{req.message}"</p>}
                   </div>
                   <Badge variant={statusVariant[req.status]}>{d.status[req.status as keyof typeof d.status]}</Badge>

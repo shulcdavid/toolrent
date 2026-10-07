@@ -192,7 +192,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           </div>
           <div className="grid gap-0 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-[#e5e2db]">
             {steps.map((step, i) => (
-              <div key={i} className="flex flex-col gap-5 p-8 sm:pr-12 first:pl-0 last:pr-0">
+              <div key={i} className="flex flex-col gap-5 p-6 sm:p-8 sm:pr-12 sm:first:pl-0 sm:last:pr-0">
                 <div className="flex items-center gap-3">
                   <span className="font-outfit text-xs text-[#20201f]/65 font-medium">0{i + 1}</span>
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#20201f] text-[#f7f6f2]">

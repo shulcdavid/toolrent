@@ -21,6 +21,8 @@ export async function createBooking(formData: FormData) {
   const endDate = formData.get("end_date") as string;
   const pricePerDay = Number(formData.get("price_per_day"));
   const message = (formData.get("message") as string) ?? "";
+  const proposedPriceRaw = formData.get("proposed_price");
+  const proposedPrice = proposedPriceRaw ? Number(proposedPriceRaw) : null;
   const days = daysBetween(startDate, endDate);
   const toolCost = days * pricePerDay;
   const serviceFee = calcServiceFee(toolCost);
@@ -35,6 +37,7 @@ export async function createBooking(formData: FormData) {
     service_fee: serviceFee,
     total_price: toolCost + serviceFee,
     message,
+    proposed_price: proposedPrice,
     status: "pending",
   });
 

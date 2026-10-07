@@ -91,10 +91,15 @@ export function AddListingForm({ dict, lang, initialData }: Props) {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (isPending) return;
     setUploadError("");
 
+    // Capture form ref synchronously before any async work
+    const formEl = formRef.current;
+    if (!formEl) return;
+
     startTransition(async () => {
-      const formData = new FormData(e.currentTarget);
+      const formData = new FormData(formEl);
 
       // Keep existing image URLs
       existingImageUrls.forEach((url) => formData.append("images", url));

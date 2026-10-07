@@ -35,6 +35,7 @@ export async function updateListing(formData: FormData) {
   const listingId = formData.get("listing_id") as string;
 
   if (!user) redirect(`/${lang}/auth/login`);
+  if (!listingId) redirect(`/${lang}/dashboard`);
 
   const db = supabase as any;
   const { error } = await db.from("listings").update({

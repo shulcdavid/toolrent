@@ -40,13 +40,15 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
             </div>
           )}
 
-          {/* Unavailable badge — only shown when not available */}
-          {!listing.is_available && (
-            <div className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full bg-[#f7f6f2]/90 backdrop-blur-sm px-2.5 py-1 text-xs font-medium text-[#20201f]">
-              <span className="h-1.5 w-1.5 rounded-full bg-[#20201f]/30" />
-              {unavailableLabel}
-            </div>
-          )}
+          {/* Status badge — always shown */}
+          <div className={`absolute top-3 left-3 flex items-center gap-1.5 rounded-full backdrop-blur-sm px-2.5 py-1 text-xs font-medium ${
+            listing.is_available
+              ? "bg-[#f7f6f2]/90 text-emerald-700"
+              : "bg-[#f7f6f2]/90 text-[#20201f]"
+          }`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${listing.is_available ? "bg-emerald-500" : "bg-[#20201f]/30"}`} />
+            {listing.is_available ? availableLabel : unavailableLabel}
+          </div>
 
           {/* Hover overlay */}
           <div className="absolute inset-0 flex items-end opacity-0 group-hover:opacity-100 transition-opacity duration-300">
