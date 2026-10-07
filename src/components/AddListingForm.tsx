@@ -117,6 +117,30 @@ export function AddListingForm({ dict, lang, initialData }: Props) {
             return;
           }
           const { data } = supabase.storage.from("listings").getPublicUrl(path);
+
+          // AI moderation — check for inappropriate content
+          try {
+            const modRes = await fetch("/api/moderate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ imageUrl: data.publicUrl }),
+            });
+            if (modRes.ok) {
+              const modData = await modRes.json();
+              if (!modData.safe) {
+                await supabase.storage.from("listings").remove([path]);
+                setUploadError(
+                  isLt
+                    ? "Nuotrauka atmesta: netinkamas turinys. Naudokite tinkamas įrankių nuotraukas."
+                    : "Image rejected: inappropriate content detected. Please use appropriate tool photos."
+                );
+                return;
+              }
+            }
+          } catch {
+            // Moderation unavailable — allow upload
+          }
+
           formData.append("images", data.publicUrl);
         }
       }

@@ -85,7 +85,15 @@ export default async function ListingDetailPage({
         <div className="lg:col-span-2 flex flex-col gap-6">
           {/* Gallery */}
           {listing.images?.length > 0 ? (
-            <ImageGallery images={listing.images} title={listing.title} />
+            <div className="relative">
+              <ImageGallery images={listing.images} title={listing.title} />
+              <div className={`absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-full backdrop-blur-sm px-2.5 py-1 text-xs font-medium pointer-events-none ${
+                listing.is_available ? "bg-[#f7f6f2]/90 text-emerald-700" : "bg-[#f7f6f2]/90 text-[#20201f]"
+              }`}>
+                <span className={`h-1.5 w-1.5 rounded-full ${listing.is_available ? "bg-emerald-500" : "bg-[#20201f]/30"}`} />
+                {listing.is_available ? dict.listings.available : dict.listings.unavailable}
+              </div>
+            </div>
           ) : (
             <div className="flex h-72 sm:h-96 w-full items-center justify-center rounded-2xl bg-[#eeece3] border border-[#e5e2db] opacity-20">
               <CategoryIcon category={listing.categories?.[0] ?? "other"} size={72} />
@@ -106,7 +114,6 @@ export default async function ListingDetailPage({
               {(listing.categories ?? []).map((cat: string) => (
                 <Badge key={cat} variant="default">{dict.categories[cat as keyof typeof dict.categories]}</Badge>
               ))}
-              {listing.is_available ? <Badge variant="green">{dict.listings.available}</Badge> : <Badge variant="gray">{dict.listings.unavailable}</Badge>}
             </div>
           </div>
 

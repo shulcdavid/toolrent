@@ -187,6 +187,27 @@ export function BookingForm({
           <input type="hidden" name="start_date" value={startDate} />
           <input type="hidden" name="end_date" value={endDate} />
 
+          {/* Proposed price — near owner price */}
+          <div>
+            <label className="text-sm font-medium text-[#20201f] block mb-1.5">
+              {isLt ? "Pasiūlyti kainą (neprivaloma)" : "Propose a price (optional)"}
+            </label>
+            <div className="relative">
+              <input
+                type="number"
+                name="proposed_price"
+                min="1"
+                step="0.5"
+                placeholder={String(listing.price_per_day)}
+                className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 pr-10 text-sm text-[#20201f] placeholder:text-[#20201f]/40 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15"
+              />
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#20201f]/50">€</span>
+            </div>
+            <p className="mt-1 text-xs text-[#20201f]/50">
+              {isLt ? "Savininkas galės priimti arba atmesti jūsų pasiūlymą." : "The owner can accept or decline your offer."}
+            </p>
+          </div>
+
           {/* Date display */}
           <div className="grid grid-cols-2 gap-2">
             <button
@@ -265,27 +286,6 @@ export function BookingForm({
             <label className="text-sm font-medium text-[#20201f] block mb-1.5">{dict.listing.messageLabel}</label>
             <textarea name="message" placeholder={dict.listing.messagePlaceholder} rows={3}
               className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 text-sm text-[#20201f] placeholder:text-[#20201f]/70 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15 resize-none" />
-          </div>
-
-          {/* Proposed price */}
-          <div>
-            <label className="text-sm font-medium text-[#20201f] block mb-1.5">
-              {isLt ? "Pasiūlyti kainą (neprivaloma)" : "Propose a price (optional)"}
-            </label>
-            <div className="relative">
-              <input
-                type="number"
-                name="proposed_price"
-                min="1"
-                step="0.5"
-                placeholder={String(listing.price_per_day)}
-                className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-4 py-2.5 pr-10 text-sm text-[#20201f] placeholder:text-[#20201f]/40 transition focus:outline-none focus:ring-2 focus:ring-[#20201f]/15"
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#20201f]/50">€</span>
-            </div>
-            <p className="mt-1 text-xs text-[#20201f]/50">
-              {isLt ? "Savininkas galės priimti arba atmesti jūsų pasiūlymą." : "The owner can accept or decline your offer."}
-            </p>
           </div>
 
           {/* Price breakdown */}
