@@ -46,6 +46,8 @@ export function ProfileForm({
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url ?? "");
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
+  const hasInvoiceData = !!(profile as any)?.company_name || !!(profile as any)?.vat_code;
+  const [invoiceOpen, setInvoiceOpen] = useState(hasInvoiceData);
   const fileRef = useRef<HTMLInputElement>(null);
 
   async function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -186,31 +188,42 @@ export function ProfileForm({
         </select>
       </div>
 
-      {/* Company / VAT — optional, used for invoice generation */}
-      <div className="border-t border-[#e5e2db] pt-4 flex flex-col gap-4">
-        <p className="text-xs font-semibold uppercase tracking-widest text-[#20201f]/45">
-          {lang === "lt" ? "Sąskaitos duomenys (neprivaloma)" : "Invoice details (optional)"}
-        </p>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#20201f]">{lang === "lt" ? "Įmonės pavadinimas" : "Company name"}</label>
-          <input
-            name="company_name"
-            type="text"
-            defaultValue={(profile as any)?.company_name ?? ""}
-            placeholder={lang === "lt" ? "UAB Pavyzdys" : "My Company Ltd"}
-            className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2.5 text-sm text-[#20201f] outline-none focus:border-[#20201f] focus:ring-1 focus:ring-[#20201f] transition-colors"
-          />
-        </div>
-        <div className="flex flex-col gap-1.5">
-          <label className="text-sm font-medium text-[#20201f]">{lang === "lt" ? "PVM kodas" : "VAT number"}</label>
-          <input
-            name="vat_code"
-            type="text"
-            defaultValue={(profile as any)?.vat_code ?? ""}
-            placeholder="LT123456789"
-            className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2.5 text-sm text-[#20201f] outline-none focus:border-[#20201f] focus:ring-1 focus:ring-[#20201f] transition-colors"
-          />
-        </div>
+      {/* Company / VAT — collapsible */}
+      <div className="border-t border-[#e5e2db] pt-4">
+        <button
+          type="button"
+          onClick={() => setInvoiceOpen((o) => !o)}
+          className="flex w-full items-center justify-between gap-3 text-left"
+        >
+          <p className="text-xs font-semibold uppercase tracking-widest text-[#20201f]/45">
+            {lang === "lt" ? "Sąskaitos duomenys (neprivaloma)" : "Invoice details (optional)"}
+          </p>
+          <span className="text-xs text-[#20201f]/40">{invoiceOpen ? "▲" : "▼"}</span>
+        </button>
+        {invoiceOpen && (
+          <div className="flex flex-col gap-4 mt-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-[#20201f]">{lang === "lt" ? "Įmonės pavadinimas" : "Company name"}</label>
+              <input
+                name="company_name"
+                type="text"
+                defaultValue={(profile as any)?.company_name ?? ""}
+                placeholder={lang === "lt" ? "UAB Pavyzdys" : "My Company Ltd"}
+                className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2.5 text-sm text-[#20201f] outline-none focus:border-[#20201f] focus:ring-1 focus:ring-[#20201f] transition-colors"
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-sm font-medium text-[#20201f]">{lang === "lt" ? "PVM kodas" : "VAT number"}</label>
+              <input
+                name="vat_code"
+                type="text"
+                defaultValue={(profile as any)?.vat_code ?? ""}
+                placeholder="LT123456789"
+                className="w-full rounded-xl border border-[#e5e2db] bg-[#f7f6f2] px-3 py-2.5 text-sm text-[#20201f] outline-none focus:border-[#20201f] focus:ring-1 focus:ring-[#20201f] transition-colors"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       {errorProp && (
