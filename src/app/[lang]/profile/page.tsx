@@ -45,9 +45,7 @@ export default async function ProfilePage({
   const dict = await getDictionary(lang as Locale);
 
   const canName = canChangeIdentity(profile?.full_name_changed_at ?? null);
-  const canUsername = canChangeIdentity(profile?.username_changed_at ?? null, 1); // monthly
   const nameUntil = nextEditDate(profile?.full_name_changed_at ?? null, 12, lang);
-  const usernameUntil = nextEditDate(profile?.username_changed_at ?? null, 1, lang);
 
   return (
     <div className="mx-auto max-w-lg px-4 sm:px-6 py-10">
@@ -73,9 +71,7 @@ export default async function ProfilePage({
         lang={lang as Locale}
         dict={dict}
         canChangeName={canName}
-        canChangeUsername={canUsername}
         nameLockedUntil={nameUntil}
-        usernameLockedUntil={usernameUntil}
         saved={sp.saved === "1"}
         error={sp.error}
       />

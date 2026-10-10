@@ -32,7 +32,7 @@ export async function updateProfile(formData: FormData) {
 
   const { data: current } = await db
     .from("profiles")
-    .select("full_name_changed_at, username_changed_at")
+    .select("full_name_changed_at")
     .eq("id", user.id)
     .single();
 
@@ -45,17 +45,10 @@ export async function updateProfile(formData: FormData) {
   };
 
   const newFullName = formData.get("full_name") as string;
-  const newUsername = formData.get("username") as string;
 
   if (canChangeIdentity(current?.full_name_changed_at)) {
     updates.full_name = newFullName || null;
     updates.full_name_changed_at = new Date().toISOString();
-  }
-
-  // Username: editable once per month
-  if (canChangeIdentity(current?.username_changed_at, 1)) {
-    updates.username = newUsername || null;
-    updates.username_changed_at = new Date().toISOString();
   }
 
   const { error } = await db.from("profiles").update(updates).eq("id", user.id);

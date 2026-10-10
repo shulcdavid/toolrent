@@ -24,24 +24,22 @@ interface Props {
   dict: {
     profile: {
       avatar: string; changeAvatar: string; removeAvatar: string;
-      fullName: string; username: string; phone: string; phonePlaceholder: string;
+      fullName: string; phone: string; phonePlaceholder: string;
       city: string; country: string; lockedMsg: string; lockedUntil: string;
       saved: string; memberSince: string;
     };
     common: { save: string; cancel: string };
   };
   canChangeName: boolean;
-  canChangeUsername: boolean;
   nameLockedUntil: string;
-  usernameLockedUntil: string;
   saved?: boolean;
   error?: string;
 }
 
 export function ProfileForm({
   profile, userId, email, lang, dict,
-  canChangeName, canChangeUsername,
-  nameLockedUntil, usernameLockedUntil,
+  canChangeName,
+  nameLockedUntil,
   saved: savedProp, error: errorProp,
 }: Props) {
   const p = dict.profile;
@@ -160,19 +158,6 @@ export function ProfileForm({
           {email}
         </div>
       </div>
-
-      <Input
-        name="username"
-        label={p.username}
-        defaultValue={profile?.username ?? ""}
-        placeholder="jonas123"
-        disabled={!canChangeUsername}
-        hint={
-          !canChangeUsername && usernameLockedUntil
-            ? `🔒 ${lang === "lt" ? `Galima keisti nuo ${usernameLockedUntil}` : `Editable again from ${usernameLockedUntil}`}`
-            : (lang === "lt" ? "⚠ Išsaugojus, slapyvardį bus galima keisti tik kartą per mėnesį." : "⚠ Once saved, your username can only be changed once per month.")
-        }
-      />
 
       <div className="flex flex-col gap-1.5">
         <label className="text-sm font-medium text-[#20201f]">{p.city}</label>
