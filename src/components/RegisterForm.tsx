@@ -26,7 +26,7 @@ export const LT_CITIES = [
 
 interface Props {
   dict: {
-    fullName: string; username: string; usernamePlaceholder: string;
+    fullName: string;
     email: string; password: string; passwordHint: string;
     city: string; country: string; submit: string; terms: string;
   };
@@ -41,7 +41,6 @@ export function RegisterForm({ dict, lang }: Props) {
     <form action={register} className="flex flex-col gap-4">
       <input type="hidden" name="lang" value={lang} />
       <Input name="full_name" label={dict.fullName} placeholder="Jonas Jonaitis" required />
-      <Input name="username" label={dict.username} placeholder={dict.usernamePlaceholder} required />
       <Input name="email" label={dict.email} type="email" placeholder="you@example.com" required />
       <Input name="password" label={dict.password} type="password" placeholder="••••••••" hint={dict.passwordHint} required />
       <div className="flex flex-col gap-1.5">

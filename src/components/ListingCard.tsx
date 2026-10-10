@@ -83,10 +83,10 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
                 </span>
               )}
               {(() => {
-                const name = listing.profiles?.username ?? listing.profiles?.full_name;
-                return name ? (
+                const firstName = listing.profiles?.full_name?.split(" ")[0];
+                return firstName ? (
                   <div className="h-6 w-6 rounded-full bg-[#20201f] flex items-center justify-center text-[10px] font-bold text-[#f7f6f2]">
-                    {name[0].toUpperCase()}
+                    {firstName[0].toUpperCase()}
                   </div>
                 ) : null;
               })()}

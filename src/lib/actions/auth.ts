@@ -27,7 +27,6 @@ export async function register(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
   const full_name = formData.get("full_name") as string;
-  const username = formData.get("username") as string;
   const city = formData.get("city") as string;
   const country = formData.get("country") as string;
   const lang = (formData.get("lang") as string) ?? "en";
@@ -37,7 +36,7 @@ export async function register(formData: FormData) {
   const { data: userData, error: createError } = await admin.auth.admin.createUser({
     email,
     password,
-    user_metadata: { full_name, username, city, country },
+    user_metadata: { full_name, city, country },
     email_confirm: false,
   });
 
@@ -49,7 +48,7 @@ export async function register(formData: FormData) {
   if (userData.user) {
     await (admin as any)
       .from("profiles")
-      .update({ username, country, city })
+      .update({ country, city })
       .eq("id", userData.user.id);
   }
 
