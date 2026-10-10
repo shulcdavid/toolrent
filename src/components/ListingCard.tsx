@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin } from "lucide-react";
+import { MapPin, Heart } from "lucide-react";
 import { formatPrice } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { FavouriteButton } from "@/components/FavouriteButton";
@@ -15,9 +15,10 @@ interface Props {
   unavailableLabel: string;
   userId?: string;
   isFavourited?: boolean;
+  favCount?: number;
 }
 
-export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavailableLabel, userId, isFavourited }: Props) {
+export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavailableLabel, userId, isFavourited, favCount }: Props) {
   const coverImage = listing.images?.[0];
 
   return (
@@ -74,11 +75,19 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
               {formatPrice(listing.price_per_day)}
               <span className="text-xs font-normal text-[#20201f]/65 ml-1">{perDayLabel}</span>
             </span>
-            {listing.profiles?.full_name && (
-              <div className="h-6 w-6 rounded-full bg-[#20201f] flex items-center justify-center text-[10px] font-bold text-[#f7f6f2]">
-                {listing.profiles.full_name[0].toUpperCase()}
-              </div>
-            )}
+            <div className="flex items-center gap-2">
+              {favCount != null && favCount > 0 && (
+                <span className="flex items-center gap-1 text-xs text-[#20201f]/50">
+                  <Heart size={11} className="fill-[#20201f]/40 text-[#20201f]/40" />
+                  {favCount}
+                </span>
+              )}
+              {(listing.profiles?.username || listing.profiles?.full_name) && (
+                <div className="h-6 w-6 rounded-full bg-[#20201f] flex items-center justify-center text-[10px] font-bold text-[#f7f6f2]">
+                  {(listing.profiles.username ?? listing.profiles.full_name)[0].toUpperCase()}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </Link>

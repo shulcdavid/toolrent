@@ -7,6 +7,7 @@ import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { ListingCard } from "@/components/ListingCard";
 import { Button } from "@/components/ui/Button";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { CATEGORIES } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
 
@@ -37,6 +38,19 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
     .limit(6);
 
   const featured = (listingsRaw ?? []) as any[];
+
+  // Fav counts — use admin client to bypass RLS
+  const favCountMap = new Map<string, number>();
+  if (featured.length > 0) {
+    const admin = createAdminClient();
+    const { data: favCountsRaw } = await (admin as any)
+      .from("favourites")
+      .select("listing_id")
+      .in("listing_id", featured.map((l) => l.id));
+    ((favCountsRaw ?? []) as any[]).forEach((f: any) => {
+      favCountMap.set(f.listing_id, (favCountMap.get(f.listing_id) ?? 0) + 1);
+    });
+  }
 
   const { data: { user } } = await supabase.auth.getUser();
   let favouriteIds = new Set<string>();
@@ -253,6 +267,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
                   unavailableLabel={dict.listings.unavailable}
                   userId={user?.id}
                   isFavourited={favouriteIds.has(listing.id)}
+                  favCount={favCountMap.get(listing.id) ?? 0}
                 />
               ))}
             </div>

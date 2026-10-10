@@ -140,11 +140,11 @@ export default async function ListingDetailPage({
                 <img src={listing.profiles.avatar_url} alt="" className="h-11 w-11 rounded-full object-cover border border-[#e5e2db]" />
               ) : (
                 <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#20201f] text-lg font-bold text-[#f7f6f2]">
-                  {listing.profiles?.full_name?.[0]?.toUpperCase() ?? "?"}
+                  {(listing.profiles?.username ?? listing.profiles?.full_name)?.[0]?.toUpperCase() ?? "?"}
                 </div>
               )}
               <div>
-                <p className="font-outfit font-semibold text-[#20201f] text-sm">{listing.profiles?.full_name ?? "Anonymous"}</p>
+                <p className="font-outfit font-semibold text-[#20201f] text-sm">{listing.profiles?.username ?? listing.profiles?.full_name ?? "Anonymous"}</p>
                 <p className="text-xs text-[#20201f]/65">{dict.listing.memberSince} {formatDate(listing.profiles?.created_at)}</p>
               </div>
               {avgRating && (

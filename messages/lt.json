@@ -112,7 +112,8 @@
       "submit": "Prisijungti",
       "noAccount": "Neturi paskyros?",
       "register": "Registruotis",
-      "forgot": "Pamiršai slaptažodį?"
+      "forgot": "Pamiršai slaptažodį?",
+      "rememberMe": "Prisiminti mane"
     },
     "register": {
       "title": "Sukurti paskyrą",

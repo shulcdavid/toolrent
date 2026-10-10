@@ -112,7 +112,8 @@
       "submit": "Log in",
       "noAccount": "Don't have an account?",
       "register": "Sign up",
-      "forgot": "Forgot password?"
+      "forgot": "Forgot password?",
+      "rememberMe": "Remember me"
     },
     "register": {
       "title": "Create an account",

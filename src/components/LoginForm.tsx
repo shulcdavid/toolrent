@@ -9,7 +9,7 @@ import { useState } from "react";
 import type { Locale } from "@/i18n/config";
 
 interface Props {
-  dict: { email: string; password: string; submit: string; forgot: string };
+  dict: { email: string; password: string; submit: string; forgot: string; rememberMe: string };
   lang: Locale;
 }
 
@@ -58,6 +58,17 @@ export function LoginForm({ dict, lang }: Props) {
             {decodeURIComponent(error)}
           </p>
         )}
+        {/* Remember me */}
+        <label className="flex items-center gap-2.5 cursor-pointer select-none">
+          <input
+            type="checkbox"
+            name="remember_me"
+            defaultChecked
+            className="h-4 w-4 rounded border-[#c8c4bc] bg-[#f7f6f2] accent-[#20201f] cursor-pointer"
+          />
+          <span className="text-sm text-[#20201f]/75">{dict.rememberMe}</span>
+        </label>
+
         <Button type="submit" size="lg" className="w-full mt-1">
           {dict.submit}
         </Button>

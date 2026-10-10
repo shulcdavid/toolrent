@@ -3,6 +3,7 @@ import { getDictionary, hasLocale, type Locale } from "@/i18n/dictionaries";
 import { ListingCard } from "@/components/ListingCard";
 import { ListingsMap } from "@/components/ListingsMap";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { CATEGORIES } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { SlidersHorizontal, MapPin, LayoutGrid, Map } from "lucide-react";
@@ -39,6 +40,19 @@ export default async function ListingsPage({
   const listings = ((listingsRaw ?? []) as any[]).filter(
     (l) => l.profiles?.owner_available !== false
   );
+
+  // Fav counts — admin client bypasses RLS
+  const favCountMap = new Map<string, number>();
+  if (listings.length > 0) {
+    const admin = createAdminClient();
+    const { data: favCountsRaw } = await (admin as any)
+      .from("favourites")
+      .select("listing_id")
+      .in("listing_id", listings.map((l: any) => l.id));
+    ((favCountsRaw ?? []) as any[]).forEach((f: any) => {
+      favCountMap.set(f.listing_id, (favCountMap.get(f.listing_id) ?? 0) + 1);
+    });
+  }
 
   const { data: cityData } = await supabase.from("listings").select("city");
   const cities = [...new Set(((cityData ?? []) as any[]).map((r) => r.city as string))].sort();
@@ -187,7 +201,8 @@ export default async function ListingsPage({
               {listings.map((listing) => (
                 <ListingCard key={listing.id} listing={listing as any} lang={lang as Locale}
                   perDayLabel={dict.listings.perDay} availableLabel={dict.listings.available} unavailableLabel={dict.listings.unavailable}
-                  userId={user?.id} isFavourited={favouriteIds.has(listing.id)} />
+                  userId={user?.id} isFavourited={favouriteIds.has(listing.id)}
+                  favCount={favCountMap.get(listing.id) ?? 0} />
               ))}
             </div>
           )}
