@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { CATEGORIES } from "@/lib/utils";
 import { CategoryIcon } from "@/components/CategoryIcon";
-import { SlidersHorizontal, MapPin, LayoutGrid, Map } from "lucide-react";
+import { SlidersHorizontal, MapPin, LayoutGrid, Map as MapIcon } from "lucide-react";
 
 interface SearchParams { category?: string; city?: string; q?: string; sort?: string; view?: string; priceMax?: string }
 
@@ -183,7 +183,7 @@ export default async function ListingsPage({
                 <a href={buildUrl(lang, { ...sp, view: "map" })}
                   className={`flex items-center gap-1 px-3 py-1.5 text-xs font-medium transition-colors ${
                     sp.view === "map" ? "bg-[#20201f] text-[#f7f6f2]" : "text-[#20201f]/75 hover:text-[#20201f]"}`}>
-                  <Map size={12} /> {lang === "lt" ? "Žemėlapis" : "Map"}
+                  <MapIcon size={12} /> {lang === "lt" ? "Žemėlapis" : "Map"}
                 </a>
               </div>
             </div>

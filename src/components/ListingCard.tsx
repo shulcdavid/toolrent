@@ -82,11 +82,14 @@ export function ListingCard({ listing, lang, perDayLabel, availableLabel, unavai
                   {favCount}
                 </span>
               )}
-              {(listing.profiles?.username || listing.profiles?.full_name) && (
-                <div className="h-6 w-6 rounded-full bg-[#20201f] flex items-center justify-center text-[10px] font-bold text-[#f7f6f2]">
-                  {(listing.profiles.username ?? listing.profiles.full_name)[0].toUpperCase()}
-                </div>
-              )}
+              {(() => {
+                const name = listing.profiles?.username ?? listing.profiles?.full_name;
+                return name ? (
+                  <div className="h-6 w-6 rounded-full bg-[#20201f] flex items-center justify-center text-[10px] font-bold text-[#f7f6f2]">
+                    {name[0].toUpperCase()}
+                  </div>
+                ) : null;
+              })()}
             </div>
           </div>
         </div>
