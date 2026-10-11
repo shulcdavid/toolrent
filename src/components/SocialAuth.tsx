@@ -37,8 +37,7 @@ function FacebookIcon() {
 }
 
 const providers: { id: Provider; label: string; Icon: () => React.ReactElement }[] = [
-  { id: "google",   label: "Continue with Google",   Icon: GoogleIcon },
-  { id: "facebook", label: "Continue with Facebook", Icon: FacebookIcon },
+  { id: "google", label: "Continue with Google", Icon: GoogleIcon },
 ];
 
 export function SocialAuth({ lang }: Props) {
